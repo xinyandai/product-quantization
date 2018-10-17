@@ -74,7 +74,7 @@ def execute(pq, metric='euclid', ground_metric=None, data_set='audio', top_k=20,
 
 def run_pq():
     M = 4
-    Ks = 32
+    Ks = 256
     deep = 1
 
     print("train the residual PQ with {} code book and {} layer of residual, each kmeans has {} centers"
@@ -94,16 +94,31 @@ def run_aq():
     execute(residual_pq, metric='product', ground_metric='euclid', data_set='audio', top_k=20, transformer=e2m_transform)
 
 
-def run_norm_pq():
-    n_percentile = 32
-    Ks = 32
-    deep = 1
+def pq_for_euclid():
+    ks = 64
+    data_set = 'audio'
+    residual_pq = ResidualPQ(M=2, Ks=ks, deep=1)
+    execute(residual_pq, data_set=data_set, top_k=20)
 
-    print("train the NormPQ with {} percentile and {} layer of residual, each kmeans has {} centers"
-          .format(n_percentile, deep, Ks))
-    norm_pq = NormPQ(n_percentile=n_percentile, Ks=Ks)
-    execute(norm_pq, metric='product', data_set='netflix', top_k=20)
+    norm_pq = NormPQ(n_percentile=ks, Ks=ks)
+    execute(norm_pq, data_set=data_set, top_k=20)
+
+
+def pq_for_ip():
+    ks = 64
+    data_set = 'netflix'
+    residual_pq = ResidualPQ(M=M, Ks=Ks, deep=deep)
+    execute(residual_pq, metric='product', data_set=data_set, top_k=20)
+
+    norm_pq = NormPQ(n_percentile=Ks, Ks=Ks)
+    execute(norm_pq, metric='product', data_set=data_set, top_k=20)
 
 
 if __name__ == '__main__':
-    run_norm_pq()
+    Ks = 16
+    data_set = 'netflix'
+    M = 2
+    deep = 2
+    residual_pq = ResidualPQ(M=M, Ks=Ks, deep=deep, n_percentile=Ks)
+    execute(residual_pq, metric='product', data_set=data_set, top_k=20)
+

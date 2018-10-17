@@ -30,7 +30,9 @@ class NormPQ(object):
             print("iter: {}, seed: {}".format(iter, seed))
 
         norms, normalized_vecs = self.normalize(vecs)
+        # float64 here
         self.percentiles = np.percentile(norms, np.linspace(0, 100, self.n_percentile + 1)[:])
+        self.percentiles = np.array(self.percentiles, dtype=np.float32)
 
         self.centers = np.zeros((self.Ks, D), dtype=np.float32)
         self.centers[:], _ = kmeans2(normalized_vecs, self.Ks, iter=iter, minit='points')
@@ -38,6 +40,10 @@ class NormPQ(object):
         return self
 
     def encode(self, vecs):
+        """
+        :param vecs:
+        :return: (N * 2)
+        """
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
 
