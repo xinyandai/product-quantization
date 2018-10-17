@@ -46,24 +46,3 @@ class ResidualPQ(object):
     def compress(self, vecs):
         return self.decode(self.encode(vecs))
 
-    def code_to_index(self, code):
-        """
-        :param code, shape of (deep, M)
-        :return: long integer
-        """
-        integer = 0
-        for deep in code:
-            for c in deep:
-                integer *= self.Ks
-                integer += c
-        return integer
-
-    def index_to_code(self, index):
-        code = np.zeros(self.M * self.deep, dtype=self.code_dtype)
-        for i in range(len(code)-1, -1, -1):
-            code[i] = index % self.Ks
-            index = index / self.Ks
-        return code.reshape(1, self.deep, self.M)
-
-    def num_code_book(self):
-        return self.Ks ** (self.M * self.deep)

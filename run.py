@@ -95,8 +95,8 @@ def run_aq():
 
 
 def run_norm_pq():
-    n_percentile = 16
-    Ks = 16
+    n_percentile = 32
+    Ks = 32
     deep = 1
 
     print("train the NormPQ with {} percentile and {} layer of residual, each kmeans has {} centers"

@@ -67,16 +67,3 @@ class NormPQ(object):
 
     def compress(self, vecs):
         return self.decode(self.encode(vecs))
-
-    def code_to_index(self, code):
-        """
-        :param code, shape of (deep, M)
-        :return: long integer
-        """
-        return code[0] * self.Ks + code[1]
-
-    def index_to_code(self, index):
-        return [index/self.Ks, index%self.Ks]
-
-    def num_code_book(self):
-        return self.n_percentile * self.Ks

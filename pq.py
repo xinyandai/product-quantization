@@ -66,20 +66,3 @@ class PQ(object):
 
     def compress(self, vecs):
         return self.decode(self.encode(vecs))
-
-    def code_to_index(self, code):
-        integer = 0
-        for c in code:
-            integer *= self.Ks
-            integer += c
-        return integer
-
-    def index_to_code(self, index):
-        code = np.zeros(self.M, dtype=self.code_dtype)
-        for i in range(len(code) - 1, -1, -1):
-            code[i] = index % self.Ks
-            index = index / self.Ks
-        return code.reshape(1, self.M)
-
-    def num_code_book(self):
-        return self.Ks ** self.M
