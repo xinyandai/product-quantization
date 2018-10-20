@@ -1,7 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 import numpy as np
-from scipy.cluster.vq import vq, kmeans2
+from quantize import vq, kmeans2
 
 
 class PQ(object):
@@ -12,9 +12,6 @@ class PQ(object):
         self.codewords = None
         self.Ds = None
 
-        if verbose:
-            print("M: {}, Ks: {}, code_dtype: {}".format(M, Ks, self.code_dtype))
-
     def fit(self, vecs, iter=20, seed=123):
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
@@ -24,16 +21,14 @@ class PQ(object):
         self.Ds = int(D / self.M)
 
         np.random.seed(seed)
-        if self.verbose:
-            print("iter: {}, seed: {}".format(iter, seed))
 
         # [m][ks][ds]: m-th subspace, ks-the codeword, ds-th dim
         self.codewords = np.zeros((self.M, self.Ks, self.Ds), dtype=np.float32)
         for m in range(self.M):
             if self.verbose:
-                print("Training the subspace: {} / {}".format(m, self.M))
+                print("    Training the subspace: {} / {}".format(m, self.M))
             vecs_sub = vecs[:, m * self.Ds : (m+1) * self.Ds]
-            self.codewords[m], _ = kmeans2(vecs_sub, self.Ks, iter=iter, minit='points')
+            self.codewords[m], _ = kmeans2(vecs_sub, self.Ks, iter=iter)
 
         return self
 
@@ -46,7 +41,6 @@ class PQ(object):
         # codes[n][m] : code of n-th vec, m-th subspace
         codes = np.empty((N, self.M), dtype=self.code_dtype)
         for m in range(self.M):
-
             vecs_sub = vecs[:, m * self.Ds : (m+1) * self.Ds]
             codes[:, m], _ = vq(vecs_sub, self.codewords[m])
 

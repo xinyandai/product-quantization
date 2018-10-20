@@ -4,33 +4,34 @@ from pq_norm import *
 
 
 class ResidualPQ(object):
-    def __init__(self, M, Ks=256, deep=1, n_percentile=0, verbose=True):
+    def __init__(self, M, Ks=256, deep=1, n_percentile=0, norm_pq_layer=0, true_norm=False, verbose=True):
         assert 0 < Ks <= 2 ** 32
-        if n_percentile != 0:
-            assert M == 2
+        assert deep > 0
+        if norm_pq_layer != 0:
+            assert n_percentile != 0
         self.M, self.Ks, self.deep, self.n_percentile, self.verbose = M, Ks, deep, n_percentile, verbose
         self.code_dtype = np.uint8 if Ks <= 2 ** 8 else (np.uint16 if Ks <= 2 ** 16 else np.uint32)
         self.codewords = None
         self.Ds = None
-        if n_percentile == 0:
-            self.pqs = [PQ(M, Ks, verbose) for _ in range(deep)]
-        else:
-            self.pqs = [NormPQ(n_percentile, Ks, verbose) for _ in range(deep)]
+        self.pqs = [PQ(M, Ks, verbose) for _ in range(deep)]
+        if n_percentile != 0:
+            self.pqs[0:norm_pq_layer] = [NormPQ(n_percentile, Ks, true_norm, verbose) for _ in range(norm_pq_layer)]
 
         if verbose:
-            print("M: {}, Ks: {}, residual deep : {}, code_dtype: {}".format(M, Ks, deep, self.code_dtype))
+            print("M: {}, Ks: {}, residual layer : {}, code_dtype: {}".format(M, Ks, deep, self.code_dtype))
 
     def fit(self, vecs, iter=20, seed=123):
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
-        for pq in self.pqs:
+        for layer, pq in enumerate(self.pqs):
+            print("------------------------------------------------------------\nlayer: {}".format(layer))
             pq.fit(vecs=vecs, iter=iter, seed=seed)
             # N * D
             compressed = pq.compress(vecs)
             vecs = vecs - compressed
-            print("=====================")
-            print('norm error:', np.linalg.norm(vecs))
-            print("=====================")
+            norms = np.linalg.norm(vecs, axis=1)
+            print("layer: {},  residual average norm : {} max norm: {} min norm: {}"\
+                  .format(layer, np.mean(norms), np.max(norms), np.min(norms)))
 
         return self
 
@@ -53,5 +54,8 @@ class ResidualPQ(object):
         return np.sum(vecss, axis=0)
 
     def compress(self, vecs):
-        return self.decode(self.encode(vecs))
-
+        compressed = np.zeros((self.deep, len(vecs), len(vecs[0])), dtype=vecs.dtype)
+        for i, pq in enumerate(self.pqs):
+            compressed[i][:][:] = pq.compress(vecs)
+            vecs = vecs - compressed[i][:][:]
+        return np.sum(compressed, axis=0)

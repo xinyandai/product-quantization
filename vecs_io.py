@@ -10,7 +10,7 @@ def fvecs_read(filename, c_contiguous=True):
     fv = fv.reshape(-1, 1 + dim)
     if not all(fv.view(np.int32)[:, 0] == dim):
         raise IOError("Non-uniform vector sizes in " + filename)
-    fv = fv[:100000, 1:]
+    fv = fv[:, 1:]
     if c_contiguous:
         fv = fv.copy()
     return fv
