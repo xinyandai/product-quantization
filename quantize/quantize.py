@@ -87,6 +87,7 @@ from scipy._lib import _numpy_compat
 
 from . import _quantize
 
+
 class ClusterError(Exception):
     pass
 
@@ -651,6 +652,7 @@ def _krandinit(data, k):
     else:
         return init_rankn(data)
 
+
 _valid_init_meth = {'random': _krandinit, 'points': _kpoints}
 
 
@@ -664,6 +666,7 @@ def _missing_raise():
     """raise a ClusterError when called."""
     raise ClusterError("One of the clusters is empty. "
                         "Re-run kmean with a different initialization.")
+
 
 _valid_miss_meth = {'warn': _missing_warn, 'raise': _missing_raise}
 
@@ -776,7 +779,7 @@ def kmeans2(data, k, iter=10, thresh=1e-5, minit='random',
 
     if int(iter) < 1:
         raise ValueError("iter = %s is not valid.  iter must be a positive integer." % iter)
-
+    clusters[0][:] = 0
     return _kmeans2(data, clusters, iter, nc, _valid_miss_meth[missing])
 
 
@@ -796,6 +799,7 @@ def _kmeans2(data, code, niter, nc, missing):
             missing()
             # Set the empty clusters to their previous positions
             new_code[~has_members] = code[~has_members]
+        new_code[0][:] = 0
         code = new_code
 
     return code, label

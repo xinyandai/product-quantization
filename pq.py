@@ -28,7 +28,7 @@ class PQ(object):
             if self.verbose:
                 print("    Training the subspace: {} / {}".format(m, self.M))
             vecs_sub = vecs[:, m * self.Ds : (m+1) * self.Ds]
-            self.codewords[m], _ = kmeans2(vecs_sub, self.Ks, iter=iter)
+            self.codewords[m], _ = kmeans2(vecs_sub, self.Ks, iter=iter, minit='points',)
 
         return self
 

@@ -29,3 +29,19 @@ def ivecs_read(filename, c_contiguous=True):
     if c_contiguous:
         iv = iv.copy()
     return iv
+
+
+def loader(data_set='audio', top_k=20, ground_metric='euclid'):
+    folder_path = '../data/%s' % data_set
+    base_file = folder_path + '/%s_base.fvecs' % data_set
+    query_file = folder_path + '/%s_query.fvecs' % data_set
+    ground_truth = folder_path + '/%s_%s_%s_groundtruth.ivecs' % \
+                   (top_k, data_set, ground_metric)
+
+    print("load the base data {}, \nload the queries {}, \nload the ground truth {}".format(base_file, query_file,
+                                                                                            ground_truth))
+    X = fvecs_read(base_file)
+    Q = fvecs_read(query_file)
+    G = ivecs_read(ground_truth)
+    return X, Q, G
+

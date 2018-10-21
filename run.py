@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from numpy.linalg import norm
-from vecs_io import *
+from vecs_io import loader
 import math
 from pq_residual import *
 from sorter import *
@@ -13,11 +13,7 @@ def draw():
     M = 1
     Ks = 128
     deep = 2
-    folder_path= '../data/%s' % data_set
-    file_path = folder_path + '/%s_base.fvecs' % data_set
-    query_path = folder_path + '/%s_query.fvecs' % data_set
-    X = fvecs_read(file_path)
-    Q = fvecs_read(query_path)
+    X, Q, G = loader(data_set, top_k, metric)
 
     residual_pq = ResidualPQ(M=1, Ks=Ks, deep=deep)
     residual_pq.fit(X, iter=20, seed=808)
@@ -40,29 +36,14 @@ def draw():
     plt.show()
 
 
-def loader(metric='euclid', ground_metric=None, data_set='audio', top_k=20):
-    folder_path = '../data/%s' % data_set
-    base_file = folder_path + '/%s_base.fvecs' % data_set
-    query_file = folder_path + '/%s_query.fvecs' % data_set
-    ground_truth = folder_path + '/%s_%s_%s_groundtruth.ivecs' % \
-                   (top_k, data_set, metric if ground_metric is None else ground_metric)
-
-    print("load the base data {}, \nload the queries {}, \nload the ground truth {}".format(base_file, query_file,
-                                                                                            ground_truth))
-    X = fvecs_read(base_file)
-    Q = fvecs_read(query_file)
-    G = ivecs_read(ground_truth)
-    return X, Q, G
-
-
 def execute(pq, metric='euclid', ground_metric=None, data_set='audio', top_k=20, transformer=None):
 
-    X, Q, G = loader(metric, ground_metric, data_set, top_k)
+    X, Q, G = loader(data_set, top_k, metric if ground_metric is None else ground_metric)
 
     if transformer is not None:
         X, Q = transformer(X, Q)
 
-    pq.fit(X, iter=20, seed=808)
+    pq.fit(X, iter=20, seed=1007)
     print('compress items')
     compressed = pq.compress(X)
     print("sorting items")
@@ -82,24 +63,12 @@ def execute(pq, metric='euclid', ground_metric=None, data_set='audio', top_k=20,
 if __name__ == '__main__':
     metric = 'product'
     ground_metric = metric
-    top_k = 10
-    Ks = 256
-    data_set = 'sift1m'
+    top_k = 20
+    Ks = 32
+    data_set = 'netflix'
     M = 1
-    deep = 8
-    n_percentile = 0
-    norm_pq_layer = 0
-    pq = ResidualPQ(M=M, Ks=Ks, deep=deep, n_percentile=n_percentile, norm_pq_layer=norm_pq_layer, true_norm=False)
 
-    # X, Q, G = loader(metric, ground_metric, data_set, top_k)
-    # pq.fit(X, iter=20, seed=808)
-    #
-    # vecs = X
-    # compressed = np.zeros((pq.deep, len(X), len(X[0])), dtype=X.dtype)
-    # for i, pq in enumerate(pq.pqs):
-    #     compressed[i][:][:] = pq.compress(vecs)
-    #     vecs = vecs - compressed[i][:][:]
-    # norms = np.linalg.norm(compressed, axis=2)
-    # for i in range(deep-1):
-    #     print(np.count_nonzero(norms[i] < norms[i+1]))
+    pqs = [PQ(M, Ks), PQ(M, Ks)]
+    pq = ResidualPQ(pqs=pqs)
+
     execute(pq, metric=metric, data_set=data_set, top_k=top_k)
