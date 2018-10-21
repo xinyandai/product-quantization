@@ -1,5 +1,12 @@
 from pq import *
-from multiprocessing import Pool, cpu_count
+import warnings
+from multiprocessing import Pool, cpu_count, sharedctypes
+
+
+def _init(arr_to_populate):
+    """Each pool process calls this initializer. Load the array to be populated into that process's global namespace"""
+    global arr
+    arr = arr_to_populate
 
 
 def arg_sort(arguments):
@@ -9,7 +16,10 @@ def arg_sort(arguments):
     :param arguments: a tuple of (metric, compressed, q)
     :return:
     """
-    metric, compressed, q = arguments
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', RuntimeWarning)
+        compressed = np.ctypeslib.as_array(arr)
+    metric, q = arguments
     if metric == 'product':
         return np.argsort([- np.dot(np.array(q).flatten(), np.array(center).flatten()) for center in compressed])
     else:
@@ -25,9 +35,12 @@ def parallel_sort(metric, compressed, Q):
     :param Q: queries, shape(len(Q) * D)
     :return:
     """
-    pool = Pool(cpu_count())
-    # may waste memory because of repeating compressed item many times
-    rank = pool.map(arg_sort, zip([metric for _ in Q], [compressed for _ in Q], Q))
+    tmp = np.ctypeslib.as_ctypes(compressed)
+    shared_arr = sharedctypes.Array(tmp._type_, tmp, lock=False)
+
+    pool = Pool(processes=cpu_count(), initializer=_init, initargs=(shared_arr, ))
+
+    rank = pool.map(arg_sort, zip([metric for _ in Q], Q))
     pool.close()
     pool.join()
     return rank
