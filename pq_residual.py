@@ -27,6 +27,15 @@ class ResidualPQ(object):
 
             if self.verbose:
                 print("maximum M: {}, residual layer : {}, code_dtype: {}".format(self.M, deep, self.code_dtype))
+        for pq in self.pqs:
+            if isinstance(pq, NormPQ):
+                print("---type: {}, M: {}, Ks : {}, n_percentile: {}, true_norm: {}, code_dtype: {}".format(
+                    type(pq), self.M, pq.Ks, pq.n_percentile, pq.true_norm, pq.code_dtype))
+            else:
+                print("---type: {}, M: {}, Ks : {}, code_dtype: {}".format(
+                    type(pq), self.M, pq.Ks, pq.code_dtype))
+            assert pq.code_dtype == self.code_dtype
+        print('-------------------------------------------------------------------------------------------------')
 
     def fit(self, vecs, iter=20, seed=123):
         assert vecs.dtype == np.float32

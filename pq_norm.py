@@ -13,7 +13,9 @@ class NormPQ(object):
 
     def normalize(self, vecs):
         norms = np.linalg.norm(vecs, axis=1)
-        normalized_vecs = vecs / norms[:, np.newaxis]
+        # normalized_vecs = vecs / norms[:, np.newaxis]
+        # divide by zero problem:
+        normalized_vecs = np.divide(vecs, norms[:, np.newaxis], out=np.zeros_like(vecs), where=norms[:, np.newaxis] != 0)
         return norms, normalized_vecs
 
     def fit(self, vecs, iter=20, seed=123):
@@ -66,7 +68,7 @@ class NormPQ(object):
         if not self.true_norm:
             norms = (self.percentiles[norm_index]+self.percentiles[norm_index-1]) / 2.0
         assert norms is not None
-        return np.multiply(vecs, np.tile(norms, (len(vecs[0]), 1)).transpose())
+        return (vecs.transpose() * norms).transpose()  # can only apply broadcast on columns, so transpose is needed
 
     def compress(self, vecs):
         norms = np.linalg.norm(vecs, axis=1) if self.true_norm else None
