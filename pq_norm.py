@@ -4,6 +4,7 @@ from pq import *
 class NormPQ(object):
     def __init__(self, n_percentile=256, Ks=256, true_norm=False, verbose=True):
         assert 0 < Ks <= 2 ** 32
+        self.M = 2
         self.n_percentile, self.Ks, self.true_norm, self.verbose = n_percentile, Ks, true_norm, verbose
         self.code_dtype = np.uint8 if max(Ks, n_percentile) <= 2 ** 8 \
             else (np.uint16 if max(Ks, n_percentile) <= 2 ** 16 else np.uint32)
