@@ -31,8 +31,15 @@ def ivecs_read(filename, c_contiguous=True):
     return iv
 
 
-def loader(data_set='audio', top_k=20, ground_metric='euclid'):
-    folder_path = '../data/%s' % data_set
+def loader(data_set='audio', top_k=20, ground_metric='euclid', folder='../data/'):
+    """
+    :param data_set: data set you wanna load , audio, sift1m, ..
+    :param top_k: how many nearest neighbor in ground truth file
+    :param ground_metric:
+    :param folder:
+    :return: X, Q, G
+    """
+    folder_path = folder + data_set
     base_file = folder_path + '/%s_base.fvecs' % data_set
     query_file = folder_path + '/%s_query.fvecs' % data_set
     ground_truth = folder_path + '/%s_%s_%s_groundtruth.ivecs' % \
