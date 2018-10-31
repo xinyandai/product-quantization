@@ -4,16 +4,16 @@ from pq_norm import *
 
 
 class ResidualPQ(object):
-    def __init__(self, M=1, Ks=256, deep=1, pqs=None, verbose=True):
+    def __init__(self, M=1, Ks=256, deep=1, pqs=None, verbose=True, mahalanobis_matrix=None):
         if pqs is None:
             assert 0 < Ks <= 2 ** 32
             assert deep > 0
 
-            self.M, self.Ks, self.deep, self.verbose = M, Ks, deep, verbose
+            self.M, self.Ks, self.deep, self.verbose, self.mahalanobis_matrix = M, Ks, deep, verbose, mahalanobis_matrix
             self.code_dtype = np.uint8 if Ks <= 2 ** 8 else (np.uint16 if Ks <= 2 ** 16 else np.uint32)
             self.codewords = None
             self.Ds = None
-            self.pqs = [PQ(M, Ks, verbose) for _ in range(deep)]
+            self.pqs = [PQ(M, Ks, verbose, mahalanobis_matrix=mahalanobis_matrix) for _ in range(deep)]
 
             if verbose:
                 print("M: {}, Ks: {}, residual layer : {}, code_dtype: {}".format(M, Ks, deep, self.code_dtype))

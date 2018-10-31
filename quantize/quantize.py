@@ -148,7 +148,7 @@ def whiten(obs, check_finite=True):
     return obs / std_dev
 
 
-def vq(obs, code_book, check_finite=True):
+def vq(obs, code_book, check_finite=True, matrix=None):
     """
     Assign codes from a code book to observations.
 
@@ -216,12 +216,84 @@ def vq(obs, code_book, check_finite=True):
         c_code_book = code_book.astype(ct)
     else:
         c_code_book = code_book
-
-    if ct in (np.float32, np.float64):
+    if matrix is not None:
+        results = py_vq_mahalanobis(c_obs, c_code_book, matrix=matrix)
+    elif ct in (np.float32, np.float64):
         results = _quantize.vq(c_obs, c_code_book)
     else:
         results = py_vq(obs, code_book)
     return results
+
+
+def py_vq_mahalanobis(obs, code_book, check_finite=True, matrix=None):
+    """ Python version of vq algorithm.
+
+    The algorithm computes the euclidian distance between each
+    observation and every frame in the code_book.
+
+    Parameters
+    ----------
+    obs : ndarray
+        Expects a rank 2 array. Each row is one observation.
+    code_book : ndarray
+        Code book to use. Same format than obs. Should have same number of
+        features (eg columns) than obs.
+    check_finite : bool, optional
+        Whether to check that the input matrices contain only finite numbers.
+        Disabling may give a performance gain, but may result in problems
+        (crashes, non-termination) if the inputs do contain infinities or NaNs.
+        Default: True
+
+    Returns
+    -------
+    code : ndarray
+        code[i] gives the label of the ith obversation, that its code is
+        code_book[code[i]].
+    mind_dist : ndarray
+        min_dist[i] gives the distance between the ith observation and its
+        corresponding code.
+
+    Notes
+    -----
+    This function is slower than the C version but works for
+    all input types.  If the inputs have the wrong types for the
+    C versions of the function, this one is called as a last resort.
+
+    It is about 20 times slower than the C version.
+
+    """
+    obs = _asarray_validated(obs, check_finite=check_finite)
+    code_book = _asarray_validated(code_book, check_finite=check_finite)
+
+    # n = number of observations
+    # d = number of features
+    if np.ndim(obs) == 1:
+        if not np.ndim(obs) == np.ndim(code_book):
+            raise ValueError(
+                    "Observation and code_book should have the same rank")
+        else:
+            return _py_vq_1d(obs, code_book)
+    else:
+        (n, d) = np.shape(obs)
+
+    # code books and observations should have same number of features and same
+    # shape
+    if not np.ndim(obs) == np.ndim(code_book):
+        raise ValueError("Observation and code_book should have the same rank")
+    elif not d == code_book.shape[1]:
+        raise ValueError("Code book(%d) and obs(%d) should have the same "
+                         "number of features (eg columns)""" %
+                         (code_book.shape[1], d))
+
+    code = np.zeros(n, dtype=int)
+    min_dist = np.zeros(n)
+    for i in range(n):
+        diff = (obs[i] - code_book)
+        dist = np.einsum('ij,ji->i', np.dot(diff, matrix), np.transpose(diff))
+        code[i] = np.argmin(dist)
+        min_dist[i] = dist[code[i]]
+
+    return code, np.sqrt(min_dist)
 
 
 def py_vq(obs, code_book, check_finite=True):
@@ -383,7 +455,7 @@ def py_vq2(obs, code_book, check_finite=True):
     return code, min_dist
 
 
-def _kmeans(obs, guess, thresh=1e-5):
+def _kmeans(obs, guess, thresh=1e-5, matrix=None):
     """ "raw" version of k-means.
 
     Returns
@@ -422,7 +494,7 @@ def _kmeans(obs, guess, thresh=1e-5):
     while diff > thresh:
         nc = code_book.shape[0]
         # compute membership and distances between obs and code_book
-        obs_code, distort = vq(obs, code_book)
+        obs_code, distort = vq(obs, code_book, matrix=matrix)
         avg_dist.append(np.mean(distort, axis=-1))
         # recalc code_book as centroids of associated obs
         if(diff > thresh):
@@ -672,7 +744,7 @@ _valid_miss_meth = {'warn': _missing_warn, 'raise': _missing_raise}
 
 
 def kmeans2(data, k, iter=10, thresh=1e-5, minit='random',
-        missing='warn', check_finite=True):
+        missing='warn', check_finite=True, matrix=None):
     """
     Classify a set of observations into k clusters using the k-means algorithm.
 
@@ -780,19 +852,23 @@ def kmeans2(data, k, iter=10, thresh=1e-5, minit='random',
     if int(iter) < 1:
         raise ValueError("iter = %s is not valid.  iter must be a positive integer." % iter)
     # clusters[0][:] = 0
-    return _kmeans2(data, clusters, iter, nc, _valid_miss_meth[missing])
+    return _kmeans2(data, clusters, iter, nc, _valid_miss_meth[missing], matrix=matrix)
 
 
-def _kmeans2(data, code, niter, nc, missing):
+def _kmeans2(data, code, niter, nc, missing, matrix=None):
     """ "raw" version of kmeans2. Do not use directly.
 
     Run k-means with a given initial codebook.
 
     """
-    for i in range(niter):
+    from tqdm import tqdm
+    for _ in tqdm(range(niter)):
+        # normalize
+        # norms = np.linalg.norm(code, axis=1)
+        # code = code / norms[:, np.newaxis]
         # Compute the nearest neighbour for each obs
         # using the current code book
-        label = vq(data, code)[0]
+        label = vq(data, code, matrix=matrix)[0]
         # Update the code by computing centroids using the new code book
         new_code, has_members = _quantize.update_cluster_means(data, label, nc)
         if not has_members.all():

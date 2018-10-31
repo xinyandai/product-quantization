@@ -5,9 +5,9 @@ from quantize import vq, kmeans2
 
 
 class PQ(object):
-    def __init__(self, M, Ks=256, verbose=True):
+    def __init__(self, M, Ks=256, verbose=True, mahalanobis_matrix=None):
         assert 0 < Ks <= 2 ** 32
-        self.M, self.Ks, self.verbose = M, Ks, verbose
+        self.M, self.Ks, self.verbose, self.mahalanobis_matrix = M, Ks, verbose, mahalanobis_matrix
         self.code_dtype = np.uint8 if Ks <= 2 ** 8 else (np.uint16 if Ks <= 2 ** 16 else np.uint32)
         self.codewords = None
         self.Ds = None
@@ -28,7 +28,7 @@ class PQ(object):
             if self.verbose:
                 print("    Training the subspace: {} / {}".format(m, self.M))
             vecs_sub = vecs[:, m * self.Ds : (m+1) * self.Ds]
-            self.codewords[m], _ = kmeans2(vecs_sub, self.Ks, iter=iter, minit='points',)
+            self.codewords[m], _ = kmeans2(vecs_sub, self.Ks, iter=iter, minit='points', matrix=self.mahalanobis_matrix)
 
         return self
 
@@ -42,7 +42,7 @@ class PQ(object):
         codes = np.empty((N, self.M), dtype=self.code_dtype)
         for m in range(self.M):
             vecs_sub = vecs[:, m * self.Ds : (m+1) * self.Ds]
-            codes[:, m], _ = vq(vecs_sub, self.codewords[m])
+            codes[:, m], _ = vq(vecs_sub, self.codewords[m], matrix=self.mahalanobis_matrix)
 
         return codes
 

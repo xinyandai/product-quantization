@@ -10,7 +10,7 @@ setup(ext_modules = cythonize(Extension(
     language='c',
     include_dirs=[numpy.get_include()],
     library_dirs=[],
-    libraries=[':libcblas.so.3'],
-    extra_compile_args=[],
-    extra_link_args=[],
+    libraries=[':libblas.so.3'],
+    extra_compile_args=['-fopenmp'],
+    extra_link_args=['-fopenmp'],
 )))

@@ -22,6 +22,11 @@ def arg_sort(arguments):
     metric, q = arguments
     if metric == 'product':
         return np.argsort([- np.dot(np.array(q).flatten(), np.array(center).flatten()) for center in compressed])
+    elif metric == 'angular':
+        return np.argsort([
+            - np.dot(np.array(q).flatten(), np.array(center).flatten()) / (np.linalg.norm(q) * np.linalg.norm(center))
+            for center in compressed
+        ])
     else:
         return np.argsort([np.linalg.norm(q - center) for center in compressed])
 
@@ -52,4 +57,6 @@ class Sorter(object):
         self.topK = parallel_sort(metric, compressed, Q)
 
     def recall(self, G, T):
-        return min(T, len(self.topK[0])), np.mean([len(np.intersect1d(G[i], self.topK[i][:T])) for i in range(len(G))]) / len(G[0])
+        t = min(T, len(self.topK[0]))
+        top_k = [len(np.intersect1d(G[i], self.topK[i][:T])) for i in range(len(G))]
+        return t, np.mean(top_k) / len(G[0])

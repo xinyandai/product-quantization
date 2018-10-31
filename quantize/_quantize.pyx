@@ -6,10 +6,11 @@ easier to maintain than old SWIG output.
 Original C version by Damian Eads.
 Translated to Cython by David Warde-Farley, October 2009.
 """
-
 import numpy as np
 cimport numpy as np
+cimport cython
 cimport scipy.linalg.cython_blas as blas
+from cython.parallel import prange
 from libc.math cimport sqrt
 
 ctypedef np.float64_t float64_t
@@ -132,6 +133,84 @@ cdef int _vq(vq_type *obs, vq_type *code_book,
 
     return 0
 
+
+
+def vq_mahalanobis(np.ndarray obs, np.ndarray codes, np.ndarray matrix):
+    """
+    Vector quantization ndarray wrapper. Only support float32.
+
+    Parameters
+    ----------
+    obs : ndarray
+        The observation matrix. Each row is an observation.
+    codes : ndarray
+        The code book matrix.
+    matrix : ndarray
+        The mahalanobis matrix
+    Notes
+    -----
+    The observation matrix and code book matrix should have same ndim and
+    same number of columns (features). Only 1-dimensional and 2-dimensional
+    arrays are supported.
+    """
+    cdef int nobs, ncodes, nfeat
+    cdef np.ndarray outcodes, outdists
+    cdef np.ndarray aM, bM, aMa, bMb, aMb
+
+    # Ensure the arrays are contiguous
+    obs = np.ascontiguousarray(obs)
+    codes = np.ascontiguousarray(codes)
+
+    if obs.dtype != codes.dtype:
+        raise TypeError('observation and code should have same dtype')
+    if obs.dtype not in (np.float32, np.float64):
+        raise TypeError('type other than float or double not supported')
+    if obs.ndim != codes.ndim:
+        raise ValueError(
+            'observation and code should have same number of dimensions')
+
+    if obs.ndim == 2:
+        nfeat = obs.shape[1]
+        nobs = obs.shape[0]
+        ncodes = codes.shape[0]
+        if nfeat != codes.shape[1]:
+            raise ValueError('obs and code should have same number of '
+                             'features (columns)')
+    else:
+        raise ValueError('ndim different than 2 are not supported')
+
+    # Initialize outdists and outcodes array.
+    # Outdists should be initialized as INF.
+    outdists = np.empty((nobs,), dtype=obs.dtype)
+    outcodes = np.empty((nobs,), dtype=np.int32)
+    outdists.fill(np.inf)
+
+    aM = np.zeros((nobs, nfeat), dtype=obs.dtype)
+    bM = np.zeros((ncodes, nfeat), dtype=obs.dtype)
+    aMa = np.zeros((nobs), dtype=obs.dtype)
+    bMb = np.zeros((ncodes), dtype=obs.dtype)
+    aMb = np.zeros((nobs, ncodes), dtype=obs.dtype)
+
+    aM = np.dot(obs, matrix)                #(n*d) (d*d) ->  (n*d)
+    bM = np.dot(codes, matrix)              #(c*d) (d*d) ->  (c*d)
+    aMa = np.einsum('ij,ij->i', aM, obs)    #(n*d) (n*d) -> n
+    bMb = np.einsum('ij,ij->i', bM, codes)  #(c*d) (c*d) -> c
+    aMb = np.matmul(aM, codes.transpose())  #(n*d) (d*c) -> n * c
+    aMb = aMb * (-2.0)
+    nobs, ncodes = obs.shape[0], codes.shape[0]
+    for i in range(nobs):
+            for j in range(ncodes):
+                dist_sqr = aMa[i] + bMb[j] + aMb[i][j]
+                if dist_sqr < outdists[i]:
+                    outcodes[i] = j
+                    outdists[i] = dist_sqr
+            # dist_sqr may be negative due to float point errors
+            if outdists[i] > 0:
+                outdists[i] = sqrt(outdists[i])
+            else:
+                outdists[i] = 0
+
+    return outcodes, outdists
 
 cdef void _vq_small_nf(vq_type *obs, vq_type *code_book,
                        int ncodes, int nfeat, int nobs,
