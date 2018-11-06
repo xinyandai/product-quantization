@@ -4,47 +4,31 @@ from pq_norm import *
 
 
 class ResidualPQ(object):
-    def __init__(self, M=1, Ks=256, deep=1, pqs=None, verbose=True, mahalanobis_matrix=None):
-        if pqs is None:
-            assert 0 < Ks <= 2 ** 32
-            assert deep > 0
+    def __init__(self, pqs=None, verbose=True):
 
-            self.M, self.Ks, self.deep, self.verbose, self.mahalanobis_matrix = M, Ks, deep, verbose, mahalanobis_matrix
-            self.code_dtype = np.uint8 if Ks <= 2 ** 8 else (np.uint16 if Ks <= 2 ** 16 else np.uint32)
-            self.codewords = None
-            self.Ds = None
-            self.pqs = [PQ(M, Ks, verbose, mahalanobis_matrix=mahalanobis_matrix) for _ in range(deep)]
+        assert len(pqs) > 0
+        self.verbose = verbose
+        self.deep = len(pqs)
+        self.code_dtype = pqs[0].code_dtype
+        self.M = max([pq.M for pq in pqs])
+        self.pqs = pqs
 
-            if verbose:
-                print("M: {}, Ks: {}, residual layer : {}, code_dtype: {}".format(M, Ks, deep, self.code_dtype))
-        else:
-            assert len(pqs) > 0
-            self.verbose = verbose
-            self.deep = len(pqs)
-            self.code_dtype = pqs[0].code_dtype
-            self.M = max([pq.M for pq in pqs])
-            self.pqs = pqs
-
-            if self.verbose:
-                print("maximum M: {}, residual layer : {}, code_dtype: {}".format(self.M, deep, self.code_dtype))
         for pq in self.pqs:
-            if isinstance(pq, NormPQ):
-                print("---type: {}, M: {}, Ks : {}, n_percentile: {}, true_norm: {}, code_dtype: {}".format(
-                    type(pq), self.M, pq.Ks, pq.n_percentile, pq.true_norm, pq.code_dtype))
-            else:
-                print("---type: {}, M: {}, Ks : {}, code_dtype: {}".format(
-                    type(pq), self.M, pq.Ks, pq.code_dtype))
             assert pq.code_dtype == self.code_dtype
-        print('-------------------------------------------------------------------------------------------------')
+
+    def class_message(self):
+        messages = ""
+        for i, pq in enumerate(self.pqs):
+            messages += "layer: {}, type: {}, M: {}, Ks : {}, code_dtype: {}    ".format(
+                    i, type(pq), self.M, pq.Ks, pq.code_dtype)
+        return messages
 
     def fit(self, vecs, iter=20, seed=123):
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
         for layer, pq in enumerate(self.pqs):
-            if self.verbose:
-                print("------------------------------------------------------------\nlayer: {}".format(layer))
 
-            pq.fit(vecs=vecs, iter=iter, seed=seed)
+            pq.fit(vecs, iter, seed=seed)
             compressed = pq.compress(vecs)
             vecs = vecs - compressed
 
@@ -62,8 +46,8 @@ class ResidualPQ(object):
         """
         code = np.zeros((self.deep, len(vecs), self.M), dtype=self.code_dtype)  # deep * N  * M
         for i, pq in enumerate(self.pqs):
-            code[i][:][:pq.M] = pq.encode(vecs)
-            vecs = vecs - pq.decode(code[i][:][:pq.M])
+            code[i, :, :pq.M] = pq.encode(vecs)
+            vecs = vecs - pq.decode(code[i, :, :pq.M])
         return np.swapaxes(code, 0, 1)  # deep * N  * M -> N * deep * M
 
     def decode(self, codes):

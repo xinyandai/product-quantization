@@ -12,12 +12,15 @@ class PQ(object):
         self.codewords = None
         self.Ds = None
 
+    def class_message(self):
+        return "Subspace PQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
+
     def fit(self, vecs, iter=20, seed=123):
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
         N, D = vecs.shape
         assert self.Ks < N, "the number of training vector should be more than Ks"
-        assert D % self.M == 0, "input dimension must be dividable by M"
+        assert D % self.M == 0, "input dimension {} must be dividable by M {}".format(D, self.M)
         self.Ds = int(D / self.M)
 
         np.random.seed(seed)

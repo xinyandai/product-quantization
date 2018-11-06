@@ -25,10 +25,12 @@ def scale(X, Q):
 
 
 def e2m_transform(X, Q):
-    X_plus = np.full((len(X), 1), fill_value=-0.5, dtype=np.float32)
-    Q_plus = np.full((len(Q), 1), fill_value=-0.5, dtype=np.float32)
+    M = np.max(np.linalg.norm(X, axis=1))
+    X_plus = np.zeros((len(X), 4), dtype=np.float32)
+    Q_plus = np.zeros((len(Q), 4), dtype=np.float32)
 
-    X_plus[:, 0] = np.linalg.norm(X, axis=1) ** 2
+    X_plus[:, 0] = M - np.linalg.norm(X, axis=1) ** 2
+    Q_plus[:, 0] = 0.5
     X = np.append(X, X_plus, axis=1)
     Q = np.append(Q, Q_plus, axis=1)
     return X, Q

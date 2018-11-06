@@ -120,70 +120,63 @@ def encodePointsAQ(points, codebooks, branch):
     return (assigns, errors)
 
 
+def learnCodebooksAQ(points, dim, M, K, pointsCount, branch, threadsCount=8, itsCount=10, codebooks=None):
+    if M < 1:
+        raise Exception('M is not positive!')
+
+    assigns = np.zeros((pointsCount, M), dtype='int32')
+
+    # random initialization of assignment variables
+    # (initializations from (O)PQ should be used for better results)
+    for m in range(M):
+        assigns[:,m] = np.random.randint(0, K, pointsCount)
+
+    data = np.ones(M * pointsCount, dtype='float32')
+    indices = np.zeros(M * pointsCount, dtype='int32')
+    indptr = np.array(range(0, pointsCount + 1)) * M
+    from tqdm import tqdm 
+    for it in tqdm(range(itsCount)):
+        for i in range(pointsCount * M):
+            indices[i] = 0
+        for pid in range(pointsCount):
+            for m in range(M):
+                indices[pid * M + m] = m * K + assigns[pid,m]
+        dimChunkSize = dim // threadsCount
+        pool = Pool(threadsCount)
+        ans = pool.map(partial(solveDimensionLeastSquares, \
+                               dimCount=dimChunkSize, \
+                               data=data, \
+                               indices=indices, \
+                               indptr=indptr, \
+                               trainPoints=points, \
+                               codebookSize=K, M=M), range(0, dim, dimChunkSize))
+        pool.close()
+        pool.join()
+        for d in range(0, dim, dimChunkSize):
+            dimCount = min(dimChunkSize, dim - d)
+            codebooks[:, :, d:d+dimCount] = ans[d // dimChunkSize][0]
+
+        (assigns, errors) = encodePointsAQ(points, codebooks, branch)
+
+    return codebooks, assigns
+
+
 class AQ(object):
     def __init__(self, M, Ks=256, verbose=True):
         assert 0 < Ks <= 2 ** 32
         self.M, self.Ks, self.verbose = M, Ks, verbose
         self.code_dtype = np.int32
         self.codewords = None
-        self.branch=64
-
-    def update_codebooks(self, vecs, codes):
-        N, D = vecs.shape
-        assert codes.shape == (N, self.M)
-        assert self.codewords.shape == (self.M, self.Ks, D)
-        one_hot_code = (np.arange(self.Ks) == codes[..., None]).astype(int)
-        assert one_hot_code.shape == (N, self.M, self.Ks)
-        one_hot_code = one_hot_code.reshape((N, self.M * self.Ks))
-
-        for d in (range(D)):
-            x_d = vecs[:, d]  # N, should be sparse here
-            self.codewords[:, :, d] = np.linalg.lstsq(one_hot_code, x_d)[0].reshape(self.M, self.Ks)
-
-        return self.codewords
+        self.branch = 64
 
     def fit(self, points, itsCount, seed):
         assert points.dtype == np.float32
         assert points.ndim == 2
         pointsCount, dim = points.shape
         assert self.Ks < pointsCount, "the number of training vector should be more than Ks"
-        M = self.M
-        K = self.Ks
-        branch = 64
-        threadsCount = cpu_count()
-
-        assigns = np.zeros((pointsCount, M), dtype='int32')
-        self.codewords = np.zeros((M, K, dim), dtype='float32')
-        # random initialization of assignment variables
-        # (initializations from (O)PQ should be used for better results)
-        for m in range(M):
-            assigns[:, m] = np.random.randint(0, K, pointsCount)
-
-        data = np.ones(M * pointsCount, dtype='float32')
-        indices = np.zeros(M * pointsCount, dtype='int32')
-        indptr = np.array(range(0, pointsCount + 1)) * M
-        for it in range(itsCount):
-            for i in range(pointsCount * M):
-                indices[i] = 0
-            for pid in range(pointsCount):
-                for m in range(M):
-                    indices[pid * M + m] = m * K + assigns[pid, m]
-                    dimChunkSize = dim // threadsCount
-            pool = Pool(threadsCount)
-            ans = pool.map(partial(solveDimensionLeastSquares, \
-                                   dimCount=dimChunkSize, \
-                                   data=data, \
-                                   indices=indices, \
-                                   indptr=indptr, \
-                                   trainPoints=points, \
-                                   codebookSize=K, M=M), range(0, dim, dimChunkSize))
-            pool.close()
-            pool.join()
-            for d in range(0, dim, dimChunkSize):
-                dimCount = min(dimChunkSize, dim - d)
-                self.codewords[:, :, d:d + dimCount] = ans[d // dimChunkSize][0]
-
-            (assigns, errors) = encodePointsAQ(points, self.codewords, branch)
+        self.codewords = np.zeros((self.M, self.Ks, dim), dtype='float32')
+        self.codewords, codes = learnCodebooksAQ(
+            points, dim, self.M, self.Ks, pointsCount, self.branch, cpu_count(), itsCount, self.codewords)
 
     def encode(self, vecs):
         assert vecs.dtype == np.float32
