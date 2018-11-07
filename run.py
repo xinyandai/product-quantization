@@ -10,6 +10,7 @@ from opq import OPQ
 def execute(pq, X, Q, G, metric='euclid'):
 
     print("ranking metric {}".format(metric))
+
     print(pq.class_message())
     pq.fit(X[:100000], 20, seed=1007)
     print('compress items')
@@ -27,8 +28,9 @@ if __name__ == '__main__':
 
     top_k = 20
     Ks = 256
-    data_set = 'yahoomusic'
-    metric = "product"
+    data_set = 'sift1m'
+    metric = "euclid"
+    folder = '../data/'
 
     def transform_based(cal_matrix=False):
         X, Q, G = loader(data_set, top_k, 'euclid')
@@ -47,33 +49,25 @@ if __name__ == '__main__':
         execute(pq, X, Q, G, 'product')
 
     def raw():
-        X, Q, G = loader(data_set, top_k, 'product')
+        X, Q, G = loader(data_set, top_k, metric)
         X, Q = scale(X, Q)
 
-        pqs = [PQ(M=1, Ks=Ks) for _ in range(4)]
+        pqs = [PQ(M=4, Ks=Ks) for _ in range(1)]
         pq = ResidualPQ(pqs=pqs)
-        execute(pq, X, Q, G, 'product')
-
-        # opq = [OPQ(M=4, Ks=Ks) for _ in range(1)]
-        # pq = ResidualPQ(pqs=opq)
-        # execute(pq, X, Q, G, 'euclid')
-        #
-        # pqs = [PQ(M=1, Ks=Ks) for _ in range(4)]
-        # pq = ResidualPQ(pqs=pqs)
-        # execute(pq, X, Q, G, 'euclid')
+        execute(pq, X, Q, G, metric)
 
     def aq():
-        X, Q, G = loader(data_set, top_k, 'product', folder='../data/')
+        X, Q, G = loader(data_set, top_k, metric, folder=folder)
         # X, Q = scale(X, Q)
-        quantizer = AQ(4, Ks)
-        execute(quantizer, X, Q, G, 'product')
+        quantize = AQ(4, Ks)
+        execute(quantize, X, Q, G, metric)
 
     def norm_pq():
-        X, Q, G = loader(data_set, top_k, 'product', folder='../data/')
+        X, Q, G = loader(data_set, top_k, metric, folder=folder)
         # X, Q = scale(X, Q)
         pqs = [PQ(M=1, Ks=Ks) for _ in range(3)]
         rq = ResidualPQ(pqs=pqs)
         quantize = NormPQ(Ks, rq)
-        execute(quantize, X, Q, G, 'product')
+        execute(quantize, X, Q, G, metric)
 
-    norm_pq()
+    raw()

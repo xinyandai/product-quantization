@@ -19,8 +19,7 @@ class ResidualPQ(object):
     def class_message(self):
         messages = ""
         for i, pq in enumerate(self.pqs):
-            messages += "layer: {}, type: {}, M: {}, Ks : {}, code_dtype: {}    ".format(
-                    i, type(pq), self.M, pq.Ks, pq.code_dtype)
+            messages += pq.class_message()
         return messages
 
     def fit(self, vecs, iter=20, seed=123):

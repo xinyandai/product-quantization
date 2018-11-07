@@ -169,6 +169,9 @@ class AQ(object):
         self.codewords = None
         self.branch = 64
 
+    def class_message(self):
+        return "AQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
+
     def fit(self, points, itsCount, seed):
         assert points.dtype == np.float32
         assert points.ndim == 2

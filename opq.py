@@ -65,6 +65,9 @@ class OPQ(object):
         """int: The dim of each sub-vector, i.e., Ds=D/M"""
         return self.pq.Ds
 
+    def class_message(self):
+        return "OPQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
+
     def fit(self, vecs, pq_iter=20, rotation_iter=10, seed=123):
         """Given training vectors, this function alternatively trains
         (a) codewords and (b) a rotation matrix.
