@@ -1,5 +1,6 @@
 from scipy.stats import ortho_group
 import numpy as np
+import numba as nb
 
 
 def zero_mean(X, Q):
@@ -23,6 +24,29 @@ def scale(X, Q):
     Q /= scale
     return X, Q
 
+
+def one_half_coeff_scale(X, Q):
+    mean = np.mean(X)
+    X /= (mean * 2);
+    Q /= (mean * 2);
+    return X, Q
+
+@nb.jit(nopython=True)
+def norm_range(norm_sqrs):
+    norm_sqr_max = np.amax(norm_sqrs)
+    norm_sqr_min = np.amin(norm_sqrs)
+
+    means = np.empty((norm_sqrs.shape[0]), dtype=np.float32)
+
+    for i in range(norm_sqrs.shape[0]):
+        bucket = int((norm_sqrs[i]- norm_sqr_min) / (norm_sqr_max - norm_sqr_min) * 255)
+        left = bucket / 255.0 * (norm_sqr_max - norm_sqr_min) + norm_sqr_min
+        right = (bucket + 1) / 255.0 * (norm_sqr_max - norm_sqr_min) + norm_sqr_min
+        mean = (left + right) / 2.0
+
+        means[i] = mean
+
+    return means
 
 def e2m_transform(X, Q):
     X_plus = np.full((len(X), 1), fill_value=-0.5, dtype=np.float32)
