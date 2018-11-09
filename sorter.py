@@ -1,43 +1,34 @@
 from pq import *
-import warnings
-from multiprocessing import Pool, cpu_count, sharedctypes
+import numba as nb
 
-
-def _init(arr_to_populate, norms_square_to_populate):
-    """Each pool process calls this initializer. Load the array to be populated into that process's global namespace"""
-    global arr
-    global norms_square
-    arr = arr_to_populate
-    norms_square = norms_square_to_populate
-
-
-def arg_sort(arguments):
+@nb.njit
+def arg_sort(metric, compressed, q):
     """
     for q, sort the compressed items in 'compressed' by their distance,
     where distance is determined by 'metric'
     :param arguments: a tuple of (metric, compressed, q)
     :return:
     """
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore', RuntimeWarning)
-        compressed = np.ctypeslib.as_array(arr)
-        norms_sqr = np.ctypeslib.as_array(norms_square)
 
-    metric, q = arguments
-    if metric == 'product':
-        return np.argsort([-np.dot(np.array(q).flatten(), np.array(center).flatten()) for center in compressed])
-    elif metric == 'angular':
-        return np.argsort([
-            - np.dot(np.array(q).flatten(), np.array(center).flatten()) / (np.linalg.norm(q) * np.linalg.norm(center))
-            for center in compressed
-        ])
-    elif metric == 'euclid_norm':
-        return np.argsort([norm_sqr - 2.0 * np.dot(center, q) for center, norm_sqr in zip(compressed, norms_sqr)])
+    if metric == 0:
+        tmp = -np.dot(compressed, q)
+    elif metric == 1:
+        tmp = -np.dot(compressed[:, :-1], q) + compressed[:, -1]
+    elif metric == 2:
+        tmp = np.empty((compressed.shape[0]), dtype=np.float32)
+        norm_q = np.linalg.norm(q)
+        for i in range(compressed.shape[0]):
+            tmp[i] = -np.dot(q, compressed[i]) / (norm_q * np.linalg.norm(compressed[i]))
     else:
-        return np.argsort([np.linalg.norm(q - center) for center in compressed])
+        tmp2 = compressed - q
+        tmp = np.empty((compressed.shape[0]), dtype=np.float32)
+        for i in range(compressed.shape[0]):
+            tmp[i] = np.dot(tmp2[i], tmp2[i])
 
+    return np.argsort(tmp).astype(np.int32)
 
-def parallel_sort(metric, compressed, Q, X):
+@nb.njit(parallel=True)
+def parallel_sort(metric, compressed, Q):
     """
     for each q in 'Q', sort the compressed items in 'compressed' by their distance,
     where distance is determined by 'metric'
@@ -46,25 +37,27 @@ def parallel_sort(metric, compressed, Q, X):
     :param Q: queries, shape(len(Q) * D)
     :return:
     """
-    tmp = np.ctypeslib.as_ctypes(compressed)
-    shared_arr = sharedctypes.Array(tmp._type_, tmp, lock=False)
-    norms_sqr = np.linalg.norm(X, axis=1) ** 2
+    rank = np.zeros((Q.shape[0], compressed.shape[0]), dtype=np.int32)
+    for i in nb.prange(Q.shape[0]):
+        rank[i] = arg_sort(metric, compressed, Q[i])
 
-    pool = Pool(processes=cpu_count(), initializer=_init, initargs=(shared_arr, norms_sqr))
-
-    rank = pool.map(arg_sort, zip([metric for _ in Q], Q))
-    pool.close()
-    pool.join()
     return rank
 
 
 class Sorter(object):
     def __init__(self, compressed, Q, X, metric='euclid'):
         self.Q = Q
-        self.X = X
-        self.topK = parallel_sort(metric, compressed, Q, X)
+        if metric == 'product':
+            metric_int = 0
+        elif metric == 'product_plus_half_mean_sqr':
+            metric_int = 1
+        elif metric == 'angular':
+            metric_int = 2
+        else:
+            metric_int = 3
+        self.topK = parallel_sort(metric_int, compressed, Q)
 
     def recall(self, G, T):
         t = min(T, len(self.topK[0]))
-        top_k = [len(np.intersect1d(G[i], self.topK[i][:T])) for i in range(len(G))]
+        top_k = [len(np.intersect1d(G[i], self.topK[i][:T])) for i in range(self.Q.shape[0])]
         return t, np.mean(top_k) / len(G[0])
