@@ -1,8 +1,5 @@
 from pq import *
-import warnings
-from multiprocessing import Pool, cpu_count, sharedctypes
 import numba as nb
-
 
 @nb.njit
 def arg_sort(metric, compressed, q):
@@ -48,7 +45,7 @@ def parallel_sort(metric, compressed, Q):
 
 
 class Sorter(object):
-    def __init__(self, compressed, Q, metric='euclid'):
+    def __init__(self, compressed, Q, X, metric='euclid'):
         self.Q = Q
         if metric == 'product':
             metric_int = 0
