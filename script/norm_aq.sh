@@ -10,7 +10,7 @@ log=script/$3/$1_$2_$(basename "$0").log
 echo witing into file : $log
 
 python3 ./run.py \
-    -q rq \
+    -q aq \
     --sup_quantizer NormPQ \
     --dataset ${dataset} \
     --topk 20 \
