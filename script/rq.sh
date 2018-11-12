@@ -9,7 +9,6 @@ echo witing into file : $log
 
 python3 ./run.py \
     -q rq \
-    --sup_quantizer NormPQ \
     --dataset yahoomusic \
     --topk 20 \
     --metric product \

@@ -45,7 +45,7 @@ def loader(data_set='audio', top_k=20, ground_metric='euclid', folder='../data/'
     ground_truth = folder_path + '/%s_%s_%s_groundtruth.ivecs' % \
                    (top_k, data_set, ground_metric)
 
-    print("load the base data {}, \nload the queries {}, \nload the ground truth {}".format(base_file, query_file,
+    print("# load the base data {}, \n# load the queries {}, \n# load the ground truth {}".format(base_file, query_file,
                                                                                             ground_truth))
     X = fvecs_read(base_file)
     Q = fvecs_read(query_file)
