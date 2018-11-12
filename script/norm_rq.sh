@@ -7,6 +7,7 @@ dataset=$3
 
 log=script/$1_codebook_$(basename "$0").log
 echo witing into file : $log
+
 python3 ./run.py \
     -q rq \
     --sup_quantizer NormPQ \

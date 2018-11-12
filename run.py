@@ -37,7 +37,7 @@ if __name__ == '__main__':
     parser.add_argument('--metric', type=str, help='metric of ground truth, euclid by default')
     parser.add_argument('--ranker', type=str, help='metric of ranker, euclid by default')
 
-    parser.add_argument('-M', '--num_codebook', type=int, help='number of codebooks')
+    parser.add_argument('--num_codebook', type=int, help='number of codebooks')
     parser.add_argument('--Ks', type=int, help='number of centroids in each sub-dimension/sub-quantizer')
     parser.add_argument('--layer', type=int, help='number of layers for residual PQ')
     parser.add_argument('--norm_centroid', type=int, help='number of norm centroids for NormPQ')
@@ -45,7 +45,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     X, Q, G = loader(args.dataset, args.topk, args.metric)
-    X, Q = scale(X, Q)
 
     # pq, rq, or component of norm-pq
     if args.quantizer in ['PQ'.lower(), 'RQ'.lower()]:
@@ -55,7 +54,7 @@ if __name__ == '__main__':
         quantizer = AQ(M=args.num_codebook, Ks=args.Ks)
     else:
         assert False
-    if args.quantizer == 'sup_quantizer'.lower():
+    if args.sup_quantizer == 'NormPQ'.lower():
         quantizer = NormPQ(args.norm_centroid, quantizer)
 
     execute(quantizer, X, Q, G, args.ranker)
