@@ -188,7 +188,7 @@ class AQ(object):
         assert self.codewords.shape == (self.M, self.Ks, D)
 
         (codes, errors) = encodePointsAQ(vecs, self.codewords, self.branch)
-        print("Mean AQ quantization error: %f" % (np.mean(errors)))
+        print("# Mean AQ quantization error: %f" % (np.mean(errors)))
         return codes
 
     def decode(self, codes):

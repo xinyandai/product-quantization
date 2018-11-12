@@ -5,69 +5,57 @@ from sorter import *
 from transformer import *
 from aq import AQ
 from opq import OPQ
+import argparse
 
 
-def execute(pq, X, Q, G, metric='euclid'):
+def execute(pq, X, Q, G, metric='euclid', train_size=100000):
 
-    print("ranking metric {}".format(metric))
-
-    print(pq.class_message())
-    pq.fit(X[:100000], 20, seed=1007)
-    print('compress items')
+    print("# ranking metric {}".format(metric))
+    print("# "+pq.class_message())
+    pq.fit(X[:train_size])
+    print('# compress items')
     compressed = pq.compress(X)
-    print("sorting items")
+    print("# sorting items")
     queries = Sorter(compressed, Q, X, metric=metric)
-    print("searching!")
+    print("# searching!")
 
+    print("expected items, overall time, avg recall, avg precision, avg error, avg items")
     for item in [2 ** i for i in range(2+int(math.log2(len(X))))]:
         actual_items, recall = queries.recall(G, item)
-        print("items {}, actual items {}, recall {}".format(item, actual_items, recall))
+        print("{}, {}, {}, {}, {}".format(
+            item, 0, recall, recall * len(G[0]) / actual_items, 0, actual_items))
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Process input method and parameters.')
+    parser.add_argument('-q', '--quantizer', type=str.lower,
+                        help='choose the quantizer to use, RQ, PQ, NormPQ, AQ, ...')
+    parser.add_argument('--sup_quantizer', type=str.lower,
+                        help='choose the sup_quantizer: NormPQ')
+    parser.add_argument('--dataset', type=str, help='choose data set name')
+    parser.add_argument('--topk', type=int, help='topk of ground truth')
+    parser.add_argument('--metric', type=str, help='metric of ground truth, euclid by default')
+    parser.add_argument('--ranker', type=str, help='metric of ranker, euclid by default')
 
-    top_k = 20
-    Ks = 256
-    data_set = 'sift1m'
-    metric = "euclid"
-    folder = '../data/'
+    parser.add_argument('-M', '--num_codebook', type=int, help='number of codebooks')
+    parser.add_argument('--Ks', type=int, help='number of centroids in each sub-dimension/sub-quantizer')
+    parser.add_argument('--layer', type=int, help='number of layers for residual PQ')
+    parser.add_argument('--norm_centroid', type=int, help='number of norm centroids for NormPQ')
 
-    def transform_based(cal_matrix=False):
-        X, Q, G = loader(data_set, top_k, 'euclid')
-        X, Q = zero_mean(X, Q)
-        X, Q = scale(X, Q)
-        # matrix = e2m_mahalanobis(X) if cal_matrix else None
-        X, Q = e2m_transform(X, Q)
-        X, _ = zero_mean(X, Q)
+    args = parser.parse_args()
 
-        matrix = np.dot(Q.transpose(), Q) / float(len(Q)) if cal_matrix else None
+    X, Q, G = loader(args.dataset, args.topk, args.metric)
+    X, Q = scale(X, Q)
 
-        pqs = [PQ(M=4, Ks=Ks) for _ in range(1)]
-        pq = ResidualPQ(pqs=pqs)
-        # pq = AQ(4, Ks)
+    # pq, rq, or component of norm-pq
+    if args.quantizer in ['PQ'.lower(), 'RQ'.lower()]:
+        pqs = [PQ(M=args.num_codebook, Ks=args.Ks) for _ in range(args.layer)]
+        quantizer = ResidualPQ(pqs=pqs)
+    elif args.quantizer == 'AQ'.lower():
+        quantizer = AQ(M=args.num_codebook, Ks=args.Ks)
+    else:
+        assert False
+    if args.quantizer == 'sup_quantizer'.lower():
+        quantizer = NormPQ(args.norm_centroid, quantizer)
 
-        execute(pq, X, Q, G, 'product')
-
-    def raw():
-        X, Q, G = loader(data_set, top_k, metric)
-        X, Q = scale(X, Q)
-
-        pqs = [PQ(M=4, Ks=Ks) for _ in range(1)]
-        pq = ResidualPQ(pqs=pqs)
-        execute(pq, X, Q, G, metric)
-
-    def aq():
-        X, Q, G = loader(data_set, top_k, metric, folder=folder)
-        # X, Q = scale(X, Q)
-        quantize = AQ(4, Ks)
-        execute(quantize, X, Q, G, metric)
-
-    def norm_pq():
-        X, Q, G = loader(data_set, top_k, metric, folder=folder)
-        # X, Q = scale(X, Q)
-        pqs = [PQ(M=1, Ks=Ks) for _ in range(3)]
-        rq = ResidualPQ(pqs=pqs)
-        quantize = NormPQ(Ks, rq)
-        execute(quantize, X, Q, G, metric)
-
-    raw()
+    execute(quantizer, X, Q, G, args.ranker)

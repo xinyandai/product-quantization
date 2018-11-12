@@ -35,7 +35,7 @@ class PQ(object):
         self.codewords = np.zeros((self.M, self.Ks, np.max(self.Ds)), dtype=np.float32)
         for m in range(self.M):
             if self.verbose:
-                print("    Training the subspace: {} / {}, {} -> {}".format(m, self.M, self.Ds[m], self.Ds[m+1]))
+                print("#    Training the subspace: {} / {}, {} -> {}".format(m, self.M, self.Ds[m], self.Ds[m+1]))
             vecs_sub = vecs[:, self.Ds[m]:self.Ds[m+1]]
             self.codewords[m, :, :self.Ds[m+1] - self.Ds[m]], _ = kmeans2(
                 vecs_sub, self.Ks, iter=iter, minit='points', matrix=self.mahalanobis_matrix)

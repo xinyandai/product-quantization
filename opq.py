@@ -97,7 +97,7 @@ class OPQ(object):
         self.R = np.eye(D, dtype=np.float32)
 
         for i in range(rotation_iter):
-            print("OPQ rotation training: {} / {}".format(i, rotation_iter))
+            print("# OPQ rotation training: {} / {}".format(i, rotation_iter))
             X = vecs @ self.R
 
             # (a) Train codewords
@@ -112,7 +112,7 @@ class OPQ(object):
             # (b) Update a rotation matrix R
             X_ = pq_tmp.decode(pq_tmp.encode(X))
             U, s, V = np.linalg.svd(vecs.T @ X_)
-            print("==== Reconstruction error:", np.linalg.norm(X - X_, 'fro'), "====")
+            print("# ==== Reconstruction error:", np.linalg.norm(X - X_, 'fro'), "====")
             if i == rotation_iter - 1:
                 self.pq = pq_tmp
                 break

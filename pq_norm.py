@@ -1,11 +1,5 @@
 from pq import *
-
-
-def normalize(vecs):
-    norms = np.linalg.norm(vecs, axis=1)
-    norms_matrix = norms[:, np.newaxis]
-    normalized_vecs = np.divide(vecs, norms_matrix, out=np.zeros_like(vecs), where=norms_matrix != 0)  # divide by zero problem
-    return norms, normalized_vecs
+from transformer import normalize
 
 
 class NormPQ(object):

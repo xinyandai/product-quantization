@@ -3,6 +3,13 @@ import numpy as np
 import numba as nb
 
 
+def normalize(vecs):
+    norms = np.linalg.norm(vecs, axis=1)
+    norms_matrix = norms[:, np.newaxis]
+    normalized_vecs = np.divide(vecs, norms_matrix, out=np.zeros_like(vecs), where=norms_matrix != 0)  # divide by zero problem
+    return norms, normalized_vecs
+
+
 def zero_mean(X, Q):
     mean = X.mean(axis=0, keepdims=True)
     X = X - mean
