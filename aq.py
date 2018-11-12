@@ -172,7 +172,7 @@ class AQ(object):
     def class_message(self):
         return "AQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
 
-    def fit(self, points, itsCount, seed):
+    def fit(self, points, itsCount=20, seed=808):
         assert points.dtype == np.float32
         assert points.ndim == 2
         pointsCount, dim = points.shape

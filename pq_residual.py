@@ -33,7 +33,7 @@ class ResidualPQ(object):
 
             if self.verbose:
                 norms = np.linalg.norm(vecs, axis=1)
-                print("layer: {},  residual average norm : {} max norm: {} min norm: {}"
+                print("# layer: {},  residual average norm : {} max norm: {} min norm: {}"
                       .format(layer, np.mean(norms), np.max(norms), np.min(norms)))
 
         return self
