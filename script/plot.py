@@ -38,7 +38,7 @@ def plot_one(method, color, x, y, linestyle="-", marker='d'):
         y = np.array(data[1:, y])
         data_list = "\n  ".join(["(%s, %s)" % (x[i], y[i]) for i in range(len(x))])
         method_name = method.replace("_", "\\_")
-        print ('\\addplot \n coordinates \n {\n%s\n};\n\\addlegendentry{$%s$}' % (data_list, method_name))
+        print ('\\addplot \n coordinates \n {\n%s\n};\n\\addlegendentry{%s}' % (data_list, method_name))
         plt.plot(x, y, color, label=method, linestyle=linestyle, marker=marker)
     except Exception as e:
         print(e)

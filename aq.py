@@ -172,14 +172,14 @@ class AQ(object):
     def class_message(self):
         return "AQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
 
-    def fit(self, points, itsCount=20, seed=808):
+    def fit(self, points, iter):
         assert points.dtype == np.float32
         assert points.ndim == 2
         pointsCount, dim = points.shape
         assert self.Ks < pointsCount, "the number of training vector should be more than Ks"
         self.codewords = np.zeros((self.M, self.Ks, dim), dtype='float32')
         self.codewords, codes = learnCodebooksAQ(
-            points, dim, self.M, self.Ks, pointsCount, self.branch, cpu_count(), itsCount, self.codewords)
+            points, dim, self.M, self.Ks, pointsCount, self.branch, cpu_count(), iter, self.codewords)
 
     def encode(self, vecs):
         assert vecs.dtype == np.float32
