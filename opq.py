@@ -68,7 +68,7 @@ class OPQ(object):
     def class_message(self):
         return "OPQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
 
-    def fit(self, vecs, pq_iter=20, rotation_iter=10, seed=123):
+    def fit(self, vecs, pq_iter, rotation_iter):
         """Given training vectors, this function alternatively trains
         (a) codewords and (b) a rotation matrix.
         The procedure of training codewords is same as :func:`PQ.fit`.
@@ -104,10 +104,10 @@ class OPQ(object):
             pq_tmp = PQ(M=self.M, Ks=self.Ks, verbose=self.verbose)
             if i == rotation_iter - 1:
                 # In the final loop, run the full training
-                pq_tmp.fit(X, iter=pq_iter, seed=seed)
+                pq_tmp.fit(X, iter=pq_iter)
             else:
                 # During the training for OPQ, just run one-pass (iter=1) PQ training
-                pq_tmp.fit(X, iter=1, seed=seed)
+                pq_tmp.fit(X, iter=1)
 
             # (b) Update a rotation matrix R
             X_ = pq_tmp.decode(pq_tmp.encode(X))

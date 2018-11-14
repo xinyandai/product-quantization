@@ -16,13 +16,11 @@ class NormPQ(object):
     def class_message(self):
         return "NormPQ, percentiles: {}, quantize: {}".format(self.n_percentile, self.quantize.class_message())
 
-    def fit(self, vecs, iter=20, seed=123):
+    def fit(self, vecs, iter):
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
         N, D = vecs.shape
         assert self.n_percentile < N, "the number of norm intervals should be more than Ks"
-
-        np.random.seed(seed)
 
         norms, normalized_vecs = normalize(vecs)
 
@@ -32,7 +30,7 @@ class NormPQ(object):
         # self.percentiles = np.array(self.percentiles, dtype=np.float32)
 
         self.percentiles, _ = kmeans2(norms[:, np.newaxis], self.n_percentile, iter=iter, minit='points')
-        self.quantize.fit(normalized_vecs, iter, seed)
+        self.quantize.fit(normalized_vecs, iter)
 
         return self
 

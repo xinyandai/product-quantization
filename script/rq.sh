@@ -10,7 +10,7 @@ echo witing into file : $log
 
 python3 ./run.py \
     -q rq \
-    --dataset yahoomusic \
+    --dataset ${dataset} \
     --topk 20 \
     --metric product \
     --ranker product \

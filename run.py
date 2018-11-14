@@ -9,10 +9,10 @@ import argparse
 
 
 def execute(pq, X, Q, G, metric='euclid', train_size=100000):
-
+    np.random.seed(123)
     print("# ranking metric {}".format(metric))
     print("# "+pq.class_message())
-    pq.fit(X[:train_size])
+    pq.fit(X[:train_size], iter=20)
     print('# compress items')
     compressed = pq.compress(X)
     print("# sorting items")

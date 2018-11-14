@@ -16,7 +16,7 @@ class PQ(object):
     def class_message(self):
         return "Subspace PQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
 
-    def fit(self, vecs, iter=20, seed=123):
+    def fit(self, vecs, iter):
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
         N, D = vecs.shape
@@ -28,8 +28,6 @@ class PQ(object):
         dims_width = [quotient + 1 if i < reminder else quotient for i in range(self.M)]
         self.Ds = np.cumsum(dims_width)     # prefix sum
         self.Ds = np.insert(self.Ds, 0, 0)  # insert zero at beginning
-
-        np.random.seed(seed)
 
         # [m][ks][ds]: m-th subspace, ks-the codeword, ds-th dim
         self.codewords = np.zeros((self.M, self.Ks, np.max(self.Ds)), dtype=np.float32)

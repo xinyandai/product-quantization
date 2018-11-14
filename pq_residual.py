@@ -22,12 +22,12 @@ class ResidualPQ(object):
             messages += pq.class_message()
         return messages
 
-    def fit(self, vecs, iter=20, seed=123):
+    def fit(self, vecs, iter):
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
         for layer, pq in enumerate(self.pqs):
 
-            pq.fit(vecs, iter, seed=seed)
+            pq.fit(vecs, iter)
             compressed = pq.compress(vecs)
             vecs = vecs - compressed
 
