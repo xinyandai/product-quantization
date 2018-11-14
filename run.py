@@ -22,7 +22,7 @@ def execute(pq, X, Q, G, metric='euclid', train_size=100000):
     print("expected items, overall time, avg recall, avg precision, avg error, avg items")
     for item in [2 ** i for i in range(2+int(math.log2(len(X))))]:
         actual_items, recall = queries.recall(G, item)
-        print("{}, {}, {}, {}, {}".format(
+        print("{}, {}, {}, {}, {}, {}".format(
             item, 0, recall, recall * len(G[0]) / actual_items, 0, actual_items))
 
 
