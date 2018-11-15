@@ -36,7 +36,7 @@ class PQ(object):
                 print("#    Training the subspace: {} / {}, {} -> {}".format(m, self.M, self.Ds[m], self.Ds[m+1]))
             vecs_sub = vecs[:, self.Ds[m]:self.Ds[m+1]]
             self.codewords[m, :, :self.Ds[m+1] - self.Ds[m]], _ = kmeans2(
-                vecs_sub, self.Ks, iter=iter, minit='points', matrix=self.mahalanobis_matrix)
+                vecs_sub, self.Ks, iter=iter, minit='points', matrix=self.mahalanobis_matrix, verbose=self.verbose)
 
         return self
 

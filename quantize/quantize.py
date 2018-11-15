@@ -455,197 +455,6 @@ def py_vq2(obs, code_book, check_finite=True):
     return code, min_dist
 
 
-def _kmeans(obs, guess, thresh=1e-5, matrix=None):
-    """ "raw" version of k-means.
-
-    Returns
-    -------
-    code_book
-        the lowest distortion codebook found.
-    avg_dist
-        the average distance a observation is from a code in the book.
-        Lower means the code_book matches the data better.
-
-    See Also
-    --------
-    kmeans : wrapper around k-means
-
-    Examples
-    --------
-    Note: not whitened in this example.
-
-    >>> from numpy import array
-    >>> from scipy.cluster.vq import _kmeans
-    >>> features  = array([[ 1.9,2.3],
-    ...                    [ 1.5,2.5],
-    ...                    [ 0.8,0.6],
-    ...                    [ 0.4,1.8],
-    ...                    [ 1.0,1.0]])
-    >>> book = array((features[0],features[2]))
-    >>> _kmeans(features,book)
-    (array([[ 1.7       ,  2.4       ],
-           [ 0.73333333,  1.13333333]]), 0.40563916697728591)
-
-    """
-
-    code_book = np.array(guess, copy=True)
-    avg_dist = []
-    diff = np.inf
-    while diff > thresh:
-        nc = code_book.shape[0]
-        # compute membership and distances between obs and code_book
-        obs_code, distort = vq(obs, code_book, matrix=matrix)
-        avg_dist.append(np.mean(distort, axis=-1))
-        # recalc code_book as centroids of associated obs
-        if(diff > thresh):
-            code_book, has_members = _quantize.update_cluster_means(obs, obs_code, nc)
-            code_book = code_book.compress(has_members, axis=0)
-        if len(avg_dist) > 1:
-            diff = avg_dist[-2] - avg_dist[-1]
-
-    return code_book, avg_dist[-1]
-
-
-def kmeans(obs, k_or_guess, iter=20, thresh=1e-5, check_finite=True):
-    """
-    Performs k-means on a set of observation vectors forming k clusters.
-
-    The k-means algorithm adjusts the centroids until sufficient
-    progress cannot be made, i.e. the change in distortion since
-    the last iteration is less than some threshold. This yields
-    a code book mapping centroids to codes and vice versa.
-
-    Distortion is defined as the sum of the squared differences
-    between the observations and the corresponding centroid.
-
-    Parameters
-    ----------
-    obs : ndarray
-       Each row of the M by N array is an observation vector. The
-       columns are the features seen during each observation.
-       The features must be whitened first with the `whiten` function.
-
-    k_or_guess : int or ndarray
-       The number of centroids to generate. A code is assigned to
-       each centroid, which is also the row index of the centroid
-       in the code_book matrix generated.
-
-       The initial k centroids are chosen by randomly selecting
-       observations from the observation matrix. Alternatively,
-       passing a k by N array specifies the initial k centroids.
-
-    iter : int, optional
-       The number of times to run k-means, returning the codebook
-       with the lowest distortion. This argument is ignored if
-       initial centroids are specified with an array for the
-       ``k_or_guess`` parameter. This parameter does not represent the
-       number of iterations of the k-means algorithm.
-
-    thresh : float, optional
-       Terminates the k-means algorithm if the change in
-       distortion since the last k-means iteration is less than
-       or equal to thresh.
-
-    check_finite : bool, optional
-        Whether to check that the input matrices contain only finite numbers.
-        Disabling may give a performance gain, but may result in problems
-        (crashes, non-termination) if the inputs do contain infinities or NaNs.
-        Default: True
-
-    Returns
-    -------
-    codebook : ndarray
-       A k by N array of k centroids. The i'th centroid
-       codebook[i] is represented with the code i. The centroids
-       and codes generated represent the lowest distortion seen,
-       not necessarily the globally minimal distortion.
-
-    distortion : float
-       The distortion between the observations passed and the
-       centroids generated.
-
-    See Also
-    --------
-    kmeans2 : a different implementation of k-means clustering
-       with more methods for generating initial centroids but without
-       using a distortion change threshold as a stopping criterion.
-
-    whiten : must be called prior to passing an observation matrix
-       to kmeans.
-
-    Examples
-    --------
-    >>> from numpy import array
-    >>> from scipy.cluster.vq import vq, kmeans, whiten
-    >>> features  = array([[ 1.9,2.3],
-    ...                    [ 1.5,2.5],
-    ...                    [ 0.8,0.6],
-    ...                    [ 0.4,1.8],
-    ...                    [ 0.1,0.1],
-    ...                    [ 0.2,1.8],
-    ...                    [ 2.0,0.5],
-    ...                    [ 0.3,1.5],
-    ...                    [ 1.0,1.0]])
-    >>> whitened = whiten(features)
-    >>> book = np.array((whitened[0],whitened[2]))
-    >>> kmeans(whitened,book)
-    (array([[ 2.3110306 ,  2.86287398],    # random
-           [ 0.93218041,  1.24398691]]), 0.85684700941625547)
-
-    >>> from numpy import random
-    >>> random.seed((1000,2000))
-    >>> codes = 3
-    >>> kmeans(whitened,codes)
-    (array([[ 2.3110306 ,  2.86287398],    # random
-           [ 1.32544402,  0.65607529],
-           [ 0.40782893,  2.02786907]]), 0.5196582527686241)
-
-    """
-    obs = _asarray_validated(obs, check_finite=check_finite)
-    if int(iter) < 1:
-        raise ValueError('iter must be at least 1.')
-
-    # Determine whether a count (scalar) or an initial guess (array) was passed.
-    k = None
-    guess = None
-    try:
-        k = int(k_or_guess)
-    except TypeError:
-        guess = _asarray_validated(k_or_guess, check_finite=check_finite)
-
-    if guess is not None:
-        if guess.size < 1:
-            raise ValueError("Asked for 0 cluster ? initial book was %s" %
-                             guess)
-        result = _kmeans(obs, guess, thresh=thresh)
-    else:
-        if k != k_or_guess:
-            raise ValueError('if k_or_guess is a scalar, it must be an integer')
-        # initialize best distance value to a large value
-        best_dist = np.inf
-        No = obs.shape[0]
-        k = k_or_guess
-        if k < 1:
-            raise ValueError("Asked for 0 cluster ? ")
-        for i in range(iter):
-            # the initial code book is randomly selected from observations
-            k_random_indices = np.random.randint(0, No, k)
-            if np.any(_numpy_compat.unique(k_random_indices,
-                                           return_counts=True)[1] > 1):
-                # randint can give duplicates, which is incorrect.  Only fix
-                # the issue if it occurs, to not change results for users who
-                #  use a random seed and get no duplicates.
-                k_random_indices = np.random.permutation(No)[:k]
-
-            guess = np.take(obs, k_random_indices, 0)
-            book, dist = _kmeans(obs, guess, thresh=thresh)
-            if dist < best_dist:
-                best_book = book
-                best_dist = dist
-        result = best_book, best_dist
-    return result
-
-
 def _kpoints(data, k):
     """Pick k points at random in data (one row = one observation).
 
@@ -744,7 +553,7 @@ _valid_miss_meth = {'warn': _missing_warn, 'raise': _missing_raise}
 
 
 def kmeans2(data, k, iter=10, thresh=1e-5, minit='random',
-        missing='warn', check_finite=True, matrix=None):
+        missing='warn', check_finite=True, matrix=None, verbose=True):
     """
     Classify a set of observations into k clusters using the k-means algorithm.
 
@@ -852,17 +661,19 @@ def kmeans2(data, k, iter=10, thresh=1e-5, minit='random',
     if int(iter) < 1:
         raise ValueError("iter = %s is not valid.  iter must be a positive integer." % iter)
     # clusters[0][:] = 0
-    return _kmeans2(data, clusters, iter, nc, _valid_miss_meth[missing], matrix=matrix)
+    return _kmeans2(data, clusters, iter, nc, _valid_miss_meth[missing], matrix=matrix, verbose=verbose)
 
 
-def _kmeans2(data, code, niter, nc, missing, matrix=None):
+def _kmeans2(data, code, niter, nc, missing, matrix=None, verbose=True):
     """ "raw" version of kmeans2. Do not use directly.
 
     Run k-means with a given initial codebook.
 
     """
     from tqdm import tqdm
-    for _ in tqdm(range(niter)):
+    iterator = tqdm if verbose else lambda x:x
+    print(iterator)
+    for _ in iterator(range(niter)):
         # normalize
         # norms = np.linalg.norm(code, axis=1)
         # code = code / norms[:, np.newaxis]
@@ -875,7 +686,6 @@ def _kmeans2(data, code, niter, nc, missing, matrix=None):
             missing()
             # Set the empty clusters to their previous positions
             new_code[~has_members] = code[~has_members]
-        # new_code[0][:] = 0
         code = new_code
 
     return code, label

@@ -5,12 +5,12 @@ import re
 top_k = 20
 code_length = 32
 # data_set = 'tinygist10million'
-data_set = 'netflix'
-# data_set = 'yahoomusic'
+# data_set = 'netflix'
+data_set = 'yahoomusic'
 # data_set = 'imagenet'
 # data_set = 'movielens'
 
-codebook = 2
+codebook = 8
 Ks = 256
 
 
@@ -35,6 +35,7 @@ def plot_one(method, color, x, y, linestyle="-", marker='d'):
         data = read_csv(get_csv_file(method))
 
         x = np.array(data[1:, x])
+        x = np.log(x)
         y = np.array(data[1:, y])
         data_list = "\n  ".join(["(%s, %s)" % (x[i], y[i]) for i in range(len(x))])
         method_name = method.replace("_", "\\_")
@@ -52,7 +53,7 @@ def plot_(x_label, y_label, x, y):
     # plot_one('norm_range',                  'gray',     x, y, '-',  'o')
     #
     plot_one('aq',      'magenta', x, y, '--', '+')
-    # plot_one('norm_aq', 'magenta', x, y, '-.', '<')
+    plot_one('norm_aq', 'magenta', x, y, '-.', '<')
     print('------------aq ----------------------------------------------')
 
     plot_one('pq',      'blue',    x, y, '--', '+')

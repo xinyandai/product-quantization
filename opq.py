@@ -68,7 +68,7 @@ class OPQ(object):
     def class_message(self):
         return "OPQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
 
-    def fit(self, vecs, pq_iter, rotation_iter):
+    def fit(self, vecs, iter):
         """Given training vectors, this function alternatively trains
         (a) codewords and (b) a rotation matrix.
         The procedure of training codewords is same as :func:`PQ.fit`.
@@ -96,23 +96,31 @@ class OPQ(object):
         _, D = vecs.shape
         self.R = np.eye(D, dtype=np.float32)
 
-        for i in range(rotation_iter):
-            print("# OPQ rotation training: {} / {}".format(i, rotation_iter))
+        rotation_iter = iter
+        pq_iter = iter
+
+        from tqdm import tqdm
+        iterator = tqdm(range(rotation_iter)) if self.verbose else range(rotation_iter)
+        for i in iterator:
             X = vecs @ self.R
 
             # (a) Train codewords
-            pq_tmp = PQ(M=self.M, Ks=self.Ks, verbose=self.verbose)
+
             if i == rotation_iter - 1:
+                # stop iterator display; show the pq process bar
+                iterator.close()
                 # In the final loop, run the full training
+                pq_tmp = PQ(M=self.M, Ks=self.Ks, verbose=self.verbose)
                 pq_tmp.fit(X, iter=pq_iter)
             else:
                 # During the training for OPQ, just run one-pass (iter=1) PQ training
+                pq_tmp = PQ(M=self.M, Ks=self.Ks, verbose=False)
                 pq_tmp.fit(X, iter=1)
 
             # (b) Update a rotation matrix R
             X_ = pq_tmp.decode(pq_tmp.encode(X))
             U, s, V = np.linalg.svd(vecs.T @ X_)
-            print("# ==== Reconstruction error:", np.linalg.norm(X - X_, 'fro'), "====")
+
             if i == rotation_iter - 1:
                 self.pq = pq_tmp
                 break
