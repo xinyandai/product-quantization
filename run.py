@@ -50,7 +50,7 @@ if __name__ == '__main__':
     if args.quantizer in ['PQ'.lower(), 'RQ'.lower()]:
         pqs = [PQ(M=args.num_codebook, Ks=args.Ks) for _ in range(args.layer)]
         quantizer = ResidualPQ(pqs=pqs)
-    if args.quantizer in ['OPQ'.lower()]:
+    elif args.quantizer in ['OPQ'.lower()]:
         pqs = [OPQ(M=args.num_codebook, Ks=args.Ks) for _ in range(args.layer)]
         quantizer = ResidualPQ(pqs=pqs)
     elif args.quantizer == 'AQ'.lower():
