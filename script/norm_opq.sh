@@ -6,7 +6,7 @@ norm_centroid=$2
 dataset=$3
 
 mkdir script/$3/$4
-log=script/$3/$1_$2_$(basename "$0").log
+log=script/$3/$4/$1_$2_$(basename "$0").log
 echo witing into file : $log
 
 python3 ./run.py \
