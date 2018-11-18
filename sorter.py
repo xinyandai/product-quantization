@@ -1,5 +1,6 @@
 from pq import *
 import warnings
+import tqdm
 from multiprocessing import Pool, cpu_count, sharedctypes
 
 
@@ -56,7 +57,7 @@ def parallel_sort(metric, compressed, Q, X):
 
     pool = Pool(processes=cpu_count(), initializer=_init, initargs=(shared_arr, norms_sqr))
 
-    rank = pool.map(arg_sort, zip([metric for _ in Q], Q))
+    rank = list(tqdm.tqdm(pool.imap(arg_sort, zip([metric for _ in Q], Q), chunksize=4), total=len(Q)))
     pool.close()
     pool.join()
     return rank
