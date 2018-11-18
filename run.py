@@ -41,6 +41,7 @@ if __name__ == '__main__':
     parser.add_argument('--Ks', type=int, help='number of centroids in each sub-dimension/sub-quantizer')
     parser.add_argument('--layer', type=int, help='number of layers for residual PQ')
     parser.add_argument('--norm_centroid', type=int, help='number of norm centroids for NormPQ')
+    parser.add_argument('--true_norm', type=bool, help='use true norm for NormPQ', default=False)
 
     args = parser.parse_args()
 
@@ -58,6 +59,6 @@ if __name__ == '__main__':
     else:
         assert False
     if args.sup_quantizer == 'NormPQ'.lower():
-        quantizer = NormPQ(args.norm_centroid, quantizer)
+        quantizer = NormPQ(args.norm_centroid, quantizer, true_norm=args.true_norm)
 
     execute(quantizer, X, Q, G, args.ranker)

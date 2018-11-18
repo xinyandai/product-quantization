@@ -672,7 +672,7 @@ def _kmeans2(data, code, niter, nc, missing, matrix=None, verbose=True):
     """
     from tqdm import tqdm
     iterator = tqdm if verbose else lambda x:x
-    print(iterator)
+
     for _ in iterator(range(niter)):
         # normalize
         # norms = np.linalg.norm(code, axis=1)
