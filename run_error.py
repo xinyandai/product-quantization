@@ -33,11 +33,13 @@ def execute(args, X, train_size=100000):
     compressed = quantizer.compress(X)
 
     mse_errors = [
-        l2norm(X[i] - compressed[i]) / l2norm(X[i])
+        l2norm(X[i] - compressed[i])
+        / l2norm(X[i])
         for i in range(len(X))
     ]
     norm_errors = [
         np.abs(l2norm(compressed[i]) - l2norm(X[i]))
+        / l2norm(X[i])
         for i in range(len(X))
     ]
     angular_errors = [
