@@ -108,7 +108,8 @@ class OPQ(object):
 
             if i == rotation_iter - 1:
                 # stop iterator display; show the pq process bar
-                iterator.close()
+                if type(iterator) is tqdm:
+                    iterator.close()
                 # In the final loop, run the full training
                 pq_tmp = PQ(M=self.M, Ks=self.Ks, verbose=self.verbose)
                 pq_tmp.fit(X, iter=pq_iter)
