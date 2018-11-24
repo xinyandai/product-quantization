@@ -2,6 +2,7 @@ from pq import *
 from transformer import normalize
 import warnings
 
+
 class NormPQ(object):
     def __init__(self, n_percentile, quantize, true_norm=False, verbose=True, method='kmeans', recover='quantize'):
 
@@ -44,6 +45,16 @@ class NormPQ(object):
             self.percentiles = np.array(self.percentiles, dtype=np.float32)
         elif self.method == 'uniform':
             self.percentiles = np.linspace(np.min(norms), np.max(norms), self.n_percentile + 1)
+            self.percentiles = np.array(self.percentiles, dtype=np.float32)
+        elif self.method == 'exponential':
+            q = 0.98
+            a = (1 - q) / (1 - q**self.n_percentile)  # make sure that sum of a*q**i is 1
+            self.percentiles = [
+                np.min(norms) if i == 0 else
+                np.min(norms) + a * (1 - q**i) / (1 - q) * (np.max(norms) - np.min(norms))
+                for i in range(self.n_percentile + 1)
+            ]
+
             self.percentiles = np.array(self.percentiles, dtype=np.float32)
         else:
             assert False

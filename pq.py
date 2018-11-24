@@ -5,7 +5,7 @@ from quantize import vq, kmeans2
 
 
 class PQ(object):
-    def __init__(self, M, Ks=256, verbose=True, mahalanobis_matrix=None):
+    def __init__(self, M, Ks, verbose=True, mahalanobis_matrix=None):
         assert 0 < Ks <= 2 ** 32
         self.M, self.Ks, self.verbose, self.mahalanobis_matrix = M, Ks, verbose, mahalanobis_matrix
         self.code_dtype = np.uint8 if Ks <= 2 ** 8 else (np.uint16 if Ks <= 2 ** 16 else np.uint32)

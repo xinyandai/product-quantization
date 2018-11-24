@@ -23,7 +23,7 @@ class OPQ(object):
 
 
     """
-    def __init__(self, M, Ks=256, verbose=True):
+    def __init__(self, M, Ks, verbose=True):
         self.pq = PQ(M, Ks, verbose)
         self.R = None
 

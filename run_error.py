@@ -38,12 +38,16 @@ def execute(args, X, train_size=100000):
         for i in range(len(X))
     ]
     norm_errors = [
-        np.abs(l2norm(compressed[i]) - l2norm(X[i]))
+        np.abs(
+            l2norm(compressed[i]) - l2norm(X[i])
+        )
         / l2norm(X[i])
         for i in range(len(X))
     ]
     angular_errors = [
-        l2norm(X[i] / l2norm(X[i]) - compressed[i] / l2norm(compressed[i]))
+        l2norm(
+            X[i] / l2norm(X[i]) - compressed[i] / l2norm(compressed[i])
+        )
         for i in range(len(X))
     ]
 
@@ -64,7 +68,7 @@ if __name__ == '__main__':
     args.num_codebook = 1
     print('codebook, mse_errors, norm_errors, angular_errors')
     for i in range(16):
-        if args.quantizer in ['PQ'.lower(), 'OPQ'.lower()]:
+        if args.quantizer in ['PQ'.lower(), 'OPQ'.lower(), "AQ".lower()]:
             args.num_codebook = i + 1
         elif args.quantizer == 'RQ'.lower():
             args.layer = i + 1
