@@ -30,8 +30,6 @@ def execute(pq, X, Q, G, metric='euclid', train_size=100000):
 if __name__ == '__main__':
 
     X, Q, G = loader('yahoomusic', 20, 'product')
-
     # pq, rq, or component of norm-pq
-    quantizer = XPQ(2, 4, 256, AQ)
-
+    quantizer = XPQ([AQ(4, 256) for _ in range(2)])
     execute(quantizer, X, Q, G, 'product')
