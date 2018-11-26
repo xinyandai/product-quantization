@@ -98,7 +98,7 @@ class OPQ(object):
         return self.pq.decode(codes) @ self.R.T
 
     def compress(self, vecs):
-        return self.pq.compress(self.rotate(vecs)) @ self.R.T
+        return self.decode(self.encode(vecs))
 
 
 

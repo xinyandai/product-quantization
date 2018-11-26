@@ -34,7 +34,7 @@ if __name__ == '__main__':
     layer = int(sys.argv[3])
     Ks = int(sys.argv[4])
 
-    X, Q, G = loader(dataset, 20, 'product')
+    X, Q, G = loader(dataset, topk, 'product')
     # pq, rq, or component of norm-pq
     quantizer = NormPQ(
         n_percentile=Ks,

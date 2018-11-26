@@ -43,15 +43,14 @@ class ResidualPQ(object):
         :param vecs:
         :return: (N * deep * M)
         """
-        code = np.zeros((self.deep, len(vecs), self.M), dtype=self.code_dtype)  # deep * N  * M
+        codes = np.zeros((len(vecs), self.deep, self.M), dtype=self.code_dtype)  # N * deep * M
         for i, pq in enumerate(self.pqs):
-            code[i, :, :pq.M] = pq.encode(vecs)
-            vecs = vecs - pq.decode(code[i, :, :pq.M])
-        return np.swapaxes(code, 0, 1)  # deep * N  * M -> N * deep * M
+            codes[:, i, :pq.M] = pq.encode(vecs)
+            vecs = vecs - pq.decode(codes[:, i, :pq.M])
+        return codes  # N * deep * M
 
     def decode(self, codes):
-        codes = np.swapaxes(codes, 0, 1)  # N * deep * M -> deep * N  * M
-        vecss = [pq.decode(codes[i][:][:pq.M]) for i, pq in enumerate(self.pqs)]
+        vecss = [pq.decode(codes[:, i, :pq.M]) for i, pq in enumerate(self.pqs)]
         return np.sum(vecss, axis=0)
 
     def compress(self, vecs):

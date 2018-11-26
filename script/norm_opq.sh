@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 cd ..
 
-codebook=$1
+codebook=`expr $1 - 1`
 norm_centroid=$2
 dataset=$3
 
