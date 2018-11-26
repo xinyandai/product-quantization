@@ -30,9 +30,9 @@ def execute(pq, X, Q, G, metric='euclid', train_size=100000):
 if __name__ == '__main__':
     import sys
     dataset = sys.argv[1]
-    topk = sys.argv[2]
-    layer = sys.argv[3]
-    Ks = sys.argv[4]
+    topk = int(sys.argv[2])
+    layer = int(sys.argv[3])
+    Ks = int(sys.argv[4])
 
     X, Q, G = loader(dataset, 20, 'product')
     # pq, rq, or component of norm-pq
