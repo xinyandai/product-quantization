@@ -36,7 +36,8 @@ class OPQ(object):
         self.R = None
 
     def class_message(self):
-        return "OPQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
+        return "ORQ, RQ : [{}],  M: {}, Ks : {}, code_dtype: {}".format(
+            self.pq.class_message(), self.M, self.Ks, self.code_dtype)
 
     def fit(self, vecs, iter):
 
