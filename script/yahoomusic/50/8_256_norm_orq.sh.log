@@ -1,8 +1,8 @@
 # load the base data ../data/yahoomusic/yahoomusic_base.fvecs, 
 # load the queries ../data/yahoomusic/yahoomusic_query.fvecs, 
-# load the ground truth ../data/yahoomusic/20_yahoomusic_product_groundtruth.ivecs
+# load the ground truth ../data/yahoomusic/50_yahoomusic_product_groundtruth.ivecs
 # ranking metric product
-# NormPQ, percentiles: 256, quantize: OPQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+# NormPQ, percentiles: 256, quantize: ORQ, RQ : Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>,  M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
 #    Training the subspace: 0 / 1, 0 -> 300
 # layer: 0,  residual average norm : 0.3155710995197296 max norm: 0.7937561869621277 min norm: 0.06384016573429108
 #    Training the subspace: 0 / 1, 0 -> 300
@@ -21,22 +21,22 @@
 # sorting items
 # searching!
 expected items, overall time, avg recall, avg precision, avg error, avg items
-1, 0, 0.04795, 0.959, 0, 1
-2, 0, 0.0931, 0.931, 0, 2
-4, 0, 0.18209999999999998, 0.9104999999999999, 0, 4
-8, 0, 0.3426, 0.8565, 0, 8
-16, 0, 0.59285, 0.7410625, 0, 16
-32, 0, 0.84005, 0.52503125, 0, 32
-64, 0, 0.95605, 0.298765625, 0, 64
-128, 0, 0.9919, 0.154984375, 0, 128
-256, 0, 0.99825, 0.07798828125, 0, 256
-512, 0, 0.9994, 0.0390390625, 0, 512
-1024, 0, 0.9999, 0.019529296875, 0, 1024
-2048, 0, 0.9999, 0.0097646484375, 0, 2048
-4096, 0, 1.0, 0.0048828125, 0, 4096
-8192, 0, 1.0, 0.00244140625, 0, 8192
-16384, 0, 1.0, 0.001220703125, 0, 16384
-32768, 0, 1.0, 0.0006103515625, 0, 32768
-65536, 0, 1.0, 0.00030517578125, 0, 65536
-131072, 0, 1.0, 0.000152587890625, 0, 131072
-262144, 0, 1.0, 0.00014626725953662532, 0, 136736
+1, 0, 0.01964, 0.9820000000000001, 0, 1
+2, 0, 0.03924, 0.9809999999999999, 0, 2
+4, 0, 0.078, 0.975, 0, 4
+8, 0, 0.15362, 0.960125, 0, 8
+16, 0, 0.29682, 0.9275625, 0, 16
+32, 0, 0.54322, 0.84878125, 0, 32
+64, 0, 0.8332599999999999, 0.650984375, 0, 64
+128, 0, 0.96762, 0.3779765625, 0, 128
+256, 0, 0.9951000000000001, 0.19435546875, 0, 256
+512, 0, 0.99912, 0.0975703125, 0, 512
+1024, 0, 0.9998600000000001, 0.0488212890625, 0, 1024
+2048, 0, 0.99994, 0.02441259765625, 0, 2048
+4096, 0, 0.9999800000000001, 0.012206787109375, 0, 4096
+8192, 0, 1.0, 0.006103515625, 0, 8192
+16384, 0, 1.0, 0.0030517578125, 0, 16384
+32768, 0, 1.0, 0.00152587890625, 0, 32768
+65536, 0, 1.0, 0.000762939453125, 0, 65536
+131072, 0, 1.0, 0.0003814697265625, 0, 131072
+262144, 0, 1.0, 0.0003656681488415633, 0, 136736
