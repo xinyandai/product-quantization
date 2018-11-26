@@ -1,0 +1,29 @@
+# load the base data ../data/yahoomusic/yahoomusic_base.fvecs, 
+# load the queries ../data/yahoomusic/yahoomusic_query.fvecs, 
+# load the ground truth ../data/yahoomusic/50_yahoomusic_product_groundtruth.ivecs
+# ranking metric product
+# NormPQ, percentiles: 256, quantize: AQ, M: 3, Ks : 256, code_dtype: <class 'numpy.int32'>
+# compress items
+# Mean AQ quantization error: 0.041926
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.01764, 0.882, 0, 1
+2, 0, 0.0348, 0.8699999999999999, 0, 2
+4, 0, 0.06794, 0.8492500000000001, 0, 4
+8, 0, 0.12908, 0.80675, 0, 8
+16, 0, 0.23684000000000002, 0.740125, 0, 16
+32, 0, 0.4045, 0.63203125, 0, 32
+64, 0, 0.62368, 0.48725, 0, 64
+128, 0, 0.81894, 0.3198984375, 0, 128
+256, 0, 0.93796, 0.1831953125, 0, 256
+512, 0, 0.9829600000000001, 0.0959921875, 0, 512
+1024, 0, 0.9953799999999999, 0.0486025390625, 0, 1024
+2048, 0, 0.99862, 0.02438037109375, 0, 2048
+4096, 0, 0.99966, 0.012202880859375, 0, 4096
+8192, 0, 0.99988, 0.006102783203125, 0, 8192
+16384, 0, 1.0, 0.0030517578125, 0, 16384
+32768, 0, 1.0, 0.00152587890625, 0, 32768
+65536, 0, 1.0, 0.000762939453125, 0, 65536
+131072, 0, 1.0, 0.0003814697265625, 0, 131072
+262144, 0, 1.0, 0.0003656681488415633, 0, 136736

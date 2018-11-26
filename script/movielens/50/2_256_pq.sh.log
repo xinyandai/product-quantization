@@ -1,0 +1,27 @@
+# load the base data ../data/movielens/movielens_base.fvecs, 
+# load the queries ../data/movielens/movielens_query.fvecs, 
+# load the ground truth ../data/movielens/50_movielens_product_groundtruth.ivecs
+# ranking metric product
+# Subspace PQ, M: 2, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 2, 0 -> 75
+#    Training the subspace: 1 / 2, 75 -> 150
+# layer: 0,  residual average norm : 0.47656962275505066 max norm: 1.6337616443634033 min norm: 0.12639953196048737
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.00718, 0.359, 0, 1
+2, 0, 0.01344, 0.336, 0, 2
+4, 0, 0.025, 0.3125, 0, 4
+8, 0, 0.04768, 0.298, 0, 8
+16, 0, 0.09108000000000001, 0.284625, 0, 16
+32, 0, 0.15356, 0.2399375, 0, 32
+64, 0, 0.23742000000000002, 0.185484375, 0, 64
+128, 0, 0.34328000000000003, 0.13409375, 0, 128
+256, 0, 0.47688, 0.093140625, 0, 256
+512, 0, 0.63166, 0.061685546875, 0, 512
+1024, 0, 0.77374, 0.0377802734375, 0, 1024
+2048, 0, 0.88792, 0.021677734375, 0, 2048
+4096, 0, 0.9672799999999999, 0.0118076171875, 0, 4096
+8192, 0, 0.99952, 0.0061005859375, 0, 8192
+16384, 0, 1.0, 0.004682963379226374, 0, 10677

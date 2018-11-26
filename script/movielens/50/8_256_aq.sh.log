@@ -1,0 +1,25 @@
+# load the base data ../data/movielens/movielens_base.fvecs, 
+# load the queries ../data/movielens/movielens_query.fvecs, 
+# load the ground truth ../data/movielens/50_movielens_product_groundtruth.ivecs
+# ranking metric product
+# AQ, M: 8, Ks : 256, code_dtype: <class 'numpy.int32'>
+# compress items
+# Mean AQ quantization error: 0.013816
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.02, 1.0, 0, 1
+2, 0, 0.04, 1.0, 0, 2
+4, 0, 0.08, 1.0, 0, 4
+8, 0, 0.15997999999999998, 0.9998749999999998, 0, 8
+16, 0, 0.31976, 0.99925, 0, 16
+32, 0, 0.62198, 0.97184375, 0, 32
+64, 0, 0.92324, 0.72128125, 0, 64
+128, 0, 0.99084, 0.387046875, 0, 128
+256, 0, 0.9990399999999999, 0.195125, 0, 256
+512, 0, 1.0, 0.09765625, 0, 512
+1024, 0, 1.0, 0.048828125, 0, 1024
+2048, 0, 1.0, 0.0244140625, 0, 2048
+4096, 0, 1.0, 0.01220703125, 0, 4096
+8192, 0, 1.0, 0.006103515625, 0, 8192
+16384, 0, 1.0, 0.004682963379226374, 0, 10677

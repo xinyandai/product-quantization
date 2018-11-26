@@ -1,0 +1,38 @@
+# load the base data ../data/movielens/movielens_base.fvecs, 
+# load the queries ../data/movielens/movielens_query.fvecs, 
+# load the ground truth ../data/movielens/50_movielens_product_groundtruth.ivecs
+# ranking metric product
+# NormPQ, percentiles: 256, quantize: Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 0,  residual average norm : 0.259373277425766 max norm: 0.7688350677490234 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 1,  residual average norm : 0.1901688128709793 max norm: 0.6341558694839478 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 2,  residual average norm : 0.14772361516952515 max norm: 0.5287684798240662 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 3,  residual average norm : 0.11792387813329697 max norm: 0.43812739849090576 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 4,  residual average norm : 0.09597765654325485 max norm: 0.3477039039134979 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 5,  residual average norm : 0.07936374098062515 max norm: 0.2535257041454315 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 6,  residual average norm : 0.0666583850979805 max norm: 0.20864169299602509 min norm: 0.0
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.02, 1.0, 0, 1
+2, 0, 0.04, 1.0, 0, 2
+4, 0, 0.08, 1.0, 0, 4
+8, 0, 0.15996, 0.9997499999999999, 0, 8
+16, 0, 0.3196, 0.99875, 0, 16
+32, 0, 0.63306, 0.98915625, 0, 32
+64, 0, 0.98822, 0.772046875, 0, 64
+128, 0, 0.99964, 0.390484375, 0, 128
+256, 0, 1.0, 0.1953125, 0, 256
+512, 0, 1.0, 0.09765625, 0, 512
+1024, 0, 1.0, 0.048828125, 0, 1024
+2048, 0, 1.0, 0.0244140625, 0, 2048
+4096, 0, 1.0, 0.01220703125, 0, 4096
+8192, 0, 1.0, 0.006103515625, 0, 8192
+16384, 0, 1.0, 0.004682963379226374, 0, 10677

@@ -1,0 +1,40 @@
+# load the base data ../data/imagenet/imagenet_base.fvecs, 
+# load the queries ../data/imagenet/imagenet_query.fvecs, 
+# load the ground truth ../data/imagenet/1_imagenet_product_groundtruth.ivecs
+# ranking metric product
+# Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 0,  residual average norm : 0.20509226620197296 max norm: 0.8650335669517517 min norm: 0.028300635516643524
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 1,  residual average norm : 0.17940162122249603 max norm: 0.8014782667160034 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 2,  residual average norm : 0.16379638016223907 max norm: 0.6748961210250854 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 3,  residual average norm : 0.15229861438274384 max norm: 0.5869590640068054 min norm: 0.0
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.048, 0.048, 0, 1
+2, 0, 0.081, 0.0405, 0, 2
+4, 0, 0.118, 0.0295, 0, 4
+8, 0, 0.173, 0.021625, 0, 8
+16, 0, 0.269, 0.0168125, 0, 16
+32, 0, 0.382, 0.0119375, 0, 32
+64, 0, 0.5, 0.0078125, 0, 64
+128, 0, 0.607, 0.0047421875, 0, 128
+256, 0, 0.702, 0.0027421875, 0, 256
+512, 0, 0.797, 0.001556640625, 0, 512
+1024, 0, 0.87, 0.000849609375, 0, 1024
+2048, 0, 0.912, 0.0004453125, 0, 2048
+4096, 0, 0.955, 0.000233154296875, 0, 4096
+8192, 0, 0.976, 0.000119140625, 0, 8192
+16384, 0, 0.983, 5.999755859375e-05, 0, 16384
+32768, 0, 0.992, 3.02734375e-05, 0, 32768
+65536, 0, 0.996, 1.519775390625e-05, 0, 65536
+131072, 0, 0.998, 7.6141357421875e-06, 0, 131072
+262144, 0, 0.999, 3.810882568359375e-06, 0, 262144
+524288, 0, 1.0, 1.9073486328125e-06, 0, 524288
+1048576, 0, 1.0, 9.5367431640625e-07, 0, 1048576
+2097152, 0, 1.0, 4.76837158203125e-07, 0, 2097152
+4194304, 0, 1.0, 4.272823178185699e-07, 0, 2340373

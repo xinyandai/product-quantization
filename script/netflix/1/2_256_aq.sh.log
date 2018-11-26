@@ -1,0 +1,26 @@
+# load the base data ../data/netflix/netflix_base.fvecs, 
+# load the queries ../data/netflix/netflix_query.fvecs, 
+# load the ground truth ../data/netflix/1_netflix_product_groundtruth.ivecs
+# ranking metric product
+# AQ, M: 2, Ks : 256, code_dtype: <class 'numpy.int32'>
+# compress items
+# Mean AQ quantization error: 0.100463
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.034, 0.034, 0, 1
+2, 0, 0.066, 0.033, 0, 2
+4, 0, 0.141, 0.03525, 0, 4
+8, 0, 0.295, 0.036875, 0, 8
+16, 0, 0.459, 0.0286875, 0, 16
+32, 0, 0.631, 0.01971875, 0, 32
+64, 0, 0.794, 0.01240625, 0, 64
+128, 0, 0.917, 0.0071640625, 0, 128
+256, 0, 0.963, 0.00376171875, 0, 256
+512, 0, 0.974, 0.00190234375, 0, 512
+1024, 0, 0.985, 0.0009619140625, 0, 1024
+2048, 0, 0.998, 0.0004873046875, 0, 2048
+4096, 0, 1.0, 0.000244140625, 0, 4096
+8192, 0, 1.0, 0.0001220703125, 0, 8192
+16384, 0, 1.0, 6.103515625e-05, 0, 16384
+32768, 0, 1.0, 5.627462014631401e-05, 0, 17770

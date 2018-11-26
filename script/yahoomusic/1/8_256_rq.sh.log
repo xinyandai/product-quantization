@@ -1,0 +1,44 @@
+# load the base data ../data/yahoomusic/yahoomusic_base.fvecs, 
+# load the queries ../data/yahoomusic/yahoomusic_query.fvecs, 
+# load the ground truth ../data/yahoomusic/1_yahoomusic_product_groundtruth.ivecs
+# ranking metric product
+# Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 0,  residual average norm : 0.6392053365707397 max norm: 1.8925235271453857 min norm: 0.11763524264097214
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 1,  residual average norm : 0.4906230568885803 max norm: 1.7396981716156006 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 2,  residual average norm : 0.4085284471511841 max norm: 1.6088778972625732 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 3,  residual average norm : 0.3514285981655121 max norm: 1.2946351766586304 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 4,  residual average norm : 0.30792850255966187 max norm: 1.2437067031860352 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 5,  residual average norm : 0.2729966342449188 max norm: 1.1373904943466187 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 6,  residual average norm : 0.24425768852233887 max norm: 1.0666238069534302 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 7,  residual average norm : 0.2201259434223175 max norm: 1.0392346382141113 min norm: 0.0
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.323, 0.323, 0, 1
+2, 0, 0.481, 0.2405, 0, 2
+4, 0, 0.637, 0.15925, 0, 4
+8, 0, 0.777, 0.097125, 0, 8
+16, 0, 0.885, 0.0553125, 0, 16
+32, 0, 0.94, 0.029375, 0, 32
+64, 0, 0.975, 0.015234375, 0, 64
+128, 0, 0.987, 0.0077109375, 0, 128
+256, 0, 0.995, 0.00388671875, 0, 256
+512, 0, 0.998, 0.00194921875, 0, 512
+1024, 0, 1.0, 0.0009765625, 0, 1024
+2048, 0, 1.0, 0.00048828125, 0, 2048
+4096, 0, 1.0, 0.000244140625, 0, 4096
+8192, 0, 1.0, 0.0001220703125, 0, 8192
+16384, 0, 1.0, 6.103515625e-05, 0, 16384
+32768, 0, 1.0, 3.0517578125e-05, 0, 32768
+65536, 0, 1.0, 1.52587890625e-05, 0, 65536
+131072, 0, 1.0, 7.62939453125e-06, 0, 131072
+262144, 0, 1.0, 7.313362976831266e-06, 0, 136736

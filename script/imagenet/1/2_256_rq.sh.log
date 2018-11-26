@@ -1,0 +1,36 @@
+# load the base data ../data/imagenet/imagenet_base.fvecs, 
+# load the queries ../data/imagenet/imagenet_query.fvecs, 
+# load the ground truth ../data/imagenet/1_imagenet_product_groundtruth.ivecs
+# ranking metric product
+# Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 0,  residual average norm : 0.20509226620197296 max norm: 0.8650335669517517 min norm: 0.028300635516643524
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 1,  residual average norm : 0.17940162122249603 max norm: 0.8014782667160034 min norm: 0.0
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.009, 0.009, 0, 1
+2, 0, 0.01, 0.005, 0, 2
+4, 0, 0.014, 0.0035, 0, 4
+8, 0, 0.029, 0.003625, 0, 8
+16, 0, 0.059, 0.0036875, 0, 16
+32, 0, 0.099, 0.00309375, 0, 32
+64, 0, 0.16, 0.0025, 0, 64
+128, 0, 0.258, 0.002015625, 0, 128
+256, 0, 0.37, 0.0014453125, 0, 256
+512, 0, 0.492, 0.0009609375, 0, 512
+1024, 0, 0.616, 0.0006015625, 0, 1024
+2048, 0, 0.72, 0.0003515625, 0, 2048
+4096, 0, 0.798, 0.00019482421875, 0, 4096
+8192, 0, 0.856, 0.0001044921875, 0, 8192
+16384, 0, 0.907, 5.535888671875e-05, 0, 16384
+32768, 0, 0.944, 2.880859375e-05, 0, 32768
+65536, 0, 0.973, 1.48468017578125e-05, 0, 65536
+131072, 0, 0.981, 7.48443603515625e-06, 0, 131072
+262144, 0, 0.988, 3.7689208984375e-06, 0, 262144
+524288, 0, 0.996, 1.89971923828125e-06, 0, 524288
+1048576, 0, 0.999, 9.527206420898437e-07, 0, 1048576
+2097152, 0, 1.0, 4.76837158203125e-07, 0, 2097152
+4194304, 0, 1.0, 4.272823178185699e-07, 0, 2340373

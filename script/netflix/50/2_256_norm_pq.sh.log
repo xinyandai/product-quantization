@@ -1,0 +1,27 @@
+# load the base data ../data/netflix/netflix_base.fvecs, 
+# load the queries ../data/netflix/netflix_query.fvecs, 
+# load the ground truth ../data/netflix/50_netflix_product_groundtruth.ivecs
+# ranking metric product
+# NormPQ, percentiles: 256, quantize: Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 0,  residual average norm : 0.22268709540367126 max norm: 0.6974430680274963 min norm: 0.0
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.01514, 0.757, 0, 1
+2, 0, 0.03068, 0.767, 0, 2
+4, 0, 0.06346, 0.79325, 0, 4
+8, 0, 0.12724, 0.7952499999999999, 0, 8
+16, 0, 0.24308, 0.759625, 0, 16
+32, 0, 0.43838, 0.68496875, 0, 32
+64, 0, 0.6903199999999999, 0.5393125, 0, 64
+128, 0, 0.89306, 0.3488515625, 0, 128
+256, 0, 0.97336, 0.190109375, 0, 256
+512, 0, 0.99548, 0.09721484375, 0, 512
+1024, 0, 0.99954, 0.0488056640625, 0, 1024
+2048, 0, 0.99994, 0.02441259765625, 0, 2048
+4096, 0, 1.0, 0.01220703125, 0, 4096
+8192, 0, 1.0, 0.006103515625, 0, 8192
+16384, 0, 1.0, 0.0030517578125, 0, 16384
+32768, 0, 1.0, 0.0028137310073157004, 0, 17770

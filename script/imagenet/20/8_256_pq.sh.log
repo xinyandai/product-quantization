@@ -1,0 +1,41 @@
+# load the base data ../data/imagenet/imagenet_base.fvecs, , 0
+# load the queries ../data/imagenet/imagenet_query.fvecs, , 0
+# load the ground truth ../data/imagenet/20_imagenet_product_groundtruth.ivecs, 0
+# ranking metric product, 0
+# Subspace PQ, M: 8, Ks : 256, code_dtype: <class 'numpy.uint8'>, 0
+#    Training the subspace: 0 / 8, 0 -> 19, 0
+#    Training the subspace: 1 / 8, 19 -> 38, 0
+#    Training the subspace: 2 / 8, 38 -> 57, 0
+#    Training the subspace: 3 / 8, 57 -> 76, 0
+#    Training the subspace: 4 / 8, 76 -> 95, 0
+#    Training the subspace: 5 / 8, 95 -> 114, 0
+#    Training the subspace: 6 / 8, 114 -> 132, 0
+#    Training the subspace: 7 / 8, 132 -> 150, 0
+# layer: 0,  residual average norm : 0.15008778870105743 max norm: 0.7559621334075928 min norm: 0.02325638011097908, 0
+# compress items, 0
+# sorting items, 0
+# searching!, 0
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.0127, 0.254, 0, 0
+2, 0, 0.02345, 0.2345, 0, 0
+4, 0, 0.04085, 0.20425, 0, 0
+8, 0, 0.0684, 0.171, 0, 0
+16, 0, 0.1123, 0.140375, 0, 0
+32, 0, 0.17735, 0.11084375, 0, 0
+64, 0, 0.267, 0.0834375, 0, 0
+128, 0, 0.37475, 0.05855468750000001, 0, 0
+256, 0, 0.5051, 0.0394609375, 0, 0
+512, 0, 0.6401, 0.02500390625, 0, 0
+1024, 0, 0.7645, 0.014931640625, 0, 0
+2048, 0, 0.8563000000000001, 0.0083623046875, 0, 0
+4096, 0, 0.917, 0.0044775390625, 0, 0
+8192, 0, 0.9544499999999999, 0.0023302001953125, 0, 0
+16384, 0, 0.9746499999999999, 0.00118975830078125, 0, 0
+32768, 0, 0.9869999999999999, 0.0006024169921875, 0, 0
+65536, 0, 0.9923500000000001, 0.0003028411865234375, 0, 0
+131072, 0, 0.9962, 0.000152008056640625, 0, 0
+262144, 0, 0.9987, 7.619476318359375e-05, 0, 0
+524288, 0, 0.9997, 3.8135528564453125e-05, 0, 0
+1048576, 0, 0.99985, 1.907062530517578e-05, 0, 0
+2097152, 0, 1.0, 9.5367431640625e-06, 0, 0
+4194304, 0, 1.0, 8.545646356371399e-06, 0, 0

@@ -1,0 +1,48 @@
+# load the base data ../data/imagenet/imagenet_base.fvecs, 
+# load the queries ../data/imagenet/imagenet_query.fvecs, 
+# load the ground truth ../data/imagenet/50_imagenet_product_groundtruth.ivecs
+# ranking metric product
+# Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 0,  residual average norm : 0.20509226620197296 max norm: 0.8650335669517517 min norm: 0.028300635516643524
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 1,  residual average norm : 0.17940162122249603 max norm: 0.8014782667160034 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 2,  residual average norm : 0.16379638016223907 max norm: 0.6748961210250854 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 3,  residual average norm : 0.15229861438274384 max norm: 0.5869590640068054 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 4,  residual average norm : 0.1430693417787552 max norm: 0.560660719871521 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 5,  residual average norm : 0.13535363972187042 max norm: 0.5163114070892334 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 6,  residual average norm : 0.12869217991828918 max norm: 0.45330479741096497 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 7,  residual average norm : 0.12286444008350372 max norm: 0.43472933769226074 min norm: 0.0
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.0171, 0.855, 0, 1
+2, 0, 0.03306, 0.8265, 0, 2
+4, 0, 0.06436, 0.8045, 0, 4
+8, 0, 0.11900000000000001, 0.74375, 0, 8
+16, 0, 0.21128, 0.66025, 0, 16
+32, 0, 0.34926, 0.54571875, 0, 32
+64, 0, 0.52292, 0.40853125, 0, 64
+128, 0, 0.68914, 0.2691953125, 0, 128
+256, 0, 0.81844, 0.1598515625, 0, 256
+512, 0, 0.90302, 0.088185546875, 0, 512
+1024, 0, 0.95172, 0.046470703125, 0, 1024
+2048, 0, 0.9766800000000001, 0.0238447265625, 0, 2048
+4096, 0, 0.9894, 0.01207763671875, 0, 4096
+8192, 0, 0.9950199999999999, 0.0060731201171875, 0, 8192
+16384, 0, 0.99736, 0.003043701171875, 0, 16384
+32768, 0, 0.99854, 0.001523651123046875, 0, 32768
+65536, 0, 0.99934, 0.0007624359130859375, 0, 65536
+131072, 0, 0.99966, 0.0003813400268554687, 0, 131072
+262144, 0, 0.99982, 0.00019070053100585937, 0, 262144
+524288, 0, 0.99996, 9.536361694335937e-05, 0, 524288
+1048576, 0, 0.9999800000000001, 4.7682762145996096e-05, 0, 1048576
+2097152, 0, 0.9999800000000001, 2.3841381072998048e-05, 0, 2097152
+4194304, 0, 1.0, 2.1364115890928497e-05, 0, 2340373

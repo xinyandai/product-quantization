@@ -1,0 +1,48 @@
+# load the base data ../data/imagenet/imagenet_base.fvecs, , 0
+# load the queries ../data/imagenet/imagenet_query.fvecs, , 0
+# load the ground truth ../data/imagenet/20_imagenet_product_groundtruth.ivecs, 0
+# ranking metric product, 0
+# Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>, 0
+#    Training the subspace: 0 / 1, 0 -> 150, 0
+# layer: 0,  residual average norm : 0.20509226620197296 max norm: 0.8650335669517517 min norm: 0.028300635516643524, 0
+#    Training the subspace: 0 / 1, 0 -> 150, 0
+# layer: 1,  residual average norm : 0.17940162122249603 max norm: 0.8014782667160034 min norm: 0.0, 0
+#    Training the subspace: 0 / 1, 0 -> 150, 0
+# layer: 2,  residual average norm : 0.16379638016223907 max norm: 0.6748961210250854 min norm: 0.0, 0
+#    Training the subspace: 0 / 1, 0 -> 150, 0
+# layer: 3,  residual average norm : 0.15229861438274384 max norm: 0.5869590640068054 min norm: 0.0, 0
+#    Training the subspace: 0 / 1, 0 -> 150, 0
+# layer: 4,  residual average norm : 0.1430693417787552 max norm: 0.560660719871521 min norm: 0.0, 0
+#    Training the subspace: 0 / 1, 0 -> 150, 0
+# layer: 5,  residual average norm : 0.13535363972187042 max norm: 0.5163114070892334 min norm: 0.0, 0
+#    Training the subspace: 0 / 1, 0 -> 150, 0
+# layer: 6,  residual average norm : 0.12869217991828918 max norm: 0.45330479741096497 min norm: 0.0, 0
+#    Training the subspace: 0 / 1, 0 -> 150, 0
+# layer: 7,  residual average norm : 0.12286444008350372 max norm: 0.43472933769226074 min norm: 0.0, 0
+# compress items, 0
+# sorting items, 0
+# searching!, 0
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.03615, 0.7230000000000001, 0, 0
+2, 0, 0.06665, 0.6665, 0, 0
+4, 0, 0.1242, 0.621, 0, 0
+8, 0, 0.21145, 0.528625, 0, 0
+16, 0, 0.3365, 0.420625, 0, 0
+32, 0, 0.48875, 0.30546875, 0, 0
+64, 0, 0.6458999999999999, 0.20184375, 0, 0
+128, 0, 0.77605, 0.1212578125, 0, 0
+256, 0, 0.86965, 0.06794140625, 0, 0
+512, 0, 0.9313, 0.03637890625, 0, 0
+1024, 0, 0.9642, 0.01883203125, 0, 0
+2048, 0, 0.9816499999999999, 0.00958642578125, 0, 0
+4096, 0, 0.9915499999999999, 0.004841552734375, 0, 0
+8192, 0, 0.9961499999999999, 0.0024320068359375, 0, 0
+16384, 0, 0.99785, 0.00121807861328125, 0, 0
+32768, 0, 0.99885, 0.000609649658203125, 0, 0
+65536, 0, 0.9994999999999999, 0.000305023193359375, 0, 0
+131072, 0, 0.99975, 0.00015254974365234376, 0, 0
+262144, 0, 0.99985, 7.628250122070312e-05, 0, 0
+524288, 0, 0.9999499999999999, 3.8145065307617185e-05, 0, 0
+1048576, 0, 0.9999499999999999, 1.9072532653808593e-05, 0, 0
+2097152, 0, 0.9999499999999999, 9.536266326904296e-06, 0, 0
+4194304, 0, 1.0, 8.545646356371399e-06, 0, 0
