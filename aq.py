@@ -123,6 +123,7 @@ def encodePointsAQ(points, codebooks, branch):
 def learnCodebooksAQ(points, dim, M, K, pointsCount, branch, threadsCount=8, itsCount=10, codebooks=None):
     if M < 1:
         raise Exception('M is not positive!')
+    threadsCount = threadsCount if threadsCount <= dim else dim
 
     assigns = np.zeros((pointsCount, M), dtype='int32')
 

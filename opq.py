@@ -1,5 +1,6 @@
 from pq import PQ
 import numpy as np
+from pq_residual import ResidualPQ
 
 
 class OPQ(object):
@@ -23,74 +24,22 @@ class OPQ(object):
 
 
     """
-    def __init__(self, M, Ks, verbose=True):
-        self.pq = PQ(M, Ks, verbose)
+    def __init__(self, M, Ks, verbose=True, layer=1):
+
+        self.pq = ResidualPQ([PQ(M, Ks, verbose) for _ in range(layer)])
+        self.layer = layer
+        self.M = M
+        self.Ks = Ks
+        self.code_dtype = self.pq.code_dtype
+        self.verbose = verbose
+
         self.R = None
-
-    def __eq__(self, other):
-        if isinstance(other, OPQ):
-            return self.pq == other.pq and np.array_equal(self.codewords, other.codewords)
-        else:
-            return False
-
-    @property
-    def M(self):
-        """int: The number of sub-space"""
-        return self.pq.M
-
-    @property
-    def Ks(self):
-        """int: The number of codewords for each subspace"""
-        return self.pq.Ks
-
-    @property
-    def verbose(self):
-        """bool: Verbose flag"""
-        return self.pq.verbose
-
-    @property
-    def code_dtype(self):
-        """object: dtype of PQ-code. Either np.uint{8, 16, 32}"""
-        return self.pq.code_dtype
-
-    @property
-    def codewords(self):
-        """np.ndarray: shape=(M, Ks, Ds) with dtype=np.float32.
-        codewords[m][ks] means ks-th codeword (Ds-dim) for m-th subspace
-        """
-        return self.pq.codewords
-
-    @property
-    def Ds(self):
-        """int: The dim of each sub-vector, i.e., Ds=D/M"""
-        return self.pq.Ds
 
     def class_message(self):
         return "OPQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
 
     def fit(self, vecs, iter):
-        """Given training vectors, this function alternatively trains
-        (a) codewords and (b) a rotation matrix.
-        The procedure of training codewords is same as :func:`PQ.fit`.
-        The rotation matrix is computed so as to minimize the quantization error
-        given codewords (Orthogonal Procrustes problem)
 
-        This function is a translation from the original MATLAB implementation to that of python
-        http://kaiminghe.com/cvpr13/index.html
-
-        If you find the error message is messy, please turn off the verbose flag, then
-        you can see the reduction of error for each iteration clearly
-
-        Args:
-            vecs: (np.ndarray): Training vectors with shape=(N, D) and dtype=np.float32.
-            pq_iter (int): The number of iteration for k-means
-            rotation_iter (int): The number of iteration for leraning rotation
-            seed (int): The seed for random process
-
-        Returns:
-            object: self
-
-        """
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
         _, D = vecs.shape
@@ -111,15 +60,15 @@ class OPQ(object):
                 if type(iterator) is tqdm:
                     iterator.close()
                 # In the final loop, run the full training
-                pq_tmp = PQ(M=self.M, Ks=self.Ks, verbose=self.verbose)
+                pq_tmp = ResidualPQ([PQ(self.M, self.Ks, self.verbose) for _ in range(self.layer)], verbose=self.verbose)
                 pq_tmp.fit(X, iter=pq_iter)
             else:
                 # During the training for OPQ, just run one-pass (iter=1) PQ training
-                pq_tmp = PQ(M=self.M, Ks=self.Ks, verbose=False)
+                pq_tmp = ResidualPQ([PQ(self.M, self.Ks, False) for _ in range(self.layer)],  verbose=False)
                 pq_tmp.fit(X, iter=1)
 
             # (b) Update a rotation matrix R
-            X_ = pq_tmp.decode(pq_tmp.encode(X))
+            X_ = pq_tmp.compress(X)
             U, s, V = np.linalg.svd(vecs.T @ X_)
 
             if i == rotation_iter - 1:
@@ -131,16 +80,7 @@ class OPQ(object):
         return self
 
     def rotate(self, vecs):
-        """Rotate input vector(s) by the rotation matrix.`
 
-        Args:
-            vecs (np.ndarray): Input vector(s) with dtype=np.float32.
-                The shape can be a single vector (D, ) or several vectors (N, D)
-
-        Returns:
-            np.ndarray: Rotated vectors with the same shape and dtype to the input vecs.
-
-        """
         assert vecs.dtype == np.float32
         assert vecs.ndim in [1, 2]
 
@@ -150,34 +90,15 @@ class OPQ(object):
             return (vecs.reshape(1, -1) @ self.R).reshape(-1)
 
     def encode(self, vecs):
-        """Rotate input vectors by :func:`OPQ.rotate`, then encode them via :func:`PQ.encode`.
 
-        Args:
-            vecs (np.ndarray): Input vectors with shape=(N, D) and dtype=np.float32.
-
-        Returns:
-            np.ndarray: PQ codes with shape=(N, M) and dtype=self.code_dtype
-
-        """
         return self.pq.encode(self.rotate(vecs))
 
     def decode(self, codes):
-        """Given PQ-codes, reconstruct original D-dimensional vectors via :func:`PQ.decode`,
-        and applying an inverse-rotation.
-
-        Args:
-            codes (np.ndarray): PQ-cdoes with shape=(N, M) and dtype=self.code_dtype.
-                Each row is a PQ-code
-
-        Returns:
-            np.ndarray: Reconstructed vectors with shape=(N, D) and dtype=np.float32
-
-        """
         # Because R is a rotation matrix (R^t * R = I), R^-1 should be R^t
         return self.pq.decode(codes) @ self.R.T
 
     def compress(self, vecs):
-        return self.decode(self.encode(vecs))
+        return self.pq.compress(self.rotate(vecs)) @ self.R.T
 
 
 
