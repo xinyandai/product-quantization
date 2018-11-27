@@ -2,28 +2,28 @@
 # load the queries ../data/netflix/netflix_query.fvecs, 
 # load the ground truth ../data/netflix/50_netflix_product_groundtruth.ivecs
 # ranking metric product
-# NormPQ, percentiles: 256, quantize: OPQ, M: 8, Ks : 256, code_dtype: <class 'numpy.uint8'>
-#    Training the subspace: 0 / 8, 0 -> 38
-#    Training the subspace: 1 / 8, 38 -> 76
-#    Training the subspace: 2 / 8, 76 -> 114
-#    Training the subspace: 3 / 8, 114 -> 152
-#    Training the subspace: 4 / 8, 152 -> 189
-#    Training the subspace: 5 / 8, 189 -> 226
-#    Training the subspace: 6 / 8, 226 -> 263
-#    Training the subspace: 7 / 8, 263 -> 300
-# layer: 0,  residual average norm : 0.0815788060426712 max norm: 0.37517043948173523 min norm: 0.02621397376060486
+# NormPQ, percentiles: 256, quantize: ORQ, RQ : [Subspace PQ, M: 7, Ks : 256, code_dtype: <class 'numpy.uint8'>],  M: 7, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 7, 0 -> 43
+#    Training the subspace: 1 / 7, 43 -> 86
+#    Training the subspace: 2 / 7, 86 -> 129
+#    Training the subspace: 3 / 7, 129 -> 172
+#    Training the subspace: 4 / 7, 172 -> 215
+#    Training the subspace: 5 / 7, 215 -> 258
+#    Training the subspace: 6 / 7, 258 -> 300
+# layer: 0,  residual average norm : 0.0894177258014679 max norm: 0.42418283224105835 min norm: 0.03593158721923828
+# layer: 0,  residual average norm : 0.0894177258014679 max norm: 0.42418286204338074 min norm: 0.03593160957098007
 # compress items
 # sorting items
 # searching!
 expected items, overall time, avg recall, avg precision, avg error, avg items
-1, 0, 0.02, 1.0, 0, 1
-2, 0, 0.04, 1.0, 0, 2
-4, 0, 0.0799, 0.99875, 0, 4
-8, 0, 0.15972, 0.99825, 0, 8
-16, 0, 0.31892, 0.996625, 0, 16
-32, 0, 0.6291, 0.98296875, 0, 32
-64, 0, 0.9773999999999999, 0.76359375, 0, 64
-128, 0, 0.99968, 0.3905, 0, 128
+1, 0, 0.01996, 0.9979999999999999, 0, 1
+2, 0, 0.03992, 0.9979999999999999, 0, 2
+4, 0, 0.07974, 0.99675, 0, 4
+8, 0, 0.15922, 0.995125, 0, 8
+16, 0, 0.31772, 0.992875, 0, 16
+32, 0, 0.62204, 0.9719375, 0, 32
+64, 0, 0.9599599999999999, 0.74996875, 0, 64
+128, 0, 0.99928, 0.39034375, 0, 128
 256, 0, 1.0, 0.1953125, 0, 256
 512, 0, 1.0, 0.09765625, 0, 512
 1024, 0, 1.0, 0.048828125, 0, 1024

@@ -1,6 +1,6 @@
 # load the base data ../data/movielens/movielens_base.fvecs, 
 # load the queries ../data/movielens/movielens_query.fvecs, 
-# load the ground truth ../data/movielens/1_movielens_product_groundtruth.ivecs
+# load the ground truth ../data/movielens/10_movielens_product_groundtruth.ivecs
 # ranking metric product
 # NormPQ, percentiles: 256, quantize: ORQ, RQ : [Subspace PQ, M: 7, Ks : 256, code_dtype: <class 'numpy.uint8'>],  M: 7, Ks : 256, code_dtype: <class 'numpy.uint8'>
 #    Training the subspace: 0 / 7, 0 -> 22
@@ -16,18 +16,18 @@
 # sorting items
 # searching!
 expected items, overall time, avg recall, avg precision, avg error, avg items
-1, 0, 0.743, 0.743, 0, 1
-2, 0, 0.885, 0.4425, 0, 2
-4, 0, 0.982, 0.2455, 0, 4
-8, 0, 0.997, 0.124625, 0, 8
-16, 0, 1.0, 0.0625, 0, 16
-32, 0, 1.0, 0.03125, 0, 32
-64, 0, 1.0, 0.015625, 0, 64
-128, 0, 1.0, 0.0078125, 0, 128
-256, 0, 1.0, 0.00390625, 0, 256
-512, 0, 1.0, 0.001953125, 0, 512
-1024, 0, 1.0, 0.0009765625, 0, 1024
-2048, 0, 1.0, 0.00048828125, 0, 2048
-4096, 0, 1.0, 0.000244140625, 0, 4096
-8192, 0, 1.0, 0.0001220703125, 0, 8192
-16384, 0, 1.0, 9.365926758452749e-05, 0, 10677
+1, 0, 0.0998, 0.998, 0, 1
+2, 0, 0.19790000000000002, 0.9895, 0, 2
+4, 0, 0.3896, 0.974, 0, 4
+8, 0, 0.7189, 0.898625, 0, 8
+16, 0, 0.9699, 0.6061875, 0, 16
+32, 0, 0.9991, 0.31221875, 0, 32
+64, 0, 1.0, 0.15625, 0, 64
+128, 0, 1.0, 0.078125, 0, 128
+256, 0, 1.0, 0.0390625, 0, 256
+512, 0, 1.0, 0.01953125, 0, 512
+1024, 0, 1.0, 0.009765625, 0, 1024
+2048, 0, 1.0, 0.0048828125, 0, 2048
+4096, 0, 1.0, 0.00244140625, 0, 4096
+8192, 0, 1.0, 0.001220703125, 0, 8192
+16384, 0, 1.0, 0.0009365926758452749, 0, 10677
