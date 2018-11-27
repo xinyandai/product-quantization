@@ -1,0 +1,36 @@
+# load the base data ../data/imagenet/imagenet_base.fvecs, 
+# load the queries ../data/imagenet/imagenet_query.fvecs, 
+# load the ground truth ../data/imagenet/1_imagenet_product_groundtruth.ivecs
+# ranking metric product
+# XPQ PQ, M: 2, quantizer : [<aq.AQ object at 0x7ff4122d1978>, <aq.AQ object at 0x7ff3fc5e1cc0>]
+#    Training the XPQ subspace: 0 / 2, 0 -> 75
+#    Training the XPQ subspace: 1 / 2, 75 -> 150
+# compress items
+# Mean AQ quantization error: 0.014436
+# Mean AQ quantization error: 0.004547
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.081, 0.081, 0, 1
+2, 0, 0.132, 0.066, 0, 2
+4, 0, 0.209, 0.05225, 0, 4
+8, 0, 0.295, 0.036875, 0, 8
+16, 0, 0.401, 0.0250625, 0, 16
+32, 0, 0.514, 0.0160625, 0, 32
+64, 0, 0.616, 0.009625, 0, 64
+128, 0, 0.711, 0.0055546875, 0, 128
+256, 0, 0.793, 0.00309765625, 0, 256
+512, 0, 0.882, 0.00172265625, 0, 512
+1024, 0, 0.933, 0.0009111328125, 0, 1024
+2048, 0, 0.96, 0.00046875, 0, 2048
+4096, 0, 0.978, 0.00023876953125, 0, 4096
+8192, 0, 0.988, 0.00012060546875, 0, 8192
+16384, 0, 0.997, 6.085205078125e-05, 0, 16384
+32768, 0, 0.998, 3.045654296875e-05, 0, 32768
+65536, 0, 0.998, 1.5228271484375e-05, 0, 65536
+131072, 0, 1.0, 7.62939453125e-06, 0, 131072
+262144, 0, 1.0, 3.814697265625e-06, 0, 262144
+524288, 0, 1.0, 1.9073486328125e-06, 0, 524288
+1048576, 0, 1.0, 9.5367431640625e-07, 0, 1048576
+2097152, 0, 1.0, 4.76837158203125e-07, 0, 2097152
+4194304, 0, 1.0, 4.272823178185699e-07, 0, 2340373
