@@ -28,8 +28,13 @@ def execute(pq, X, Q, G, metric='euclid', train_size=100000):
 
 
 if __name__ == '__main__':
+    import sys
+    dataset = sys.argv[1]
+    topk = int(sys.argv[2])
+    codebook = int(sys.argv[3])
+    Ks = int(sys.argv[4])
 
-    X, Q, G = loader('yahoomusic', 20, 'product')
+    X, Q, G = loader(dataset, topk, 'product')
     # pq, rq, or component of norm-pq
-    quantizer = XPQ([AQ(4, 256) for _ in range(2)])
+    quantizer = XPQ([AQ(codebook//2, Ks) for _ in range(2)])
     execute(quantizer, X, Q, G, 'product')
