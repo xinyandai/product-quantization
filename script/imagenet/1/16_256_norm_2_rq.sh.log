@@ -1,0 +1,60 @@
+# load the base data ../data/imagenet/imagenet_base.fvecs, 
+# load the queries ../data/imagenet/imagenet_query.fvecs, 
+# load the ground truth ../data/imagenet/1_imagenet_product_groundtruth.ivecs
+# ranking metric product
+# NormPQ, percentiles: 256, quantize: Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 0,  residual average norm : 0.6843136548995972 max norm: 1.0400437116622925 min norm: 0.13191360235214233
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 1,  residual average norm : 0.6002913117408752 max norm: 0.9870588183403015 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 2,  residual average norm : 0.5481430292129517 max norm: 0.9561288356781006 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 3,  residual average norm : 0.5101341009140015 max norm: 0.9099083542823792 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 4,  residual average norm : 0.4789798855781555 max norm: 0.8734250664710999 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 5,  residual average norm : 0.45337921380996704 max norm: 0.8475639820098877 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 6,  residual average norm : 0.43196073174476624 max norm: 0.8261905312538147 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 7,  residual average norm : 0.4124186336994171 max norm: 0.7639428377151489 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 8,  residual average norm : 0.39413660764694214 max norm: 0.7416508197784424 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 9,  residual average norm : 0.37842273712158203 max norm: 0.7261723279953003 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 10,  residual average norm : 0.36342042684555054 max norm: 0.7025391459465027 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 11,  residual average norm : 0.34942013025283813 max norm: 0.6698626279830933 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 12,  residual average norm : 0.33730265498161316 max norm: 0.6511397957801819 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 13,  residual average norm : 0.32596591114997864 max norm: 0.6314256191253662 min norm: 0.0
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.337, 0.337, 0, 1
+2, 0, 0.472, 0.236, 0, 2
+4, 0, 0.641, 0.16025, 0, 4
+8, 0, 0.785, 0.098125, 0, 8
+16, 0, 0.877, 0.0548125, 0, 16
+32, 0, 0.931, 0.02909375, 0, 32
+64, 0, 0.96, 0.015, 0, 64
+128, 0, 0.992, 0.00775, 0, 128
+256, 0, 0.997, 0.00389453125, 0, 256
+512, 0, 0.998, 0.00194921875, 0, 512
+1024, 0, 0.999, 0.0009755859375, 0, 1024
+2048, 0, 1.0, 0.00048828125, 0, 2048
+4096, 0, 1.0, 0.000244140625, 0, 4096
+8192, 0, 1.0, 0.0001220703125, 0, 8192
+16384, 0, 1.0, 6.103515625e-05, 0, 16384
+32768, 0, 1.0, 3.0517578125e-05, 0, 32768
+65536, 0, 1.0, 1.52587890625e-05, 0, 65536
+131072, 0, 1.0, 7.62939453125e-06, 0, 131072
+262144, 0, 1.0, 3.814697265625e-06, 0, 262144
+524288, 0, 1.0, 1.9073486328125e-06, 0, 524288
+1048576, 0, 1.0, 9.5367431640625e-07, 0, 1048576
+2097152, 0, 1.0, 4.76837158203125e-07, 0, 2097152
+4194304, 0, 1.0, 4.272823178185699e-07, 0, 2340373
