@@ -1,0 +1,32 @@
+# load the base data ../data/yahoomusic/yahoomusic_base.fvecs, 
+# load the queries ../data/yahoomusic/yahoomusic_query.fvecs, 
+# load the ground truth ../data/yahoomusic/1_yahoomusic_product_groundtruth.ivecs
+# ranking metric product
+# XPQ PQ, M: 2, quantizer : [<aq.AQ object at 0x7fa0a99249b0>, <aq.AQ object at 0x7fa093c34be0>]
+#    Training the XPQ subspace: 0 / 2, 0 -> 150
+#    Training the XPQ subspace: 1 / 2, 150 -> 300
+# compress items
+# Mean AQ quantization error: 0.020226
+# Mean AQ quantization error: 0.020679
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.415, 0.415, 0, 1
+2, 0, 0.597, 0.2985, 0, 2
+4, 0, 0.74, 0.185, 0, 4
+8, 0, 0.867, 0.108375, 0, 8
+16, 0, 0.94, 0.05875, 0, 16
+32, 0, 0.971, 0.03034375, 0, 32
+64, 0, 0.986, 0.01540625, 0, 64
+128, 0, 0.995, 0.0077734375, 0, 128
+256, 0, 0.999, 0.00390234375, 0, 256
+512, 0, 0.999, 0.001951171875, 0, 512
+1024, 0, 1.0, 0.0009765625, 0, 1024
+2048, 0, 1.0, 0.00048828125, 0, 2048
+4096, 0, 1.0, 0.000244140625, 0, 4096
+8192, 0, 1.0, 0.0001220703125, 0, 8192
+16384, 0, 1.0, 6.103515625e-05, 0, 16384
+32768, 0, 1.0, 3.0517578125e-05, 0, 32768
+65536, 0, 1.0, 1.52587890625e-05, 0, 65536
+131072, 0, 1.0, 7.62939453125e-06, 0, 131072
+262144, 0, 1.0, 7.313362976831266e-06, 0, 136736

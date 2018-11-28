@@ -1,0 +1,9 @@
+# load the base data ../data/imagenet/imagenet_base.fvecs, 
+# load the queries ../data/imagenet/imagenet_query.fvecs, 
+# load the ground truth ../data/imagenet/20_imagenet_product_groundtruth.ivecs
+# ranking metric product
+# XPQ PQ, M: 2, quantizer : [<aq.AQ object at 0x7f305df8fa20>, <aq.AQ object at 0x7f30482a0c50>]
+#    Training the XPQ subspace: 0 / 2, 0 -> 75
+#    Training the XPQ subspace: 1 / 2, 75 -> 150
+# compress items
+# Mean AQ quantization error: 0.007564

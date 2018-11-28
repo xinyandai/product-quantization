@@ -1,0 +1,50 @@
+# load the base data ../data/imagenet/imagenet_base.fvecs, 
+# load the queries ../data/imagenet/imagenet_query.fvecs, 
+# load the ground truth ../data/imagenet/20_imagenet_product_groundtruth.ivecs
+# ranking metric product
+# ORQ, RQ : [Subspace PQ, M: 16, Ks : 256, code_dtype: <class 'numpy.uint8'>],  M: 16, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 16, 0 -> 10
+#    Training the subspace: 1 / 16, 10 -> 20
+#    Training the subspace: 2 / 16, 20 -> 30
+#    Training the subspace: 3 / 16, 30 -> 40
+#    Training the subspace: 4 / 16, 40 -> 50
+#    Training the subspace: 5 / 16, 50 -> 60
+#    Training the subspace: 6 / 16, 60 -> 69
+#    Training the subspace: 7 / 16, 69 -> 78
+#    Training the subspace: 8 / 16, 78 -> 87
+#    Training the subspace: 9 / 16, 87 -> 96
+#    Training the subspace: 10 / 16, 96 -> 105
+#    Training the subspace: 11 / 16, 105 -> 114
+#    Training the subspace: 12 / 16, 114 -> 123
+#    Training the subspace: 13 / 16, 123 -> 132
+#    Training the subspace: 14 / 16, 132 -> 141
+#    Training the subspace: 15 / 16, 141 -> 150
+# layer: 0,  residual average norm : 0.09880247712135315 max norm: 0.6210853457450867 min norm: 0.023860471323132515
+# layer: 0,  residual average norm : 0.09880247712135315 max norm: 0.6210854053497314 min norm: 0.023860488086938858
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.0325, 0.65, 0, 1
+2, 0, 0.060399999999999995, 0.604, 0, 2
+4, 0, 0.10825, 0.54125, 0, 4
+8, 0, 0.18595, 0.46487500000000004, 0, 8
+16, 0, 0.29185, 0.3648125, 0, 16
+32, 0, 0.42774999999999996, 0.26734375, 0, 32
+64, 0, 0.5776, 0.1805, 0, 64
+128, 0, 0.71815, 0.1122109375, 0, 128
+256, 0, 0.8333999999999999, 0.065109375, 0, 256
+512, 0, 0.9113, 0.03559765625, 0, 512
+1024, 0, 0.9577, 0.018705078125, 0, 1024
+2048, 0, 0.9802, 0.009572265625, 0, 2048
+4096, 0, 0.99175, 0.004842529296875, 0, 4096
+8192, 0, 0.9962, 0.00243212890625, 0, 8192
+16384, 0, 0.9981, 0.0012183837890625, 0, 16384
+32768, 0, 0.9991, 0.00060980224609375, 0, 32768
+65536, 0, 0.9996, 0.0003050537109375, 0, 65536
+131072, 0, 0.9997999999999999, 0.000152557373046875, 0, 131072
+262144, 0, 0.9997999999999999, 7.62786865234375e-05, 0, 262144
+524288, 0, 0.9999, 3.814315795898438e-05, 0, 524288
+1048576, 0, 0.9999499999999999, 1.9072532653808593e-05, 0, 1048576
+2097152, 0, 1.0, 9.5367431640625e-06, 0, 2097152
+4194304, 0, 1.0, 8.545646356371399e-06, 0, 2340373

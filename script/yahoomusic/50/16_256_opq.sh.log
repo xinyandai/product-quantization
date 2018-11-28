@@ -1,0 +1,46 @@
+# load the base data ../data/yahoomusic/yahoomusic_base.fvecs, 
+# load the queries ../data/yahoomusic/yahoomusic_query.fvecs, 
+# load the ground truth ../data/yahoomusic/50_yahoomusic_product_groundtruth.ivecs
+# ranking metric product
+# ORQ, RQ : [Subspace PQ, M: 16, Ks : 256, code_dtype: <class 'numpy.uint8'>],  M: 16, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 16, 0 -> 19
+#    Training the subspace: 1 / 16, 19 -> 38
+#    Training the subspace: 2 / 16, 38 -> 57
+#    Training the subspace: 3 / 16, 57 -> 76
+#    Training the subspace: 4 / 16, 76 -> 95
+#    Training the subspace: 5 / 16, 95 -> 114
+#    Training the subspace: 6 / 16, 114 -> 133
+#    Training the subspace: 7 / 16, 133 -> 152
+#    Training the subspace: 8 / 16, 152 -> 171
+#    Training the subspace: 9 / 16, 171 -> 190
+#    Training the subspace: 10 / 16, 190 -> 209
+#    Training the subspace: 11 / 16, 209 -> 228
+#    Training the subspace: 12 / 16, 228 -> 246
+#    Training the subspace: 13 / 16, 246 -> 264
+#    Training the subspace: 14 / 16, 264 -> 282
+#    Training the subspace: 15 / 16, 282 -> 300
+# layer: 0,  residual average norm : 0.2310061901807785 max norm: 1.1458244323730469 min norm: 0.11346549540758133
+# layer: 0,  residual average norm : 0.2310061901807785 max norm: 1.1458243131637573 min norm: 0.11346547305583954
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.01928, 0.964, 0, 1
+2, 0, 0.03836, 0.959, 0, 2
+4, 0, 0.07488, 0.936, 0, 4
+8, 0, 0.14482, 0.9051250000000001, 0, 8
+16, 0, 0.26802, 0.8375625, 0, 16
+32, 0, 0.45892000000000005, 0.7170625, 0, 32
+64, 0, 0.6925199999999999, 0.54103125, 0, 64
+128, 0, 0.8729, 0.3409765625, 0, 128
+256, 0, 0.96026, 0.18755078125, 0, 256
+512, 0, 0.98828, 0.09651171875, 0, 512
+1024, 0, 0.9965600000000001, 0.04866015625, 0, 1024
+2048, 0, 0.99902, 0.02439013671875, 0, 2048
+4096, 0, 0.9997400000000001, 0.012203857421875, 0, 4096
+8192, 0, 0.99996, 0.006103271484375, 0, 8192
+16384, 0, 1.0, 0.0030517578125, 0, 16384
+32768, 0, 1.0, 0.00152587890625, 0, 32768
+65536, 0, 1.0, 0.000762939453125, 0, 65536
+131072, 0, 1.0, 0.0003814697265625, 0, 131072
+262144, 0, 1.0, 0.0003656681488415633, 0, 136736

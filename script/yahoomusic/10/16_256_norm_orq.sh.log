@@ -1,0 +1,58 @@
+# load the base data ../data/yahoomusic/yahoomusic_base.fvecs, 
+# load the queries ../data/yahoomusic/yahoomusic_query.fvecs, 
+# load the ground truth ../data/yahoomusic/10_yahoomusic_product_groundtruth.ivecs
+# ranking metric product
+# NormPQ, percentiles: 256, quantize: ORQ, RQ : [Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>],  M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 0,  residual average norm : 0.3145803213119507 max norm: 0.7985729575157166 min norm: 0.06384017318487167
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 1,  residual average norm : 0.24183067679405212 max norm: 0.7361800670623779 min norm: 0.07259087264537811
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 2,  residual average norm : 0.2017449289560318 max norm: 0.6521474123001099 min norm: 0.06757495552301407
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 3,  residual average norm : 0.1737825572490692 max norm: 0.6162969470024109 min norm: 0.04241164028644562
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 4,  residual average norm : 0.15229108929634094 max norm: 0.5459824204444885 min norm: 0.019918197765946388
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 5,  residual average norm : 0.1350078582763672 max norm: 0.5067137479782104 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 6,  residual average norm : 0.12081369012594223 max norm: 0.4828393757343292 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 7,  residual average norm : 0.10882990062236786 max norm: 0.4401160180568695 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 8,  residual average norm : 0.09862392395734787 max norm: 0.41183021664619446 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 9,  residual average norm : 0.08990506827831268 max norm: 0.3864746391773224 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 10,  residual average norm : 0.08228928595781326 max norm: 0.3380487263202667 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 11,  residual average norm : 0.07562782615423203 max norm: 0.30656757950782776 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 12,  residual average norm : 0.06974141299724579 max norm: 0.2595389485359192 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 13,  residual average norm : 0.06451550871133804 max norm: 0.2507559061050415 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 14,  residual average norm : 0.059885572642087936 max norm: 0.23267124593257904 min norm: 0.0
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.09759999999999999, 0.976, 0, 1
+2, 0, 0.1927, 0.9635, 0, 2
+4, 0, 0.3711, 0.92775, 0, 4
+8, 0, 0.654, 0.8175, 0, 8
+16, 0, 0.8930999999999999, 0.5581875, 0, 16
+32, 0, 0.9702, 0.3031875, 0, 32
+64, 0, 0.9923, 0.155046875, 0, 64
+128, 0, 0.9991, 0.0780546875, 0, 128
+256, 0, 1.0, 0.0390625, 0, 256
+512, 0, 1.0, 0.01953125, 0, 512
+1024, 0, 1.0, 0.009765625, 0, 1024
+2048, 0, 1.0, 0.0048828125, 0, 2048
+4096, 0, 1.0, 0.00244140625, 0, 4096
+8192, 0, 1.0, 0.001220703125, 0, 8192
+16384, 0, 1.0, 0.0006103515625, 0, 16384
+32768, 0, 1.0, 0.00030517578125, 0, 32768
+65536, 0, 1.0, 0.000152587890625, 0, 65536
+131072, 0, 1.0, 7.62939453125e-05, 0, 131072
+262144, 0, 1.0, 7.313362976831266e-05, 0, 136736
