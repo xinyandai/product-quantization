@@ -6,3 +6,4 @@
 #    Training the XPQ subspace: 0 / 2, 0 -> 75
 #    Training the XPQ subspace: 1 / 2, 75 -> 150
 # compress items
+# Mean AQ quantization error: 0.007566
