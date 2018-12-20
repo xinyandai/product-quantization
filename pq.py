@@ -1,13 +1,13 @@
 from __future__ import division
 from __future__ import print_function
 import numpy as np
-from quantize import vq, kmeans2
+from scipy.cluster.vq import vq, kmeans2
 
 
 class PQ(object):
-    def __init__(self, M, Ks, verbose=True, mahalanobis_matrix=None):
+    def __init__(self, M, Ks, verbose=True):
         assert 0 < Ks <= 2 ** 32
-        self.M, self.Ks, self.verbose, self.mahalanobis_matrix = M, Ks, verbose, mahalanobis_matrix
+        self.M, self.Ks, self.verbose = M, Ks, verbose
         self.code_dtype = np.uint8 if Ks <= 2 ** 8 else (np.uint16 if Ks <= 2 ** 16 else np.uint32)
         self.codewords = None
         self.Ds = None
@@ -36,7 +36,7 @@ class PQ(object):
                 print("#    Training the subspace: {} / {}, {} -> {}".format(m, self.M, self.Ds[m], self.Ds[m+1]))
             vecs_sub = vecs[:, self.Ds[m]:self.Ds[m+1]]
             self.codewords[m, :, :self.Ds[m+1] - self.Ds[m]], _ = kmeans2(
-                vecs_sub, self.Ks, iter=iter, minit='points', matrix=self.mahalanobis_matrix, verbose=self.verbose)
+                vecs_sub, self.Ks, iter=iter, minit='points')
 
         return self
 
@@ -50,7 +50,7 @@ class PQ(object):
         for m in range(self.M):
             vecs_sub = vecs[:, self.Ds[m]: self.Ds[m+1]]
             codes[:, m], _ = vq(vecs_sub,
-                                self.codewords[m, :, :self.Ds[m+1] - self.Ds[m]], matrix=self.mahalanobis_matrix)
+                                self.codewords[m, :, :self.Ds[m+1] - self.Ds[m]])
 
         return codes
 

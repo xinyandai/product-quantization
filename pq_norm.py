@@ -39,7 +39,14 @@ class NormPQ(object):
             assert False
 
         if self.method == 'kmeans':
-            self.percentiles, _ = kmeans2(norms[:, np.newaxis], self.n_percentile, iter=iter, minit='points')
+            self.percentiles, _ = kmeans2(norms[:], self.n_percentile, iter=iter, minit='points')
+        elif self.method == 'kmeans_partial':
+            indexes = np.argsort(norms)
+            count = int(len(norms) * 0.7)
+            centers_small_norms, _ = kmeans2(norms[indexes[:count]], self.n_percentile // 2, iter=iter, minit='points')
+            centers_big_norms, _ = kmeans2(norms[indexes[count:]], self.n_percentile // 2, iter=iter, minit='points')
+            self.percentiles = np.concatenate((centers_small_norms, centers_big_norms))
+
         elif self.method == 'percentile':
             self.percentiles = np.percentile(norms, np.linspace(0, 100, self.n_percentile + 1)[:])
             self.percentiles = np.array(self.percentiles, dtype=np.float32)
@@ -63,16 +70,16 @@ class NormPQ(object):
 
     def encode_norm(self, norms):
 
-        if self.method == 'kmeans':
-            norm_index, _ = vq(norms[:, np.newaxis], self.percentiles)
+        if self.method == 'kmeans' or self.method == 'kmeans_partial':
+            norm_index, _ = vq(norms[:], self.percentiles)
         else:
             norm_index = [np.argmax(self.percentiles[1:] > n) for n in norms]
             norm_index = np.clip(norm_index, 1, self.n_percentile)
         return norm_index
 
     def decode_norm(self, norm_index):
-        if self.method == 'kmeans':
-            return self.percentiles[norm_index, 0]
+        if self.method == 'kmeans' or self.method == 'kmeans_partial':
+            return self.percentiles[norm_index]
         else:
             return (self.percentiles[norm_index]+self.percentiles[norm_index-1]) / 2.0
 

@@ -1,7 +1,6 @@
 from __future__ import division
 from __future__ import print_function
 import numpy as np
-from quantize import vq, kmeans2
 
 
 class RandomProjection(object):
