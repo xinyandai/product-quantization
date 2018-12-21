@@ -55,8 +55,9 @@ class ResidualPQ(object):
 
     def compress(self, vecs):
         N, D = np.shape(vecs)
-        compressed = np.zeros((self.deep, N, D), dtype=vecs.dtype)
+        sum_residual = np.zeros((N, D), dtype=vecs.dtype)
         for i, pq in enumerate(self.pqs):
-            compressed[i][:][:] = pq.compress(vecs)
-            vecs = vecs - compressed[i][:][:]
-        return np.sum(compressed, axis=0)
+            compressed = pq.compress(vecs)
+            vecs = vecs - compressed
+            sum_residual = sum_residual + compressed
+        return sum_residual
