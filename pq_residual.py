@@ -58,6 +58,8 @@ class ResidualPQ(object):
         sum_residual = np.zeros((N, D), dtype=vecs.dtype)
         for i, pq in enumerate(self.pqs):
             compressed = pq.compress(vecs)
-            vecs = vecs - compressed
-            sum_residual = sum_residual + compressed
+            vecs[:, :] = vecs - compressed
+            sum_residual[:, :] = sum_residual + compressed
+            del compressed
+
         return sum_residual
