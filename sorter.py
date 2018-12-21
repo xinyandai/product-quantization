@@ -26,20 +26,26 @@ def arg_sort(arguments):
 
     metric, q = arguments
     if metric == 'product':
-        return np.argsort([-np.dot(np.array(q).flatten(), np.array(center).flatten()) for center in compressed])
+        distances = [-np.dot(np.array(q).flatten(), np.array(center).flatten()) for center in compressed]
     elif metric == 'angular':
-        return np.argsort([
+        distances = [
             - np.dot(np.array(q).flatten(), np.array(center).flatten()) / (np.linalg.norm(q) * np.linalg.norm(center))
             for center in compressed
-        ])
+        ]
     elif metric == 'sign':
-        return np.argsort([
+        distances = [
             np.count_nonzero((q > 0) != (center > 0)) for center in compressed
-        ])
+        ]
     elif metric == 'euclid_norm':
-        return np.argsort([norm_sqr - 2.0 * np.dot(center, q) for center, norm_sqr in zip(compressed, norms_sqr)])
+        distances = [norm_sqr - 2.0 * np.dot(center, q) for center, norm_sqr in zip(compressed, norms_sqr)]
     else:
-        return np.argsort([np.linalg.norm(q - center) for center in compressed])
+        distances = [np.linalg.norm(q - center) for center in compressed]
+
+    distances = np.array(distances)
+
+    top_k = min(131072, len(distances)-1)
+    indices = np.argpartition(distances, top_k)[:top_k]
+    return indices[np.argsort(distances[indices])]
 
 
 def parallel_sort(metric, compressed, Q, X):
