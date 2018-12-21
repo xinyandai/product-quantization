@@ -16,14 +16,14 @@ def execute(pq, X, Q, G, metric='euclid', train_size=100000):
     print('# compress items')
     compressed = pq.compress(X)
     print("# sorting items")
-    queries = Sorter(compressed, Q, X, metric=metric)
+    Ts = [2 ** i for i in range(2+int(math.log2(len(X))))]
+    recalls = BatchSorter(compressed, Q, X, G, Ts, metric=metric, batch_size=cpu_count() * 10).recall()
     print("# searching!")
 
     print("expected items, overall time, avg recall, avg precision, avg error, avg items")
-    for item in [2 ** i for i in range(2+int(math.log2(len(X))))]:
-        actual_items, recall = queries.recall(G, item)
+    for i, (t, recall) in enumerate(zip(Ts, recalls)):
         print("{}, {}, {}, {}, {}, {}".format(
-            item, 0, recall, recall * len(G[0]) / actual_items, 0, actual_items))
+            2**i, 0, recall, recall * len(G[0]) / t, 0, t))
 
 
 if __name__ == '__main__':

@@ -70,7 +70,7 @@ def parallel_sort(metric, compressed, Q, X):
 
 
 class Sorter(object):
-    def __init__(self, compressed, Q, X, metric='euclid'):
+    def __init__(self, compressed, Q, X, metric):
         self.Q = Q
         self.X = X
 
@@ -78,6 +78,26 @@ class Sorter(object):
 
     def recall(self, G, T):
         t = min(T, len(self.topK[0]))
-        assert len(self.topK) <= len(G)
-        top_k = [len(np.intersect1d(G[i], self.topK[i][:T])) for i in range(len(self.topK))]
-        return t, np.mean(top_k) / len(G[0])
+        return t, self.sum_recall(G, T) / len(self.Q)
+
+    def sum_recall(self, G, T):
+        assert len(self.Q) == len(self.topK), "number of query not equals"
+        assert len(self.topK) <= len(G), "number of queries should not exceed the number of queries in ground truth"
+        true_positive = [len(np.intersect1d(G[i], self.topK[i][:T])) for i in range(len(self.Q))]
+        return np.sum(true_positive) / len(G[0])  # TP / K
+
+
+class BatchSorter(object):
+    def __init__(self, compressed, Q, X, G, Ts, metric, batch_size):
+        self.Q = Q
+        self.X = X
+        self.recalls = np.zeros(shape=(len(Ts)))
+        for i in range(len(Q) // batch_size + 1):
+            q = Q[i*batch_size: (i + 1) * batch_size, :]
+            g = G[i*batch_size: (i + 1) * batch_size, :]
+            sorter = Sorter(compressed, q, X, metric=metric)
+            self.recalls[:] = self.recalls[:] + [sorter.sum_recall(g, t) for t in Ts]
+        self.recalls = self.recalls / len(self.Q)
+
+    def recall(self):
+        return self.recalls

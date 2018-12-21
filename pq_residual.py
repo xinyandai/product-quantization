@@ -25,11 +25,14 @@ class ResidualPQ(object):
     def fit(self, vecs, iter):
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
+
+        vecs = vecs[:, :]
         for layer, pq in enumerate(self.pqs):
 
             pq.fit(vecs, iter)
             compressed = pq.compress(vecs)
             vecs = vecs - compressed
+            del compressed
 
             if self.verbose:
                 norms = np.linalg.norm(vecs, axis=1)
