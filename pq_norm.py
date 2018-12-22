@@ -1,7 +1,8 @@
 from pq import *
 from transformer import normalize
 import warnings
-
+import math
+import tqdm
 
 class NormPQ(object):
     def __init__(self, n_percentile, quantize, true_norm=False, verbose=True, method='kmeans', recover='quantize'):
@@ -83,10 +84,12 @@ class NormPQ(object):
         else:
             return (self.percentiles[norm_index]+self.percentiles[norm_index-1]) / 2.0
 
-    def compress(self, vecs):
+    def _compress(self, vecs):
         norms, normalized_vecs = normalize(vecs)
 
         compressed_vecs = self.quantize.compress(normalized_vecs)
+        del normalized_vecs
+
         if self.recover == 'quantize':
             norms = norms / np.linalg.norm(compressed_vecs, axis=1)
         elif self.recover == 'normalization':
@@ -104,3 +107,11 @@ class NormPQ(object):
             assert False
 
         return (compressed_vecs.transpose() * norms).transpose()
+
+    def compress(self, vecs):
+        chunk_size = 1000000
+        compressed_vecs = np.empty(shape=vecs.shape, dtype=vecs.dtype)
+        for i in tqdm.tqdm(range(math.ceil(len(vecs) / chunk_size))):
+            compressed_vecs[i*chunk_size: (i+1) * chunk_size, :] \
+                = self._compress(vecs[i*chunk_size: (i+1) * chunk_size, :])
+        return compressed_vecs
