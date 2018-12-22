@@ -2,7 +2,7 @@ from pq import *
 from multiprocessing import cpu_count
 import numba as nb
 import math
-
+import tqdm
 
 @nb.jit
 def arg_sort(distances):
@@ -13,8 +13,7 @@ def arg_sort(distances):
 
 @nb.jit
 def product_arg_sort(q, compressed, norms_sqr, distances):
-    np.dot(compressed, q, out=distances)
-    distances[:] = - distances
+    np.dot(compressed, -q, out=distances)
     return arg_sort(distances)
 
 
@@ -63,17 +62,19 @@ def parallel_sort(metric, compressed, Q, X):
     rank = np.empty((Q.shape[0], min(131072, compressed.shape[0]-1)), dtype=np.int32)
     tmp_distance = np.empty(shape=(compressed.shape[0]), dtype=X.dtype)
 
+    p_range = tqdm.tqdm(nb.prange(Q.shape[0]))
+
     if metric == 'product':
-        for i in nb.prange(Q.shape[0]):
+        for i in p_range:
             rank[i, :] = product_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
     elif metric == 'angular':
-        for i in nb.prange(Q.shape[0]):
+        for i in p_range:
             rank[i, :] = angular_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
     elif metric == 'euclid_norm':
-        for i in nb.prange(Q.shape[0]):
+        for i in p_range:
             rank[i, :] = euclidean_norm_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
     else:
-        for i in nb.prange(Q.shape[0]):
+        for i in p_range:
             rank[i, :] = euclidean_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
 
     return rank
