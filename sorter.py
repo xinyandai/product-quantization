@@ -57,11 +57,15 @@ def parallel_sort(metric, compressed, Q, X):
     :param Q: queries, shape(len(Q) * D)
     :return:
     """
-    tmp = np.ctypeslib.as_ctypes(compressed)
-    shared_arr = sharedctypes.Array(tmp._type_, tmp, lock=False)
-    norms_sqr = np.linalg.norm(X, axis=1) ** 2
+    def shared_array(np_array):
+        tmp = np.ctypeslib.as_ctypes(np_array)
+        return sharedctypes.Array(tmp._type_, tmp, lock=False)
 
-    pool = Pool(processes=cpu_count(), initializer=_init, initargs=(shared_arr, norms_sqr))
+    shared_arr = shared_array(compressed)
+    norms_sqr = np.linalg.norm(X, axis=1) ** 2
+    shared_norms = shared_array(norms_sqr)
+
+    pool = Pool(processes=cpu_count(), initializer=_init, initargs=(shared_arr, shared_norms))
 
     rank = list(tqdm.tqdm(pool.imap(arg_sort, zip([metric for _ in Q], Q), chunksize=4), total=len(Q)))
     pool.close()
