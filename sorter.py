@@ -1,53 +1,54 @@
 from pq import *
-import warnings
-import tqdm
-from multiprocessing import Pool, cpu_count, sharedctypes
+from multiprocessing import cpu_count
+import numba as nb
+import math
 
 
-def _init(arr_to_populate, norms_square_to_populate):
-    """Each pool process calls this initializer. Load the array to be populated into that process's global namespace"""
-    global arr
-    global norms_square
-    arr = arr_to_populate
-    norms_square = norms_square_to_populate
-
-
-def arg_sort(arguments):
-    """
-    for q, sort the compressed items in 'compressed' by their distance,
-    where distance is determined by 'metric'
-    :param arguments: a tuple of (metric, compressed, q)
-    :return:
-    """
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore', RuntimeWarning)
-        compressed = np.ctypeslib.as_array(arr)
-        norms_sqr = np.ctypeslib.as_array(norms_square)
-
-    metric, q = arguments
-    if metric == 'product':
-        distances = [-np.dot(np.array(q).flatten(), np.array(center).flatten()) for center in compressed]
-    elif metric == 'angular':
-        distances = [
-            - np.dot(np.array(q).flatten(), np.array(center).flatten()) / (np.linalg.norm(q) * np.linalg.norm(center))
-            for center in compressed
-        ]
-    elif metric == 'sign':
-        distances = [
-            np.count_nonzero((q > 0) != (center > 0)) for center in compressed
-        ]
-    elif metric == 'euclid_norm':
-        distances = [norm_sqr - 2.0 * np.dot(center, q) for center, norm_sqr in zip(compressed, norms_sqr)]
-    else:
-        distances = [np.linalg.norm(q - center) for center in compressed]
-
-    distances = np.array(distances)
-
+@nb.jit
+def arg_sort(distances):
     top_k = min(131072, len(distances)-1)
     indices = np.argpartition(distances, top_k)[:top_k]
     return indices[np.argsort(distances[indices])]
 
 
+@nb.jit
+def product_arg_sort(q, compressed, norms_sqr, distances):
+    np.dot(compressed, q, out=distances)
+    distances[:] = - distances
+    return arg_sort(distances)
+
+
+@nb.jit
+def angular_arg_sort(q, compressed, norms_sqr, distances):
+    norm_q = np.linalg.norm(q)
+    for i in range(compressed.shape[0]):
+        distances[i] = -np.dot(q, compressed[i]) / (norm_q * norms_sqr[i])
+    return arg_sort(distances)
+
+
+@nb.jit
+def euclidean_arg_sort(q, compressed, norms_sqr, distances):
+    distances = [np.linalg.norm(q - center) for center in compressed]
+    for i in range(len(compressed)):
+        distances[i] = np.linalg.norm(q - compressed[i])
+    return arg_sort(distances)
+
+
+@nb.jit
+def sign_arg_sort(q, compressed, norms_sqr, distances):
+    for i in range(len(compressed)):
+        distances[i] = np.count_nonzero((q > 0) != (compressed[i] > 0))
+    return arg_sort(distances)
+
+
+@nb.jit
+def euclidean_norm_arg_sort(q, compressed, norms_sqr, distances):
+    for i in range(len(compressed)):
+        distances[i] = norms_sqr[i] - 2.0 * np.dot(compressed[i], q)
+    return arg_sort(distances)
+
+
+@nb.jit
 def parallel_sort(metric, compressed, Q, X):
     """
     for each q in 'Q', sort the compressed items in 'compressed' by their distance,
@@ -57,19 +58,24 @@ def parallel_sort(metric, compressed, Q, X):
     :param Q: queries, shape(len(Q) * D)
     :return:
     """
-    def shared_array(np_array):
-        tmp = np.ctypeslib.as_ctypes(np_array)
-        return sharedctypes.Array(tmp._type_, tmp, lock=False)
 
-    shared_arr = shared_array(compressed)
     norms_sqr = np.linalg.norm(X, axis=1) ** 2
-    shared_norms = shared_array(norms_sqr)
+    rank = np.empty((Q.shape[0], min(131072, compressed.shape[0]-1)), dtype=np.int32)
+    tmp_distance = np.empty(shape=(compressed.shape[0]), dtype=X.dtype)
 
-    pool = Pool(processes=cpu_count(), initializer=_init, initargs=(shared_arr, shared_norms))
+    if metric == 'product':
+        for i in nb.prange(Q.shape[0]):
+            rank[i, :] = product_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
+    elif metric == 'angular':
+        for i in nb.prange(Q.shape[0]):
+            rank[i, :] = angular_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
+    elif metric == 'euclid_norm':
+        for i in nb.prange(Q.shape[0]):
+            rank[i, :] = euclidean_norm_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
+    else:
+        for i in nb.prange(Q.shape[0]):
+            rank[i, :] = euclidean_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
 
-    rank = list(tqdm.tqdm(pool.imap(arg_sort, zip([metric for _ in Q], Q), chunksize=4), total=len(Q)))
-    pool.close()
-    pool.join()
     return rank
 
 
@@ -96,7 +102,7 @@ class BatchSorter(object):
         self.Q = Q
         self.X = X
         self.recalls = np.zeros(shape=(len(Ts)))
-        for i in range(len(Q) // batch_size + 1):
+        for i in range(math.ceil(len(Q) / float(batch_size))):
             q = Q[i*batch_size: (i + 1) * batch_size, :]
             g = G[i*batch_size: (i + 1) * batch_size, :]
             sorter = Sorter(compressed, q, X, metric=metric)
