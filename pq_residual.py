@@ -22,11 +22,12 @@ class ResidualPQ(object):
             messages += pq.class_message()
         return messages
 
-    def fit(self, vecs, iter):
-        assert vecs.dtype == np.float32
-        assert vecs.ndim == 2
+    def fit(self, X, iter):
+        assert X.dtype == np.float32
+        assert X.ndim == 2
 
-        vecs = vecs[:, :]
+        vecs = np.empty(shape=X.shape, dtype=X.dtype)
+        vecs[:, :] = X[:, :]
         for layer, pq in enumerate(self.pqs):
 
             pq.fit(vecs, iter)
@@ -56,9 +57,14 @@ class ResidualPQ(object):
         vecss = [pq.decode(codes[:, i, :pq.M]) for i, pq in enumerate(self.pqs)]
         return np.sum(vecss, axis=0)
 
-    def compress(self, vecs):
-        N, D = np.shape(vecs)
-        sum_residual = np.zeros((N, D), dtype=vecs.dtype)
+    def _compress(self, X):
+        N, D = np.shape(X)
+
+        sum_residual = np.zeros((N, D), dtype=X.dtype)
+
+        vecs = np.zeros((N, D), dtype=X.dtype)
+        vecs[:, :] = X[:, :]
+
         for i, pq in enumerate(self.pqs):
             compressed = pq.compress(vecs)
             vecs[:, :] = vecs - compressed
@@ -66,3 +72,11 @@ class ResidualPQ(object):
             del compressed
 
         return sum_residual
+
+    def compress(self, vecs):
+        chunk_size = 1000000
+        compressed_vecs = np.empty(shape=vecs.shape, dtype=vecs.dtype)
+        for i in tqdm.tqdm(range(math.ceil(len(vecs) / chunk_size))):
+            compressed_vecs[i*chunk_size: (i+1) * chunk_size, :] \
+                = self._compress(vecs[i*chunk_size: (i+1) * chunk_size, :])
+        return compressed_vecs

@@ -17,7 +17,7 @@ def execute(pq, X, Q, G, metric='euclid', train_size=100000):
     compressed = pq.compress(X)
     print("# sorting items")
     Ts = [2 ** i for i in range(2+int(math.log2(len(X))))]
-    recalls = BatchSorter(compressed, Q, X, G, Ts, metric=metric, batch_size=cpu_count() * 10).recall()
+    recalls = BatchSorter(compressed, Q, X, G, Ts, metric=metric, batch_size=200).recall()
     print("# searching!")
 
     print("expected items, overall time, avg recall, avg precision, avg error, avg items")
