@@ -1,6 +1,7 @@
 from scipy.stats import ortho_group
 import numpy as np
 import numba as nb
+from scipy.cluster.vq import kmeans2, vq
 
 
 def normalize(vecs):
@@ -33,27 +34,45 @@ def scale(X, Q):
 
 
 def one_half_coeff_scale(X, Q):
-    mean = np.mean(X)
+    mean = np.mean(np.absolute(X))
     X /= (mean * 2);
     Q /= (mean * 2);
     return X, Q
 
+def coeff_scale(X, Q, scale):
+    mean = np.mean(np.absolute(X))
+    X /= (mean / scale);
+    Q /= (mean / scale);
+    return X, Q
+
+def inverse_d_coeff_scale(X, Q):
+    mean = np.mean(np.absolute(X))
+    X /= (mean * X.shape[1]);
+    Q /= (mean * X.shape[1])
+    return X, Q
+
 @nb.jit(nopython=True)
-def norm_range(norm_sqrs):
+def norm_range(norm_sqrs, num_intervals):
+    num_intervals_minus_1 = float(num_intervals - 1)
+
     norm_sqr_max = np.amax(norm_sqrs)
     norm_sqr_min = np.amin(norm_sqrs)
 
     means = np.empty((norm_sqrs.shape[0]), dtype=np.float32)
 
     for i in range(norm_sqrs.shape[0]):
-        bucket = int((norm_sqrs[i]- norm_sqr_min) / (norm_sqr_max - norm_sqr_min) * 255)
-        left = bucket / 255.0 * (norm_sqr_max - norm_sqr_min) + norm_sqr_min
-        right = (bucket + 1) / 255.0 * (norm_sqr_max - norm_sqr_min) + norm_sqr_min
+        bucket = int((norm_sqrs[i] - norm_sqr_min) / (norm_sqr_max - norm_sqr_min) * num_intervals_minus_1)
+        left = bucket / num_intervals_minus_1 * (norm_sqr_max - norm_sqr_min) + norm_sqr_min
+        right = (bucket + 1) / num_intervals_minus_1 * (norm_sqr_max - norm_sqr_min) + norm_sqr_min
         mean = (left + right) / 2.0
 
         means[i] = mean
 
     return means
+
+def norm_range_non_uniform(norm_sqrs):
+    code_book, code = kmeans2(norm_sqrs[:, np.newaxis], 256, iter=20, minit='points')
+    return code_book[code, 0]
 
 def e2m_transform(X, Q):
     M = np.max(np.linalg.norm(X, axis=1))
