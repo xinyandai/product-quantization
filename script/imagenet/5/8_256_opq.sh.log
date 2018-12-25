@@ -1,0 +1,42 @@
+# load the base data ../data/imagenet/imagenet_base.fvecs, 
+# load the queries ../data/imagenet/imagenet_query.fvecs, 
+# load the ground truth ../data/imagenet/5_imagenet_product_groundtruth.ivecs
+# ranking metric product
+# ORQ, RQ : [Subspace PQ, M: 8, Ks : 256, code_dtype: <class 'numpy.uint8'>],  M: 8, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 8, 0 -> 19
+#    Training the subspace: 1 / 8, 19 -> 38
+#    Training the subspace: 2 / 8, 38 -> 57
+#    Training the subspace: 3 / 8, 57 -> 76
+#    Training the subspace: 4 / 8, 76 -> 95
+#    Training the subspace: 5 / 8, 95 -> 114
+#    Training the subspace: 6 / 8, 114 -> 132
+#    Training the subspace: 7 / 8, 132 -> 150
+# layer: 0,  residual average norm : 0.13034270703792572 max norm: 0.7184332609176636 min norm: 0.025565803050994873
+# layer: 0,  residual average norm : 0.13034270703792572 max norm: 0.7184333205223083 min norm: 0.02556580677628517
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.0304, 0.152, 0, 1
+2, 0, 0.0572, 0.14300000000000002, 0, 2
+4, 0, 0.0902, 0.11275, 0, 4
+8, 0, 0.141, 0.088125, 0, 8
+16, 0, 0.20860000000000004, 0.06518750000000001, 0, 16
+32, 0, 0.2878, 0.04496875, 0, 32
+64, 0, 0.396, 0.0309375, 0, 64
+128, 0, 0.5114000000000001, 0.019976562500000003, 0, 128
+256, 0, 0.6437999999999999, 0.012574218749999998, 0, 256
+512, 0, 0.7593999999999999, 0.0074160156249999986, 0, 512
+1024, 0, 0.85, 0.004150390625, 0, 1024
+2048, 0, 0.9111999999999999, 0.0022246093749999996, 0, 2048
+4096, 0, 0.9494000000000001, 0.0011589355468750002, 0, 4096
+8192, 0, 0.9762000000000001, 0.0005958251953125, 0, 8192
+16384, 0, 0.987, 0.00030120849609375, 0, 16384
+32768, 0, 0.9948, 0.00015179443359375, 0, 32768
+65536, 0, 0.9976, 7.611083984375e-05, 0, 65536
+131072, 0, 0.9988, 3.81011962890625e-05, 0, 131072
+262144, 0, 0.9988, 1.905059814453125e-05, 0, 262144
+524288, 0, 0.9988, 9.525299072265625e-06, 0, 524288
+1048576, 0, 0.9988, 4.762649536132812e-06, 0, 1048576
+2097152, 0, 0.9988, 2.381324768066406e-06, 0, 2097152
+4194304, 0, 0.9988, 1.190662384033203e-06, 0, 4194304
