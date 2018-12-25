@@ -1,49 +1,55 @@
 import numpy as np
+import struct
 
 
-def fvecs_read(filename, c_contiguous=True):
-    fv = np.fromfile(filename, dtype=np.float32)
-    if fv.size == 0:
-        return np.zeros((0, 0))
-    dim = fv.view(np.int32)[0]
-    assert dim > 0
-    fv = fv.reshape(-1, 1 + dim)
-    if not all(fv.view(np.int32)[:, 0] == dim):
-        raise IOError("Non-uniform vector sizes in " + filename)
-    fv = fv[:, 1:]
-    if c_contiguous:
-        fv = fv.copy()
-    return fv
+def ivecs_read(fname):
+    a = np.fromfile(fname, dtype='int32')
+    d = a[0]
+    return a.reshape(-1, d + 1)[:, 1:].copy()
 
 
-def ivecs_read(filename, c_contiguous=True):
-    iv = np.fromfile(filename, dtype=np.int32)
-    if iv.size == 0:
-        return np.zeros((0, 0))
-    dim = iv.view(np.int32)[0]
-    assert dim > 0
-    iv = iv.reshape(-1, 1 + dim)
-    if not all(iv.view(np.int32)[:, 0] == dim):
-        raise IOError("Non-uniform vector sizes in " + filename)
-    iv = iv[:, 1:]
-    if c_contiguous:
-        iv = iv.copy()
-    return iv
+def fvecs_read(fname):
+    return ivecs_read(fname).view('float32')
 
 
-def bvecs_read(filename, c_contiguous=True):
-    fv = np.fromfile(filename, dtype=np.float32)
-    if fv.size == 0:
-        return np.zeros((0, 0))
-    dim = fv.view(np.int32)[0]
-    assert dim > 0
-    fv = fv.reshape(-1, 1 + dim)
-    if not all(fv.view(np.uint8)[:, 0] == dim):
-        raise IOError("Non-uniform vector sizes in " + filename)
-    fv = fv[:, 1:]
-    if c_contiguous:
-        fv = fv.copy()
-    return fv
+# we mem-map the biggest files to avoid having them in memory all at
+# once
+def mmap_fvecs(fname):
+    x = np.memmap(fname, dtype='int32', mode='r')
+    d = x[0]
+    return x.view('float32').reshape(-1, d + 1)[:, 1:]
+
+
+def mmap_bvecs(fname):
+    x = np.memmap(fname, dtype='uint8', mode='r')
+    d = x[:4].view('int32')[0]
+    return x.reshape(-1, d + 4)[:, 4:]
+
+
+def bvecs_read(filename):
+    return mmap_bvecs(fname=filename)
+
+
+def fvecs_writer(filename, vecs):
+    f = open(filename, "ab")
+    dimension = [len(vecs[0])]
+
+    for x in vecs:
+        f.write(struct.pack('i' * len(dimension), *dimension))
+        f.write(struct.pack('f' * len(x), *x))
+
+    f.close()
+
+
+def ivecs_writer(filename, vecs):
+    f = open(filename, "ab")
+    dimension = [len(vecs[0])]
+
+    for x in vecs:
+        f.write(struct.pack('i' * len(dimension), *dimension))
+        f.write(struct.pack('i' * len(x), *x))
+
+    f.close()
 
 
 def loader(data_set='audio', top_k=20, ground_metric='euclid', folder='../data/'):
