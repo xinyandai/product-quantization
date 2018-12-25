@@ -1,0 +1,38 @@
+# load the base data ../data/yahoomusic/yahoomusic_base.fvecs, 
+# load the queries ../data/yahoomusic/yahoomusic_query.fvecs, 
+# load the ground truth ../data/yahoomusic/10_yahoomusic_product_groundtruth.ivecs
+# ranking metric product
+# ORQ, RQ : [Subspace PQ, M: 8, Ks : 256, code_dtype: <class 'numpy.uint8'>],  M: 8, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 8, 0 -> 38
+#    Training the subspace: 1 / 8, 38 -> 76
+#    Training the subspace: 2 / 8, 76 -> 114
+#    Training the subspace: 3 / 8, 114 -> 152
+#    Training the subspace: 4 / 8, 152 -> 189
+#    Training the subspace: 5 / 8, 189 -> 226
+#    Training the subspace: 6 / 8, 226 -> 263
+#    Training the subspace: 7 / 8, 263 -> 300
+# layer: 0,  residual average norm : 0.3524692952632904 max norm: 1.3625035285949707 min norm: 0.13704833388328552
+# layer: 0,  residual average norm : 0.3524692952632904 max norm: 1.3625035285949707 min norm: 0.1370483636856079
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.047799999999999995, 0.478, 0, 1
+2, 0, 0.0888, 0.444, 0, 2
+4, 0, 0.1559, 0.38975000000000004, 0, 4
+8, 0, 0.25660000000000005, 0.3207500000000001, 0, 8
+16, 0, 0.38720000000000004, 0.24200000000000002, 0, 16
+32, 0, 0.5391999999999999, 0.16849999999999998, 0, 32
+64, 0, 0.6925, 0.108203125, 0, 64
+128, 0, 0.8294, 0.064796875, 0, 128
+256, 0, 0.9165, 0.03580078125, 0, 256
+512, 0, 0.9648, 0.01884375, 0, 512
+1024, 0, 0.9883, 0.0096513671875, 0, 1024
+2048, 0, 0.9951999999999999, 0.004859374999999999, 0, 2048
+4096, 0, 0.9986, 0.00243798828125, 0, 4096
+8192, 0, 0.9996999999999999, 0.0012203369140625, 0, 8192
+16384, 0, 1.0, 0.0006103515625, 0, 16384
+32768, 0, 1.0, 0.00030517578125, 0, 32768
+65536, 0, 1.0, 0.000152587890625, 0, 65536
+131072, 0, 1.0, 7.62939453125e-05, 0, 131072
+262144, 0, 1.0, 3.814697265625e-05, 0, 262144

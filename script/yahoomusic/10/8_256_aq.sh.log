@@ -1,0 +1,5 @@
+# load the base data ../data/yahoomusic/yahoomusic_base.fvecs, 
+# load the queries ../data/yahoomusic/yahoomusic_query.fvecs, 
+# load the ground truth ../data/yahoomusic/10_yahoomusic_product_groundtruth.ivecs
+# ranking metric product
+# AQ, M: 8, Ks : 256, code_dtype: <class 'numpy.int32'>

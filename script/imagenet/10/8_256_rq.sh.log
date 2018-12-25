@@ -1,0 +1,48 @@
+# load the base data ../data/imagenet/imagenet_base.fvecs, 
+# load the queries ../data/imagenet/imagenet_query.fvecs, 
+# load the ground truth ../data/imagenet/10_imagenet_product_groundtruth.ivecs
+# ranking metric product
+# Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 0,  residual average norm : 0.20509201288223267 max norm: 0.8650335669517517 min norm: 0.028300635516643524
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 1,  residual average norm : 0.1793849766254425 max norm: 0.7998328804969788 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 2,  residual average norm : 0.16378386318683624 max norm: 0.6254310607910156 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 3,  residual average norm : 0.15231886506080627 max norm: 0.5719641447067261 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 4,  residual average norm : 0.14314916729927063 max norm: 0.544162392616272 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 5,  residual average norm : 0.13543079793453217 max norm: 0.48670512437820435 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 6,  residual average norm : 0.12880443036556244 max norm: 0.4589427709579468 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 150
+# layer: 7,  residual average norm : 0.122958704829216 max norm: 0.4509408175945282 min norm: 0.0
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.0539, 0.539, 0, 1
+2, 0, 0.09720000000000001, 0.48600000000000004, 0, 2
+4, 0, 0.17220000000000002, 0.43050000000000005, 0, 4
+8, 0, 0.2831, 0.35387500000000005, 0, 8
+16, 0, 0.41869999999999996, 0.26168749999999996, 0, 16
+32, 0, 0.5706, 0.17831249999999998, 0, 32
+64, 0, 0.7066, 0.11040625, 0, 64
+128, 0, 0.8162, 0.063765625, 0, 128
+256, 0, 0.8939000000000001, 0.03491796875000001, 0, 256
+512, 0, 0.9416000000000001, 0.018390625, 0, 512
+1024, 0, 0.9707, 0.0094794921875, 0, 1024
+2048, 0, 0.985, 0.0048095703125, 0, 2048
+4096, 0, 0.992, 0.002421875, 0, 4096
+8192, 0, 0.9962000000000001, 0.0012160644531250002, 0, 8192
+16384, 0, 0.998, 0.000609130859375, 0, 16384
+32768, 0, 0.9990999999999999, 0.000304901123046875, 0, 32768
+65536, 0, 0.9995, 0.00015251159667968752, 0, 65536
+131072, 0, 0.9997, 7.627105712890625e-05, 0, 131072
+262144, 0, 0.9997, 3.8135528564453125e-05, 0, 262144
+524288, 0, 0.9997, 1.9067764282226562e-05, 0, 524288
+1048576, 0, 0.9997, 9.533882141113281e-06, 0, 1048576
+2097152, 0, 0.9997, 4.7669410705566406e-06, 0, 2097152
+4194304, 0, 0.9997, 2.3834705352783203e-06, 0, 4194304
