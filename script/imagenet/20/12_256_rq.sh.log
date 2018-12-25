@@ -28,22 +28,6 @@
 #    Training the subspace: 0 / 1, 0 -> 150
 # layer: 11,  residual average norm : 0.10439396649599075 max norm: 0.35428881645202637 min norm: 0.0
 # compress items
-# sorting items
-calculate norm.
-allocate memory
-allocate memory
-calculate norm.
-allocate memory
-allocate memory
-calculate norm.
-allocate memory
-allocate memory
-calculate norm.
-allocate memory
-allocate memory
-calculate norm.
-allocate memory
-allocate memory
 # searching!
 expected items, overall time, avg recall, avg precision, avg error, avg items
 1, 0, 0.04205, 0.841, 0, 1
