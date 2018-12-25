@@ -47,7 +47,6 @@ def euclidean_norm_arg_sort(q, compressed, norms_sqr, distances):
     return arg_sort(distances)
 
 
-@nb.jit
 def parallel_sort(metric, compressed, Q, X):
     """
     for each q in 'Q', sort the compressed items in 'compressed' by their distance,
@@ -62,7 +61,7 @@ def parallel_sort(metric, compressed, Q, X):
     rank = np.empty((Q.shape[0], min(131072, compressed.shape[0]-1)), dtype=np.int32)
     tmp_distance = np.empty(shape=(compressed.shape[0]), dtype=X.dtype)
 
-    p_range = tqdm.tqdm(nb.prange(Q.shape[0]))
+    p_range = tqdm.tqdm(range(Q.shape[0]))
 
     if metric == 'product':
         for i in p_range:
