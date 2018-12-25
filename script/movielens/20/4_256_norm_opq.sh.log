@@ -2,28 +2,28 @@
 # load the queries ../data/movielens/movielens_query.fvecs, 
 # load the ground truth ../data/movielens/20_movielens_product_groundtruth.ivecs
 # ranking metric product
-# NormPQ, percentiles: 256, quantize: OPQ, M: 4, Ks : 256, code_dtype: <class 'numpy.uint8'>
-#    Training the subspace: 0 / 4, 0 -> 38
-#    Training the subspace: 1 / 4, 38 -> 76
-#    Training the subspace: 2 / 4, 76 -> 113
-#    Training the subspace: 3 / 4, 113 -> 150
-# layer: 0,  residual average norm : 0.14009761810302734 max norm: 0.5515555739402771 min norm: 0.03815397247672081
+# NormPQ, percentiles: 256, quantize: ORQ, RQ : [Subspace PQ, M: 3, Ks : 256, code_dtype: <class 'numpy.uint8'>],  M: 3, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 3, 0 -> 50
+#    Training the subspace: 1 / 3, 50 -> 100
+#    Training the subspace: 2 / 3, 100 -> 150
+# layer: 0,  residual average norm : 0.1647578775882721 max norm: 0.6091921925544739 min norm: 0.04007694125175476
+# layer: 0,  residual average norm : 0.1647578775882721 max norm: 0.6091921925544739 min norm: 0.04007693752646446
 # compress items
 # sorting items
 # searching!
 expected items, overall time, avg recall, avg precision, avg error, avg items
-1, 0, 0.0486, 0.972, 0, 1
-2, 0, 0.0949, 0.949, 0, 2
-4, 0, 0.183, 0.915, 0, 4
-8, 0, 0.35075, 0.8768750000000001, 0, 8
-16, 0, 0.6498999999999999, 0.8123749999999998, 0, 16
-32, 0, 0.9452, 0.59075, 0, 32
-64, 0, 0.9961, 0.31128125, 0, 64
-128, 0, 0.9994500000000001, 0.1561640625, 0, 128
-256, 0, 0.9997999999999999, 0.078109375, 0, 256
-512, 0, 0.9999499999999999, 0.039060546875, 0, 512
-1024, 0, 0.9999499999999999, 0.0195302734375, 0, 1024
-2048, 0, 0.9999499999999999, 0.00976513671875, 0, 2048
+1, 0, 0.0459, 0.918, 0, 1
+2, 0, 0.08835000000000001, 0.8835000000000002, 0, 2
+4, 0, 0.1732, 0.866, 0, 4
+8, 0, 0.32589999999999997, 0.8147499999999999, 0, 8
+16, 0, 0.59075, 0.7384375, 0, 16
+32, 0, 0.90015, 0.56259375, 0, 32
+64, 0, 0.9909, 0.30965625, 0, 64
+128, 0, 0.9991, 0.156109375, 0, 128
+256, 0, 0.99985, 0.07811328125, 0, 256
+512, 0, 0.99995, 0.039060546875, 0, 512
+1024, 0, 1.0, 0.01953125, 0, 1024
+2048, 0, 1.0, 0.009765625, 0, 2048
 4096, 0, 1.0, 0.0048828125, 0, 4096
 8192, 0, 1.0, 0.00244140625, 0, 8192
-16384, 0, 1.0, 0.0018731853516905498, 0, 10677
+16384, 0, 1.0, 0.001220703125, 0, 16384
