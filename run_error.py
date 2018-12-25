@@ -5,6 +5,7 @@ from transformer import *
 from aq import AQ
 from opq import OPQ
 from numpy.linalg import norm as l2norm
+from scipy import spatial
 
 
 class DotDict(dict):
@@ -14,7 +15,7 @@ class DotDict(dict):
     __delattr__ = dict.__delitem__
 
 
-def execute(args, X, train_size=100000):
+def execute(args, X, Q, G, train_size=100000):
     verbose = False
     if args.quantizer in ['PQ'.lower(), 'RQ'.lower()]:
         pqs = [PQ(M=args.num_codebook, Ks=args.Ks, verbose=verbose) for _ in range(args.layer)]
@@ -50,8 +51,18 @@ def execute(args, X, train_size=100000):
         )
         for i in range(len(X))
     ]
-
-    return np.mean(mse_errors), np.mean(norm_errors), np.mean(angular_errors)
+    topk_angular_err = [
+        [
+            np.abs(
+                (spatial.distance.cosine(q, X[x_i]) - spatial.distance.cosine(q, compressed[x_i]))
+                / spatial.distance.cosine(q, X[x_i])
+            )
+            for x_i in G[q_i]
+        ]
+        for q_i, q in enumerate(Q)
+    ]
+    return np.mean(mse_errors), np.mean(norm_errors), \
+           np.mean(angular_errors), np.mean(topk_angular_err)
 
 
 if __name__ == '__main__':
@@ -62,11 +73,11 @@ if __name__ == '__main__':
     args.quantizer = sys.argv[2].lower()
     args.Ks = 256
 
-    X = fvecs_read('../data/%s/%s_base.fvecs' % (args.dataset, args.dataset))
+    X, Q, G = loader(args.dataset, 50, 'product')
 
     args.layer = 1
     args.num_codebook = 1
-    print('codebook, mse_errors, norm_errors, angular_errors')
+    print('codebook, mse_errors, norm_errors, angular_errors, topk_angular_error')
     for i in range(16):
         if args.quantizer in ['PQ'.lower(), 'OPQ'.lower(), "AQ".lower()]:
             args.num_codebook = i + 1
@@ -74,5 +85,6 @@ if __name__ == '__main__':
             args.layer = i + 1
         else:
             assert False, 'no designated method, (O)PQ or RQ'
-        mse_error, norm_error, angular_error = execute(args, X)
-        print('{}, {}, {}, {}'.format(i, mse_error, norm_error, angular_error))
+        mse_error, norm_error, angular_error, topk_angular_error = execute(args, X, Q, G)
+        print('{}, {}, {}, {}, {}'.format(
+            i, mse_error, norm_error, angular_error, topk_angular_error))
