@@ -8,12 +8,12 @@ def topk(data_set, top_ks, ground_metric):
     base_file = folder_path + '/%s_base.fvecs' % data_set
     query_file = folder_path + '/%s_query.fvecs' % data_set
 
-    print("# load the base data {}, \n".format(base_file),
-          "# load the queries {}, \n".format(base_file, query_file, ))
-
+    print("# loading the base data {}, \n".format(base_file))
     X = bvecs_read(base_file)
+    print("# loading the queries data {}, \n".format(query_file))
     Q = fvecs_read(query_file)
-    knn = Sorter(compressed=X, Q=Q, X=X, metric=ground_metric).topK
+    print("# sorting")
+    knn = Sorter(compressed=X, Q=Q[0:200], X=X, metric=ground_metric).topK
 
     for top_k in top_ks:
         ground_truth = folder_path + '/%s_%s_%s_groundtruth.ivecs' % \
