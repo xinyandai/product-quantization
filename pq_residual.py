@@ -57,7 +57,7 @@ class ResidualPQ(object):
         vecss = [pq.decode(codes[:, i, :pq.M]) for i, pq in enumerate(self.pqs)]
         return np.sum(vecss, axis=0)
 
-    def _compress(self, X):
+    def compress(self, X):
         N, D = np.shape(X)
 
         sum_residual = np.zeros((N, D), dtype=X.dtype)
@@ -73,10 +73,3 @@ class ResidualPQ(object):
 
         return sum_residual
 
-    def compress(self, vecs):
-        chunk_size = 1000000
-        compressed_vecs = np.empty(shape=vecs.shape, dtype=vecs.dtype)
-        for i in tqdm.tqdm(range(math.ceil(len(vecs) / chunk_size))):
-            compressed_vecs[i*chunk_size: (i+1) * chunk_size, :] \
-                = self._compress(vecs[i*chunk_size: (i+1) * chunk_size, :])
-        return compressed_vecs

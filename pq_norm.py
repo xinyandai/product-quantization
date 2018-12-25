@@ -84,7 +84,7 @@ class NormPQ(object):
         else:
             return (self.percentiles[norm_index]+self.percentiles[norm_index-1]) / 2.0
 
-    def _compress(self, vecs):
+    def compress(self, vecs):
         norms, normalized_vecs = normalize(vecs)
 
         compressed_vecs = self.quantize.compress(normalized_vecs)
@@ -108,10 +108,3 @@ class NormPQ(object):
 
         return (compressed_vecs.transpose() * norms).transpose()
 
-    def compress(self, vecs):
-        chunk_size = 1000000
-        compressed_vecs = np.empty(shape=vecs.shape, dtype=vecs.dtype)
-        for i in tqdm.tqdm(range(math.ceil(len(vecs) / chunk_size))):
-            compressed_vecs[i*chunk_size: (i+1) * chunk_size, :] \
-                = self._compress(vecs[i*chunk_size: (i+1) * chunk_size, :])
-        return compressed_vecs

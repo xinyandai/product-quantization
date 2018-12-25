@@ -8,13 +8,22 @@ from opq import OPQ
 import argparse
 
 
+def chunk_compress(pq, vecs):
+    chunk_size = 1000000
+    compressed_vecs = np.empty(shape=vecs.shape, dtype=np.float32)
+    for i in tqdm.tqdm(range(math.ceil(len(vecs) / chunk_size))):
+        compressed_vecs[i * chunk_size: (i + 1) * chunk_size, :] \
+            = pq.compress(vecs[i * chunk_size: (i + 1) * chunk_size, :].astype(dtype=np.float32))
+    return compressed_vecs
+
+
 def execute(pq, X, Q, G, metric='euclid', train_size=100000):
     np.random.seed(123)
     print("# ranking metric {}".format(metric))
     print("# "+pq.class_message())
-    pq.fit(X[:train_size], iter=20)
+    pq.fit(X[:train_size].astype(dtype=np.float32), iter=20)
     print('# compress items')
-    compressed = pq.compress(X)
+    compressed = chunk_compress(pq, X)
     print("# sorting items")
     Ts = [2 ** i for i in range(2+int(math.log2(len(X))))]
     recalls = BatchSorter(compressed, Q, X, G, Ts, metric=metric, batch_size=200).recall()
@@ -43,9 +52,14 @@ if __name__ == '__main__':
     parser.add_argument('--norm_centroid', type=int, help='number of norm centroids for NormPQ')
     parser.add_argument('--true_norm', type=bool, help='use true norm for NormPQ', default=False)
 
+    parser.add_argument('--base_fvecs', type=bool, help='use true norm for NormPQ', default=True)
+
     args = parser.parse_args()
 
-    X, Q, G = loader(args.dataset, args.topk, args.metric)
+    if args.base_fvecs:
+        X, Q, G = loader(args.dataset, args.topk, args.metric)
+    else:
+        X, Q, G = bvecs_loader(args.dataset, args.topk, args.metric)
 
     # pq, rq, or component of norm-pq
     if args.quantizer in ['PQ'.lower(), 'RQ'.lower()]:

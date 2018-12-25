@@ -31,6 +31,21 @@ def ivecs_read(filename, c_contiguous=True):
     return iv
 
 
+def bvecs_read(filename, c_contiguous=True):
+    fv = np.fromfile(filename, dtype=np.float32)
+    if fv.size == 0:
+        return np.zeros((0, 0))
+    dim = fv.view(np.int32)[0]
+    assert dim > 0
+    fv = fv.reshape(-1, 1 + dim)
+    if not all(fv.view(np.uint8)[:, 0] == dim):
+        raise IOError("Non-uniform vector sizes in " + filename)
+    fv = fv[:, 1:]
+    if c_contiguous:
+        fv = fv.copy()
+    return fv
+
+
 def loader(data_set='audio', top_k=20, ground_metric='euclid', folder='../data/'):
     """
     :param data_set: data set you wanna load , audio, sift1m, ..
@@ -48,6 +63,28 @@ def loader(data_set='audio', top_k=20, ground_metric='euclid', folder='../data/'
     print("# load the base data {}, \n# load the queries {}, \n# load the ground truth {}".format(base_file, query_file,
                                                                                             ground_truth))
     X = fvecs_read(base_file)
+    Q = fvecs_read(query_file)
+    G = ivecs_read(ground_truth)
+    return X, Q, G
+
+
+def bvecs_loader(data_set, top_k, ground_metric, folder='../data/'):
+    """
+    :param data_set: data set you wanna load , audio, sift1m, ..
+    :param top_k: how many nearest neighbor in ground truth file
+    :param ground_metric:
+    :param folder:
+    :return: X, Q, G
+    """
+    folder_path = folder + data_set
+    base_file = folder_path + '/%s_base.fvecs' % data_set
+    query_file = folder_path + '/%s_query.fvecs' % data_set
+    ground_truth = folder_path + '/%s_%s_%s_groundtruth.ivecs' % \
+                   (top_k, data_set, ground_metric)
+
+    print("# load the base data {}, \n# load the queries {}, \n# load the ground truth {}".format(base_file, query_file,
+                                                                                            ground_truth))
+    X = bvecs_loader(base_file)
     Q = fvecs_read(query_file)
     G = ivecs_read(ground_truth)
     return X, Q, G
