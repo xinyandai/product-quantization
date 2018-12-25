@@ -6,7 +6,7 @@ from aq import AQ
 from opq import OPQ
 from numpy.linalg import norm as l2norm
 from scipy import spatial
-
+import tqdm
 
 class DotDict(dict):
     """dot.notation access to dictionary attributes"""
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     args.layer = 1
     args.num_codebook = 1
     print('codebook, mse_errors, norm_errors, angular_errors, topk_angular_error')
-    for i in range(16):
+    for i in tqdm.tqdm(range(16)):
         if args.quantizer in ['PQ'.lower(), 'OPQ'.lower(), "AQ".lower()]:
             args.num_codebook = i + 1
         elif args.quantizer == 'RQ'.lower():
@@ -87,4 +87,4 @@ if __name__ == '__main__':
             assert False, 'no designated method, (O)PQ or RQ'
         mse_error, norm_error, angular_error, topk_angular_error = execute(args, X, Q, G)
         print('{}, {}, {}, {}, {}'.format(
-            i, mse_error, norm_error, angular_error, topk_angular_error))
+            i+1, mse_error, norm_error, angular_error, topk_angular_error))
