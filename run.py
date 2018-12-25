@@ -76,3 +76,64 @@ if __name__ == '__main__':
         quantizer = NormPQ(args.norm_centroid, quantizer, true_norm=args.true_norm)
 
     execute(quantizer, X, Q, G, args.ranker)
+
+    # TODO(Kelvin): The following code is not used, but is left there as a record. When they are needed, I will merge them into the current framework
+    #def aq_fast_norm():
+    #    X, Q, G = loader(data_set, top_k, 'euclid', folder='../data/')
+    #    Q = Q[:200]
+    #    X, Q = scale(X, Q)
+    #    norm_sqrs = np.linalg.norm(X, axis=1) ** 2
+    #    means = norm_range(norm_sqrs, 128)
+    #    means /= 2.0
+    #    quantizer = AQ(4, 256)
+
+    #    print('fitting')
+    #    quantizer.fit(X[:100000], 20, seed=1007)
+    #    print('compress items')
+    #    compressed = quantizer.compress(X)
+    #    print("sorting items")
+    #    queries = Sorter(np.column_stack((compressed, means)), Q, metric='product_plus_half_mean_sqr')
+    #    print("searching!")
+
+    #    for item in [2 ** i for i in range(2+int(math.log2(len(X))))]:
+    #        actual_items, recall = queries.recall(G, item)
+    #        print("items {}, actual items {}, recall {}".format(item, actual_items, recall))
+
+    #def aq_euclid_transform():
+    #    X, Q, G = loader(data_set, top_k, 'euclid', folder='../data/')
+    #    X, Q = scale(X, Q)
+    #    X, Q = zero_mean(X, Q)
+    #    X, Q = e2m_transform(X, Q)
+    #    quantizer = AQ(4, 256)
+    #    execute(quantizer, X, Q, G, 'product')
+
+    #def aq_euclid_transform_inverse_d_coeff_scale():
+    #    X, Q, G = loader(data_set, top_k, 'euclid', folder='../data/')
+    #    X, Q = zero_mean(X, Q)
+    #    X, Q = inverse_d_coeff_scale(X, Q);
+    #    X, Q = e2m_transform(X, Q)
+    #    quantizer = AQ(4, 256)
+    #    execute(quantizer, X, Q, G, 'product')
+
+    #def aq_euclid_transform_norm_range():
+    #    X, Q, G = loader(data_set, top_k, 'euclid', folder='../data/')
+    #    X, Q = zero_mean(X, Q)
+    #    #X, Q = one_half_coeff_scale(X, Q)
+    #    X, Q = coeff_scale(X, Q, 1.0/25.0)
+    #    X, Q = e2m_transform(X, Q)
+    #    means = norm_range(X[:, -1], 256)
+    #    X[:, -1] -= means
+    #    means /= 2.0
+    #    quantizer = AQ(4, 256)
+
+    #    print('fitting')
+    #    quantizer.fit(X[:100000], 20, seed=1007)
+    #    print('compress items')
+    #    compressed = quantizer.compress(X)
+    #    print("sorting items")
+    #    queries = Sorter(np.column_stack((compressed, means)), Q, metric='product_plus_half_mean_sqr')
+    #    print("searching!")
+
+    #    for item in [2 ** i for i in range(2+int(math.log2(len(X))))]:
+    #        actual_items, recall = queries.recall(G, item)
+    #        print("items {}, actual items {}, recall {}".format(item, actual_items, recall))
