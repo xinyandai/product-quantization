@@ -80,6 +80,14 @@ def parallel_sort(metric, compressed, Q, X):
     return rank
 
 
+@nb.jit
+def true_positives(topK, Q, G, T):
+    result = np.empty(shape=(len(Q)))
+    for i in nb.prange(len(Q)):
+        result[i] = len(np.intersect1d(G[i], topK[i][:T]))
+    return result
+
+
 class Sorter(object):
     def __init__(self, compressed, Q, X, metric):
         self.Q = Q
@@ -94,7 +102,7 @@ class Sorter(object):
     def sum_recall(self, G, T):
         assert len(self.Q) == len(self.topK), "number of query not equals"
         assert len(self.topK) <= len(G), "number of queries should not exceed the number of queries in ground truth"
-        true_positive = [len(np.intersect1d(G[i], self.topK[i][:T])) for i in range(len(self.Q))]
+        true_positive = true_positives(self.topK, self.Q, G, T)
         return np.sum(true_positive) / len(G[0])  # TP / K
 
 
