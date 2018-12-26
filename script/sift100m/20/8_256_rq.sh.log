@@ -1,0 +1,68 @@
+# load the base data ../data/sift100m/sift100m_base.fvecs, 
+# load the queries ../data/sift100m/sift100m_query.fvecs, 
+# load the ground truth ../data/sift100m/20_sift100m_product_groundtruth.ivecs
+# ranking metric product
+# Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 1, 0 -> 128
+# layer: 0,  residual average norm : 269.5653381347656 max norm: 409.8830871582031 min norm: 76.6838607788086
+#    Training the subspace: 0 / 1, 0 -> 128
+# layer: 1,  residual average norm : 232.9311065673828 max norm: 357.6693420410156 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 128
+# layer: 2,  residual average norm : 210.4586944580078 max norm: 330.7267761230469 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 128
+# layer: 3,  residual average norm : 194.5640411376953 max norm: 312.1168518066406 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 128
+# layer: 4,  residual average norm : 181.93182373046875 max norm: 288.2013854980469 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 128
+# layer: 5,  residual average norm : 171.52171325683594 max norm: 275.4236145019531 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 128
+# layer: 6,  residual average norm : 162.57073974609375 max norm: 261.0152282714844 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 128
+# layer: 7,  residual average norm : 154.96005249023438 max norm: 253.69920349121094 min norm: 0.0
+# compress items
+# sorting items
+calculate norm.
+allocate memory
+allocate memory
+calculate norm.
+allocate memory
+allocate memory
+calculate norm.
+allocate memory
+allocate memory
+calculate norm.
+allocate memory
+allocate memory
+calculate norm.
+allocate memory
+allocate memory
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.005550000000000001, 0.11100000000000002, 0, 1
+2, 0, 0.00875, 0.08750000000000001, 0, 2
+4, 0, 0.01645, 0.08224999999999999, 0, 4
+8, 0, 0.028799999999999996, 0.072, 0, 8
+16, 0, 0.0453, 0.056625, 0, 16
+32, 0, 0.0732, 0.04575, 0, 32
+64, 0, 0.11415, 0.035671875, 0, 64
+128, 0, 0.16920000000000002, 0.026437500000000003, 0, 128
+256, 0, 0.24175, 0.01888671875, 0, 256
+512, 0, 0.3334, 0.013023437499999999, 0, 512
+1024, 0, 0.4365, 0.008525390625, 0, 1024
+2048, 0, 0.5549, 0.0054189453124999995, 0, 2048
+4096, 0, 0.6671500000000001, 0.003257568359375001, 0, 4096
+8192, 0, 0.7722, 0.0018852539062499999, 0, 8192
+16384, 0, 0.85825, 0.00104766845703125, 0, 16384
+32768, 0, 0.9213000000000001, 0.0005623168945312501, 0, 32768
+65536, 0, 0.9629500000000001, 0.0002938690185546875, 0, 65536
+131072, 0, 0.9861, 0.0001504669189453125, 0, 131072
+262144, 0, 0.9861, 7.523345947265625e-05, 0, 262144
+524288, 0, 0.9861, 3.761672973632813e-05, 0, 524288
+1048576, 0, 0.9861, 1.8808364868164064e-05, 0, 1048576
+2097152, 0, 0.9861, 9.404182434082032e-06, 0, 2097152
+4194304, 0, 0.9861, 4.702091217041016e-06, 0, 4194304
+8388608, 0, 0.9861, 2.351045608520508e-06, 0, 8388608
+16777216, 0, 0.9861, 1.175522804260254e-06, 0, 16777216
+33554432, 0, 0.9861, 5.87761402130127e-07, 0, 33554432
+67108864, 0, 0.9861, 2.938807010650635e-07, 0, 67108864
+134217728, 0, 0.9861, 1.4694035053253175e-07, 0, 134217728
