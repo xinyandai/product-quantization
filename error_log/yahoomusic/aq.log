@@ -1,0 +1,12 @@
+# load the base data ../data/yahoomusic/yahoomusic_base.fvecs, 
+# load the queries ../data/yahoomusic/yahoomusic_query.fvecs, 
+# load the ground truth ../data/yahoomusic/50_yahoomusic_product_groundtruth.ivecs
+codebook, mse_errors, norm_errors, angular_errors, topk_angular_error
+# Mean AQ quantization error: 0.471960
+1, 0.33556848764419556, 0.07139759510755539, 0.3344062566757202, 0.2711235937393624
+# Mean AQ quantization error: 0.263536
+2, 0.25078052282333374, 0.04594263434410095, 0.24892199039459229, 0.16425829225779887
+# Mean AQ quantization error: 0.163735
+3, 0.19811834394931793, 0.03395988792181015, 0.1960209161043167, 0.11941463663504248
+# Mean AQ quantization error: 0.113328
+4, 0.16463440656661987, 0.026362009346485138, 0.16279484331607819, 0.09189210206810604
