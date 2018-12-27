@@ -3,3 +3,7 @@
 # load the ground truth ../data/imagenet/10_imagenet_product_groundtruth.ivecs
 # ranking metric product
 # NormPQ, percentiles: 256, quantize: AQ, M: 7, Ks : 256, code_dtype: <class 'numpy.int32'>
+# Mean AQ quantization error: 0.166628
+# compress items
+# Mean AQ quantization error: 0.176775
+# Mean AQ quantization error: 0.177927
