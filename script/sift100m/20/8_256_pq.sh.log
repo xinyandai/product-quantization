@@ -14,21 +14,6 @@
 # layer: 0,  residual average norm : 159.1437225341797 max norm: 278.84320068359375 min norm: 51.18410110473633
 # compress items
 # sorting items
-calculate norm.
-allocate memory
-allocate memory
-calculate norm.
-allocate memory
-allocate memory
-calculate norm.
-allocate memory
-allocate memory
-calculate norm.
-allocate memory
-allocate memory
-calculate norm.
-allocate memory
-allocate memory
 # searching!
 expected items, overall time, avg recall, avg precision, avg error, avg items
 1, 0, 0.00455, 0.091, 0, 1
