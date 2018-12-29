@@ -1,5 +1,5 @@
-# load the base data ../data/imagenet/imagenet_base.fvecs, 
-# load the queries ../data/imagenet/imagenet_query.fvecs, 
+# load the base data ../data/imagenet/imagenet_base.fvecs,
+# load the queries ../data/imagenet/imagenet_query.fvecs,
 # load the ground truth ../data/imagenet/50_imagenet_product_groundtruth.ivecs
 # ranking metric product
 # NormPQ, percentiles: 256, quantize: Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>

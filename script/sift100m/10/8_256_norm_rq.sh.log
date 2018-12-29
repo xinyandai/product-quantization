@@ -19,7 +19,7 @@
 # layer: 6,  residual average norm : 0.31853803992271423 max norm: 0.5331188440322876 min norm: 0.0
 # compress items
 # sorting items
- searching!
+# searching!
 expected items, overall time, avg recall, avg precision, avg error, avg items
 1, 0, 0.028799999999999996, 0.288, 0, 1
 2, 0, 0.0518, 0.259, 0, 2
