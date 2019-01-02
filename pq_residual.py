@@ -22,23 +22,56 @@ class ResidualPQ(object):
             messages += pq.class_message()
         return messages
 
-    def fit(self, X, iter):
-        assert X.dtype == np.float32
-        assert X.ndim == 2
+    def fit(self, T, iter, save_codebook=False, save_decoded=[], save_residue_norms=[], save_results_T=False, dataset_name=None, save_dir=None, D=None):
+        assert T.dtype == np.float32
+        assert T.ndim == 2
 
-        vecs = np.empty(shape=X.shape, dtype=X.dtype)
-        vecs[:, :] = X[:, :]
+        if save_dir is None:
+            save_dir = './results'
+
+        vecs = np.empty(shape=T.shape, dtype=T.dtype)
+        vecs[:, :] = T[:, :]
+        if D is not None:
+            vecs_d = np.empty(shape=D.shape, dtype=D.dtype)
+            vecs_d[:, :] = D[:, :]
+        if save_codebook:
+            codebook_f = open(save_dir + '/' + dataset_name + '_rq_' + str(self.deep) + '_' + str(self.pqs[0].Ks) + '_codebook', 'wb')
+
         for layer, pq in enumerate(self.pqs):
-
             pq.fit(vecs, iter)
             compressed = pq.compress(vecs)
             vecs = vecs - compressed
             del compressed
 
+            if D is not None:
+                compressed_d = pq.compress(vecs_d)
+                vecs_d -= compressed_d
+
             if self.verbose:
                 norms = np.linalg.norm(vecs, axis=1)
                 print("# layer: {},  residual average norm : {} max norm: {} min norm: {}"
                       .format(layer, np.mean(norms), np.max(norms), np.min(norms)))
+
+            if (layer + 1) in save_residue_norms:
+                with open(save_dir + '/' + dataset_name + '_rq_' + str(layer + 1) + '_' + str(self.pqs[0].Ks) + '_residue_norms', 'wb') as f:
+                    if save_results_T:
+                        np.linalg.norm(vecs, axis=1).tofile(f)
+                    if D is not None:
+                        np.linalg.norm(vecs_d, axis=1).tofile(f)
+
+            if (layer + 1) in save_decoded:
+                with open(save_dir + '/' + dataset_name + '_rq_' + str(layer + 1) + '_' + str(self.pqs[0].Ks) + '_decoded', 'wb') as f:
+                    if save_results_T:
+                        (T - vecs).tofile(f)
+                    if D is not None:
+                        (D - vecs_d).tofile(f)
+
+            if save_codebook:
+                pq.codewords.tofile(codebook_f)
+                codebook_f.flush()
+
+        if save_codebook:
+            codebook_f.close()
 
         return self
 

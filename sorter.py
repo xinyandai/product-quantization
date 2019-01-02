@@ -12,42 +12,40 @@ def arg_sort(distances):
 
 
 @nb.jit
-def product_arg_sort(q, compressed, norms_sqr, distances):
-    np.dot(compressed, -q, out=distances)
+def product_arg_sort(q, compressed):
+    distances = np.dot(compressed, -q)
     return arg_sort(distances)
 
 
 @nb.jit
-def angular_arg_sort(q, compressed, norms_sqr, distances):
+def angular_arg_sort(q, compressed, norms_sqr):
     norm_q = np.linalg.norm(q)
-    for i in range(compressed.shape[0]):
-        distances[i] = -np.dot(q, compressed[i]) / (norm_q * norms_sqr[i])
+    distances = np.dot(compressed, q) / (norm_q * norms_sqr)
     return arg_sort(distances)
 
 
 @nb.jit
-def euclidean_arg_sort(q, compressed, norms_sqr, distances):
-    distances = [np.linalg.norm(q - center) for center in compressed]
-    for i in range(len(compressed)):
-        distances[i] = np.linalg.norm(q - compressed[i])
+def euclidean_arg_sort(q, compressed):
+    distances = np.linalg.norm(q - compressed, axis=1)
     return arg_sort(distances)
 
 
 @nb.jit
-def sign_arg_sort(q, compressed, norms_sqr, distances):
+def sign_arg_sort(q, compressed):
+    distances = np.empty(len(compressed), dtype=np.int32)
     for i in range(len(compressed)):
         distances[i] = np.count_nonzero((q > 0) != (compressed[i] > 0))
     return arg_sort(distances)
 
 
 @nb.jit
-def euclidean_norm_arg_sort(q, compressed, norms_sqr, distances):
-    for i in range(len(compressed)):
-        distances[i] = norms_sqr[i] - 2.0 * np.dot(compressed[i], q)
+def euclidean_norm_arg_sort(q, compressed, norms_sqr):
+    distances = norms_sqr - 2.0 * np.dot(compressed, q)
     return arg_sort(distances)
 
 
-def parallel_sort(metric, compressed, Q, X):
+@nb.jit
+def parallel_sort(metric, compressed, Q, X, norms_sqr=None):
     """
     for each q in 'Q', sort the compressed items in 'compressed' by their distance,
     where distance is determined by 'metric'
@@ -57,24 +55,26 @@ def parallel_sort(metric, compressed, Q, X):
     :return:
     """
 
-    norms_sqr = np.linalg.norm(X, axis=1) ** 2
     rank = np.empty((Q.shape[0], min(131072, compressed.shape[0]-1)), dtype=np.int32)
-    tmp_distance = np.empty(shape=(compressed.shape[0]), dtype=X.dtype)
 
-    p_range = tqdm.tqdm(range(Q.shape[0]))
+    p_range = nb.prange(Q.shape[0])
 
     if metric == 'product':
         for i in p_range:
-            rank[i, :] = product_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
+            rank[i, :] = product_arg_sort(Q[i], compressed)
     elif metric == 'angular':
+        if norms_sqr is None:
+            norms_sqr = np.linalg.norm(compressed, axis=1) ** 2
         for i in p_range:
-            rank[i, :] = angular_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
+            rank[i, :] = angular_arg_sort(Q[i], compressed, norms_sqr)
     elif metric == 'euclid_norm':
+        if norms_sqr is None:
+            norms_sqr = np.linalg.norm(compressed, axis=1) ** 2
         for i in p_range:
-            rank[i, :] = euclidean_norm_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
+            rank[i, :] = euclidean_norm_arg_sort(Q[i], compressed, norms_sqr)
     else:
         for i in p_range:
-            rank[i, :] = euclidean_arg_sort(Q[i], compressed, norms_sqr, tmp_distance)
+            rank[i, :] = euclidean_arg_sort(Q[i], compressed)
 
     return rank
 
@@ -88,11 +88,11 @@ def true_positives(topK, Q, G, T):
 
 
 class Sorter(object):
-    def __init__(self, compressed, Q, X, metric):
+    def __init__(self, compressed, Q, X, metric, norms_sqr=None):
         self.Q = Q
         self.X = X
 
-        self.topK = parallel_sort(metric, compressed, Q, X)
+        self.topK = parallel_sort(metric, compressed, Q, X, norms_sqr=norms_sqr)
 
     def recall(self, G, T):
         t = min(T, len(self.topK[0]))
@@ -106,14 +106,14 @@ class Sorter(object):
 
 
 class BatchSorter(object):
-    def __init__(self, compressed, Q, X, G, Ts, metric, batch_size):
+    def __init__(self, compressed, Q, X, G, Ts, metric, batch_size, norms_sqr=None):
         self.Q = Q
         self.X = X
         self.recalls = np.zeros(shape=(len(Ts)))
         for i in range(math.ceil(len(Q) / float(batch_size))):
             q = Q[i*batch_size: (i + 1) * batch_size, :]
             g = G[i*batch_size: (i + 1) * batch_size, :]
-            sorter = Sorter(compressed, q, X, metric=metric)
+            sorter = Sorter(compressed, q, X, metric=metric, norms_sqr=norms_sqr)
             self.recalls[:] = self.recalls[:] + [sorter.sum_recall(g, t) for t in Ts]
         self.recalls = self.recalls / len(self.Q)
 
