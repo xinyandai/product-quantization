@@ -1,0 +1,74 @@
+import matplotlib.pyplot as plt
+import numpy as np
+fontsize = 36
+ticksize = 32
+
+"""
+RQ: netflix, 0.04952465370297432
+NormRQ: netflix, 0.05552900955080986
+RQ: yahoomusic, 0.11313685774803162
+NormRQ: yahoomusic, 0.12156727910041809
+RQ: imagenet, 0.44435518980026245
+NormRQ: imagenet, 0.456410676240921
+RQ: sift1m, 0.2893875539302826
+NormRQ: sift1m, 0.30533209443092346
+==== 
+mse, relative_mse, norm, relative_norm errors
+RQ: netflix, 0.08785273134708405, 0.0496121309697628, 0.013214564882218838, 0.007432546932250261
+NormRQ: netflix, 0.0989408940076828, 0.055425241589546204, 0.0015027511399239302, 0.0009515237179584801
+RQ: yahoomusic, 0.2233698070049286, 0.11342737078666687, 0.029383542016148567, 0.015051213093101978
+NormRQ: yahoomusic, 0.24143770337104797, 0.12157030403614044, 0.0017714555142447352, 0.0010673056822270155
+RQ: imagenet, 0.12867175042629242, 0.44517359137535095, 0.025624122470617294, 0.08373615890741348
+NormRQ: imagenet, 0.13406096398830414, 0.4580143988132477, 0.000833445112220943, 0.0021015023812651634
+RQ: sift1m, 147.63418579101562, 0.29027125239372253, 19.55497932434082, 0.038453780114650726
+NormRQ: sift1m, 155.2176513671875, 0.3051822781562805, 0.12272220849990845, 0.00024130473320838064
+"""
+
+relative_norms = np.array(
+   [
+       [0.007432546932250261, 0.0009515237179584801],
+       [0.015051213093101978, 0.0010673056822270155],
+       [0.08373615890741348, 0.0021015023812651634],
+       [0.038453780114650726, 0.00024130473320838064],
+   ]
+)
+relative_mses = np.array([
+    [0.04952465370297432, 0.05552900955080986],
+    [0.11313685774803162, 0.12156727910041809],
+    [0.44435518980026245, 0.456410676240921],
+    [0.2893875539302826, 0.30533209443092346]
+])
+
+absolute_mses = np.array([
+    [0.08785273134708405, 0.0989408940076828],
+    [0.2233698070049286, 0.24143770337104797,],
+    [0.12867175042629242, 0.13406096398830414,],
+    [147.63418579101562, 155.2176513671875]
+])
+max_norms = np.array([2.4958174, 2.8637984, 1.3360785, 511.35312])
+absolute_mses = absolute_mses / max_norms[:, np.newaxis]
+
+
+# mses = relative_mses
+mses = absolute_mses
+# mses = relative_norms
+
+dataset = ['Netflix', 'Yahoo!Music', 'ImageNet', 'Sift100M']
+rqs = mses[:, 0]
+nrq = mses[:, 1]
+
+x =list(range(len(rqs)))
+
+width = 0.4
+plt.ylabel('Quantization Error', fontsize=fontsize)
+
+plt.bar(x, rqs, width=width, label='RQ', hatch='', fc='lightgray')
+plt.bar([i + width for i in x], nrq, width=width, label='NE-RQ', hatch='', fc='dimgray')
+plt.xticks([i + width / 2.0 for i in x], dataset)
+plt.legend(loc='upper left', fontsize=ticksize)
+
+
+plt.xticks(fontsize=ticksize)
+plt.yticks(fontsize=ticksize)
+
+plt.show()

@@ -2,14 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import re
 
-top_k = 20
-code_length = 32
 # data_set = 'tinygist10million'
 # data_set = 'netflix'
-data_set = 'yahoomusic'
-# data_set = 'imagenet'
+# data_set = 'yahoomusic'
+# data_set = 'sift1m'
+data_set = 'imagenet'
 # data_set = 'movielens'
 
+top_k = 20
 codebook = 8
 Ks = 256
 
@@ -23,7 +23,7 @@ actual_avg_items = 0
 
 
 def get_csv_file(method):
-    return "%s/%d_%d_%s.sh.log" % (data_set, codebook, Ks, method)
+    return "%s/%d/%d_%d_%s.sh.log" % (data_set, top_k, codebook, Ks, method)
 
 
 def read_csv(file_name):
@@ -34,9 +34,9 @@ def plot_one(method, color, x, y, linestyle="-", marker='d'):
     try:
         data = read_csv(get_csv_file(method))
 
-        x = np.array(data[1:, x])
-        x = np.log(x)
-        y = np.array(data[1:, y])
+        x = np.array(data[2:10, x])
+        # x = np.log(x)
+        y = np.array(data[2:10, y])
         data_list = "\n  ".join(["(%s, %s)" % (x[i], y[i]) for i in range(len(x))])
         method_name = method.replace("_", "\\_")
         print ('\\addplot \n coordinates \n {\n%s\n};\n\\addlegendentry{%s}' % (data_list, method_name))
@@ -46,23 +46,31 @@ def plot_one(method, color, x, y, linestyle="-", marker='d'):
 
 
 def plot_(x_label, y_label, x, y):
-    plt.title('%s - %s on %s of top%d with code-%d' % (y_label, x_label, data_set, top_k, code_length))
+    plt.title('%s - %s on %s of top%d with codebook-%d' % (y_label, x_label, data_set, top_k, codebook))
     plt.xlabel(x_label)
     plt.ylabel(y_label)
 
     # plot_one('norm_range',                  'gray',     x, y, '-',  'o')
     #
-    plot_one('aq',      'magenta', x, y, '--', '+')
-    plot_one('norm_aq', 'magenta', x, y, '-.', '<')
-    print('------------aq ----------------------------------------------')
+    # plot_one('aq',      'black', x, y, '--', '+')
+    # plot_one('norm_aq', 'black', x, y, '-.', '<')
+    # plot_one('apq', 'green', x, y, '-.', '+')
+    # print('------------aq ----------------------------------------------')
 
-    plot_one('pq',      'blue',    x, y, '--', '+')
-    plot_one('norm_pq', 'blue',    x, y, '-.', '<')
-    print('------------pq-----------------------------------------------')
+    # plot_one('pq',      'blue',    x, y, '--', '+')
+    # plot_one('norm_pq', 'blue',    x, y, '-.', '<')
+    # print('------------pq-----------------------------------------------')
 
-    plot_one('rq',       'red',    x, y, '-.', '+')
-    plot_one('norm_rq',  'red',    x, y, '-.', '<')
+    # plot_one('rq',       'red',    x, y, '-.', '+')
+    # plot_one('norm_rq',  'red',    x, y, '-.', '<')
+    plot_one('norm_rq_kmeans',  'black',    x, y, '-.', '<')
+    plot_one('norm_rq_partial_kmeans',  'red',    x, y, '-.', '<')
+    # plot_one('norm_orq', 'green',    x, y, '-.', '<')
     print('-----------rq-----------------------------------------------')
+
+    # plot_one('opq',      'gray', x, y, '-.', '+')
+    # plot_one('norm_opq', 'gray', x, y, '-.', '<')
+    print('-----------opq-----------------------------------------------')
 
     plt.legend(loc='lower right')
 
