@@ -3,17 +3,17 @@ from sorter import *
 
 
 def topk(data_set, top_ks, ground_metric):
-    folder = '../data/'
+    folder = 'data/'
     folder_path = folder + data_set
     base_file = folder_path + '/%s_base.fvecs' % data_set
     query_file = folder_path + '/%s_query.fvecs' % data_set
 
     print("# loading the base data {}, \n".format(base_file))
-    X = bvecs_read(base_file)
+    X = fvecs_read(base_file)
     print("# loading the queries data {}, \n".format(query_file))
     Q = fvecs_read(query_file)
     print("# sorting")
-    knn = Sorter(compressed=X, Q=Q[0:200], X=X, metric=ground_metric).topK
+    knn = Sorter(compressed=X, Q=Q[0:1000], X=X, metric=ground_metric).topK
 
     for top_k in top_ks:
         ground_truth = folder_path + '/%s_%s_%s_groundtruth.ivecs' % \
@@ -22,4 +22,4 @@ def topk(data_set, top_ks, ground_metric):
 
 
 if __name__ == "__main__":
-    topk('audio', [1, 5, 10, 20, 50, 100, 200, 10000], 'product')
+    topk('netflix', [20], 'product')

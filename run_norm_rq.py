@@ -1,19 +1,18 @@
 from vecs_io import *
 from pq_residual import *
 from sorter import *
-from run import execute
+from run_pq import execute
 
 
 if __name__ == '__main__':
-    import sys
-    dataset = sys.argv[1]
-    topk = int(sys.argv[2])
-    codebook = int(sys.argv[3])
-    Ks = int(sys.argv[4])
+    dataset = 'netflix'
+    topk = 20
+    codebook = 4
+    Ks = 256
 
-    X, Q, G = loader(dataset, topk, 'product')
+    X, T, Q, G = loader(dataset, topk, 'product', folder='data/')
     # pq, rq, or component of norm-pq
-    pqs = [PQ(M=1, Ks=Ks) for _ in range(3)]
+    pqs = [PQ(M=1, Ks=Ks) for _ in range(codebook)]
     quantizer = ResidualPQ(pqs=pqs)
-    quantizer = NormPQ(n_percentile=codebook, quantize=quantizer)
-    execute(quantizer, X, Q, G, 'product')
+    quantizer = NormPQ(n_percentile=Ks, quantize=quantizer)
+    execute(quantizer,  X, T, Q, G, 'product')

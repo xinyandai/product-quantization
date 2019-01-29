@@ -1,3 +1,0 @@
-# load the base data ../data/netflix/netflix_base.fvecs, 
-# load the queries ../data/netflix/netflix_query.fvecs, 
-# load the ground truth ../data/netflix/10_netflix_product_groundtruth.ivecs
