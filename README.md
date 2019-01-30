@@ -13,8 +13,13 @@ The netflix dataset is contained in this repository, you can download more datas
 # run examples
 
     python run_pq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256
+    python run_opq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256
     python run_rq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256
     python run_aq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256 # very slow
+
+# reproduce result of NEQ
+
     python run_norm_pq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256
+    python run_norm_opq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256
     python run_norm_rq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256
     python run_norm_aq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256 # very slow
