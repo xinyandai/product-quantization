@@ -2,6 +2,17 @@ from vecs_io import *
 from sorter import *
 
 
+def parse_args():
+    # override default parameters with command line parameters
+    import argparse
+    parser = argparse.ArgumentParser(description='Process input method and parameters.')
+    parser.add_argument('--dataset', type=str, help='choose data set name')
+    parser.add_argument('--topk', type=int, help='required topk of ground truth')
+    parser.add_argument('--metric', type=str, help='metric of ground truth')
+    args = parser.parse_args()
+    return args.dataset, args.topk, args.metric
+
+
 def topk(data_set, top_ks, ground_metric):
     folder = 'data/'
     folder_path = folder + data_set
@@ -22,4 +33,18 @@ def topk(data_set, top_ks, ground_metric):
 
 
 if __name__ == "__main__":
-    topk('netflix', [20], 'product')
+    metric = 'product'
+    dataset = 'netflix'
+    top_k = 1
+
+    # override default parameters with command line parameters
+    import sys
+    if len(sys.argv) > 3:
+        dataset, top_k, metric = parse_args()
+    else:
+        import warnings
+        warnings.warn("Using  Default Parameters ")
+    print("# Parameters: dataset = {}, topK = {}, metric = {}"
+          .format(dataset, topk, metric))
+
+    topk(dataset, [top_k], metric)
