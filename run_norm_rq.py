@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     X, T, Q, G = loader(dataset, topk, metric, folder='data/')
     # pq, rq, or component of norm-pq
-    pqs = [PQ(M=1, Ks=Ks) for _ in range(codebook)]
+    pqs = [PQ(M=1, Ks=Ks) for _ in range(codebook-1)]
     quantizer = ResidualPQ(pqs=pqs)
     quantizer = NormPQ(n_percentile=Ks, quantize=quantizer)
     execute(quantizer,  X, T, Q, G, metric)
