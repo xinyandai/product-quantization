@@ -12,6 +12,7 @@ def gen_chunk(X, chunk_size=1000000):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process input method and parameters.')
+    parser.add_argument('--data_dir', type=str, help='directory storing the data', default='./data/')
     parser.add_argument('--dataset', type=str, help='choose data set name')
     parser.add_argument('--data_type', type=str, default='fvecs', help='data type of base and queries')
     parser.add_argument('--topk', type=int, help='topk of ground truth')
