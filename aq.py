@@ -173,6 +173,10 @@ class AQ(object):
     def class_message(self):
         return "AQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
 
+    @property
+    def num_codebooks(self):
+        return self.M
+
     def fit(self, points, iter):
         assert points.dtype == np.float32
         assert points.ndim == 2

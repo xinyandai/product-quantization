@@ -39,6 +39,10 @@ class OPQ(object):
         return "ORQ, RQ : [{}],  M: {}, Ks : {}, code_dtype: {}".format(
             self.pq.class_message(), self.M, self.Ks, self.code_dtype)
 
+    @property
+    def num_codebooks(self):
+        return self.M
+
     def fit(self, vecs, iter):
 
         assert vecs.dtype == np.float32

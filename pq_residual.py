@@ -22,6 +22,10 @@ class ResidualPQ(object):
             messages += pq.class_message()
         return messages
 
+    @property
+    def num_codebooks(self):
+        return self.M * self.deep
+
     def fit(self, T, iter, save_codebook=False, save_decoded=[], save_residue_norms=[], save_results_T=False, dataset_name=None, save_dir=None, D=None):
         assert T.dtype == np.float32
         assert T.ndim == 2

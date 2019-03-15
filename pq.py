@@ -16,6 +16,10 @@ class PQ(object):
     def class_message(self):
         return "Subspace PQ, M: {}, Ks : {}, code_dtype: {}".format(self.M, self.Ks, self.code_dtype)
 
+    @property
+    def num_codebooks(self):
+        return self.M
+
     def fit(self, vecs, iter):
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
