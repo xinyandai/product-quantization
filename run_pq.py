@@ -38,6 +38,7 @@ def parse_args(dataset=None, topk=None, codebook=None, Ks=None, metric=None):
     # override default parameters with command line parameters
     import argparse
     parser = argparse.ArgumentParser(description='Process input method and parameters.')
+    parser.add_argument('--data_dir', type=str, help='directory storing the data', default='./data/')
     parser.add_argument('--dataset', type=str, help='choose data set name', default=dataset)
     parser.add_argument('--topk', type=int, help='required topk of ground truth', default=topk)
     parser.add_argument('--metric', type=str, help='metric of ground truth', default=metric)
@@ -64,7 +65,7 @@ if __name__ == '__main__':
     print("# Parameters: dataset = {}, topK = {}, codebook = {}, Ks = {}, metric = {}"
           .format(args.dataset, args.topk, args.num_codebook, args.Ks, args.metric))
 
-    X, T, Q, G = loader(args.dataset, args.topk, args.metric, folder='data/')
+    X, T, Q, G = loader(args.dataset, args.topk, args.metric, folder=args.data_dir)
     if T is None:
         T = X[:args.train_size]
     else:

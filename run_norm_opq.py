@@ -18,7 +18,7 @@ if __name__ == '__main__':
     print("# Parameters: dataset = {}, topK = {}, codebook = {}, Ks = {}, metric = {}"
           .format(args.dataset, args.topk, args.num_codebook, args.Ks, args.metric))
 
-    X, T, Q, G = loader(args.dataset, args.topk, args.metric, folder='data/')
+    X, T, Q, G = loader(args.dataset, args.topk, args.metric, folder=args.data_dir)
     if T is None:
         T = X[:args.train_size]
     else:
