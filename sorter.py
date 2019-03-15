@@ -57,7 +57,7 @@ def parallel_sort(metric, compressed, Q, X, norms_sqr=None):
 
     rank = np.empty((Q.shape[0], min(131072, compressed.shape[0]-1)), dtype=np.int32)
 
-    p_range = nb.prange(Q.shape[0])
+    p_range = tqdm.tqdm(nb.prange(Q.shape[0]))
 
     if metric == 'product':
         for i in p_range:
