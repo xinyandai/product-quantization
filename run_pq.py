@@ -47,6 +47,7 @@ def parse_args(dataset=None, topk=None, codebook=None, Ks=None, metric=None):
     parser.add_argument('--save_model', type=int, help='should save the model', default=0)
     parser.add_argument('--save_dir', type=str, help='dir to save results', default='./results')
     parser.add_argument('--result_suffix', type=str, help='suffix to be added to the file names of the results', default='')
+    parser.add_argument('--train_size', type=int, help='train size', default=100000)
     args = parser.parse_args()
     return args
 
@@ -64,10 +65,18 @@ if __name__ == '__main__':
           .format(args.dataset, args.topk, args.num_codebook, args.Ks, args.metric))
 
     X, T, Q, G = loader(args.dataset, args.topk, args.metric, folder='data/')
+    if T is None:
+        T = X[:args.train_size]
+    else:
+        T = T[:args.train_size]
+    T = np.ascontiguousarray(T, np.float32)
+
     # pq, rq, or component of norm-pq
     quantizer = PQ(M=args.num_codebook, Ks=args.Ks)
     if args.rank:
         execute(quantizer, X, T, Q, G, args.metric)
     if args.save_model:
+        if not args.rank:
+            quantizer.fit(T, iter=20)
         with open(args.save_dir + '/' + args.dataset + '_pq' + args.result_suffix + '.pickle', 'wb') as f:
             pickle.dump(quantizer, f)
