@@ -97,3 +97,42 @@ def loader(data_set='audio', top_k=20, ground_metric='euclid', folder='../data/'
         G = None
     return X, T, Q, G
 
+
+def mmap_loader(data_set='audio', top_k=20, ground_metric='euclid', folder='../data/', data_type='fvecs'):
+    """
+    :param data_set: data set you wanna load , audio, sift1m, ..
+    :param top_k: how many nearest neighbor in ground truth file
+    :param ground_metric:
+    :param folder:
+    :return: X, T, Q, G
+    """
+    folder_path = folder + data_set
+    base_file = folder_path + '/%s_base.%s' % (data_set, data_type)
+    train_file = folder_path + '/%s_learn.%s' % (data_set, data_type)
+    query_file = folder_path + '/%s_query.%s' % (data_set, data_type)
+    ground_truth = folder_path + '/%s_%s_%s_groundtruth.ivecs' % \
+                   (top_k, data_set, ground_metric)
+
+    print("# load the base data {}, \n# load the queries {}, \n# load the ground truth {}".format(base_file, query_file,
+                                                                                            ground_truth))
+    if data_type == 'fvecs':
+        X = mmap_fvecs(base_file)
+        Q = fvecs_read(query_file)
+        try:
+            T = mmap_fvecs(train_file)
+        except FileNotFoundError:
+            T = None
+    elif data_type == 'bvecs':
+        X = mmap_bvecs(base_file)
+        Q = bvecs_read(query_file)
+        try:
+            T = mmap_bvecs(train_file)
+        except FileNotFoundError:
+            T = None
+    else:
+        assert False
+    try:
+        G = ivecs_read(ground_truth)
+    except FileNotFoundError:
+        G = None
+    return X, T, Q, G
