@@ -1,7 +1,7 @@
 from sorter import *
 from transformer import *
 from vecs_io import loader
-
+import pickle
 
 def chunk_compress(pq, vecs):
     chunk_size = 1000000
@@ -59,18 +59,13 @@ if __name__ == '__main__':
     metric = 'product'
 
     # override default parameters with command line parameters
-    import sys
-    if len(sys.argv) > 3:
-        args = parse_args(dataset, topk, codebook, Ks, metric)
-    else:
-        import warnings
-        warnings.warn("Using  Default Parameters ")
+    args = parse_args(dataset, topk, codebook, Ks, metric)
     print("# Parameters: dataset = {}, topK = {}, codebook = {}, Ks = {}, metric = {}"
           .format(args.dataset, args.topk, args.num_codebook, args.Ks, args.metric))
 
     X, T, Q, G = loader(args.dataset, args.topk, args.metric, folder='data/')
     # pq, rq, or component of norm-pq
-    quantizer = PQ(M=args.num_codebook, args.Ks=args.Ks)
+    quantizer = PQ(M=args.num_codebook, Ks=args.Ks)
     if args.rank:
         execute(quantizer, X, T, Q, G, args.metric)
     if args.save_model:

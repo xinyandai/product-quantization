@@ -1,8 +1,10 @@
 from vecs_io import *
 from pq import *
+from pq_norm import NormPQ
 from sorter import *
 from run_pq import execute
 from run_pq import parse_args
+import pickle
 
 
 if __name__ == '__main__':

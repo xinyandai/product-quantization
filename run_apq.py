@@ -3,7 +3,7 @@ from aq import AQ
 from pqx import PQX
 from run_pq import execute
 from run_pq import parse_args
-
+import pickle
 
 if __name__ == '__main__':
     dataset = 'netflix'

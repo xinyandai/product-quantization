@@ -2,6 +2,7 @@ from run_pq import execute
 from vecs_io import loader
 from aq import AQ
 from run_pq import parse_args
+import pickle
 
 if __name__ == '__main__':
     dataset = 'netflix'
