@@ -86,8 +86,10 @@ class ResidualPQ(object):
             vecs = vecs - pq.decode(codes[:, i, :pq.M])
         return codes  # N * deep * M
 
-    def decode(self, codes):
-        vecss = [pq.decode(codes[:, i, :pq.M]) for i, pq in enumerate(self.pqs)]
+    def decode(self, codes, left=0, right=None):
+        if right == None:
+            right = len(self.pqs)
+        vecss = [pq.decode(codes[:, i, :pq.M]) for i, pq in enumerate(self.pqs[left:right], left)]
         return np.sum(vecss, axis=0)
 
     def compress(self, X):
