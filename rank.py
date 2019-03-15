@@ -12,7 +12,8 @@ def gen_chunk(X, chunk_size=1000000):
 
 def rank(compressed, Q, G, metric):
     print("# sorting items")
-    Ts = [2 ** i for i in range(2+int(math.log2(len(X))))]
+    Ts = [2 ** i for i in range(2+int(math.log2(len(compressed))))]
+    X = None
     recalls = BatchSorter(compressed, Q, X, G, Ts, metric=metric, batch_size=200).recall()
     print("# searching!")
 
