@@ -1,7 +1,7 @@
-from sorter import *
-from transformer import *
-from vecs_io import loader
+import math
+import argparse
 import pickle
+import numpy as np
 
 
 def gen_chunk(X, chunk_size=1000000):
