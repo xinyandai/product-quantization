@@ -16,11 +16,11 @@ if __name__ == '__main__':
     import sys
     args = parse_args(dataset, topk, codebook, Ks, metric)
     print("# Parameters: dataset = {}, topK = {}, codebook = {}, Ks = {}, metric = {}"
-          .format(args.dataset, args.topk, args.codebook, args.Ks, args.metric))
+          .format(args.dataset, args.topk, args.num_codebook, args.Ks, args.metric))
 
     X, T, Q, G = loader(args.dataset, args.topk, args.metric, folder='data/')
     # pq, rq, or component of norm-pq
-    pqs = [PQ(M=1, Ks=args.Ks) for _ in range(args.codebook)]
+    pqs = [PQ(M=1, Ks=args.Ks) for _ in range(args.num_codebook)]
     quantizer = ResidualPQ(pqs=pqs)
     if args.rank:
         execute(quantizer, X, T, Q, G, args.metric)

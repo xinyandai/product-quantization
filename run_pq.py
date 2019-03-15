@@ -66,11 +66,11 @@ if __name__ == '__main__':
         import warnings
         warnings.warn("Using  Default Parameters ")
     print("# Parameters: dataset = {}, topK = {}, codebook = {}, Ks = {}, metric = {}"
-          .format(args.dataset, args.topk, args.codebook, args.Ks, args.metric))
+          .format(args.dataset, args.topk, args.num_codebook, args.Ks, args.metric))
 
     X, T, Q, G = loader(args.dataset, args.topk, args.metric, folder='data/')
     # pq, rq, or component of norm-pq
-    quantizer = PQ(M=args.codebook, args.Ks=args.Ks)
+    quantizer = PQ(M=args.num_codebook, args.Ks=args.Ks)
     if args.rank:
         execute(quantizer, X, T, Q, G, args.metric)
     if args.save_model:
