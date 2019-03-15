@@ -34,17 +34,21 @@ def execute(pq, X, T, Q, G, metric, train_size=100000):
             2**i, 0, recall, recall * len(G[0]) / t, 0, t))
 
 
-def parse_args():
+def parse_args(dataset=None, topk=None, codebook=None, Ks=None, metric=None):
     # override default parameters with command line parameters
     import argparse
     parser = argparse.ArgumentParser(description='Process input method and parameters.')
-    parser.add_argument('--dataset', type=str, help='choose data set name')
-    parser.add_argument('--topk', type=int, help='required topk of ground truth')
-    parser.add_argument('--metric', type=str, help='metric of ground truth')
-    parser.add_argument('--num_codebook', type=int, help='number of codebooks')
-    parser.add_argument('--Ks', type=int, help='number of centroids in each quantizer')
+    parser.add_argument('--dataset', type=str, help='choose data set name', default=dataset)
+    parser.add_argument('--topk', type=int, help='required topk of ground truth', default=topk)
+    parser.add_argument('--metric', type=str, help='metric of ground truth', default=metric)
+    parser.add_argument('--num_codebook', type=int, help='number of codebooks', default=codebook)
+    parser.add_argument('--Ks', type=int, help='number of centroids in each quantizer', default=Ks)
+    parser.add_argument('--rank', type=bool, help='should rank', default=True)
+    parser.add_argument('--save_model', type=bool, help='should save the model', default=False)
+    parser.add_argument('--save_dir', type=str, help='dir to save results', default='./results')
+    parser.add_argument('--result_suffix', type=str, help='suffix to be added to the file names of the results', default='')
     args = parser.parse_args()
-    return args.dataset, args.topk, args.num_codebook, args.Ks, args.metric
+    return args
 
 
 if __name__ == '__main__':
@@ -57,14 +61,18 @@ if __name__ == '__main__':
     # override default parameters with command line parameters
     import sys
     if len(sys.argv) > 3:
-        dataset, topk, codebook, Ks, metric = parse_args()
+        args = parse_args(dataset, topk, codebook, Ks, metric)
     else:
         import warnings
         warnings.warn("Using  Default Parameters ")
     print("# Parameters: dataset = {}, topK = {}, codebook = {}, Ks = {}, metric = {}"
-          .format(dataset, topk, codebook, Ks, metric))
+          .format(args.dataset, args.topk, args.codebook, args.Ks, args.metric))
 
-    X, T, Q, G = loader(dataset, topk, metric, folder='data/')
+    X, T, Q, G = loader(args.dataset, args.topk, args.metric, folder='data/')
     # pq, rq, or component of norm-pq
-    quantizer = PQ(M=codebook, Ks=Ks)
-    execute(quantizer, X, T, Q, G, metric)
+    quantizer = PQ(M=args.codebook, args.Ks=args.Ks)
+    if args.rank:
+        execute(quantizer, X, T, Q, G, args.metric)
+    if args.save_model:
+        with open(args.save_dir + '/' + args.dataset + '_pq' + args.result_suffix + '.pickle', 'wb') as f:
+            pickle.dump(quantizer, f)
