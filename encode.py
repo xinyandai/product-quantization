@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    X, _, _, _ = mmap_loader(args.dataset, args.topk, args.metric, data_type=args.data_type)
+    X, _, _, _ = mmap_loader(args.dataset, args.topk, args.metric, folder=args.data_dir, data_type=args.data_type)
 
     np.random.seed(123)
 
