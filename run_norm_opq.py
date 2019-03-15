@@ -13,16 +13,15 @@ if __name__ == '__main__':
 
     # override default parameters with command line parameters
     import sys
-    if len(sys.argv) > 3:
-        dataset, topk, codebook, Ks, metric = parse_args()
-    else:
-        import warnings
-        warnings.warn("Using  Default Parameters ")
+    args = parse_args(dataset, topk, codebook, Ks, metric)
     print("# Parameters: dataset = {}, topK = {}, codebook = {}, Ks = {}, metric = {}"
-          .format(dataset, topk, codebook, Ks, metric))
+          .format(args.dataset, args.topk, args.codebook, args.Ks, args.metric))
 
-    X, T, Q, G = loader(dataset, topk, metric, folder='data/')
-    # pq, rq, or component of norm-pq
-    quantizer = OPQ(M=codebook-1, Ks=Ks)
-    quantizer = NormPQ(n_percentile=Ks, quantize=quantizer)
-    execute(quantizer, X, T, Q, G, metric)
+    X, T, Q, G = loader(args.dataset, args.topk, args.metric, folder='data/')
+    quantizer = OPQ(M=args.codebook-1, Ks=args.Ks)
+    quantizer = NormPQ(n_percentile=args.Ks, quantize=quantizer)
+    if args.rank:
+        execute(quantizer, X, T, Q, G, args.metric)
+    if args.save_model:
+        with open(args.save_dir + '/' + args.dataset + '_norm_opq' + args.result_suffix + '.pickle', 'wb') as f:
+            pickle.dump(quantizer, f)
