@@ -92,7 +92,7 @@ class ResidualPQ(object):
 
     def decode(self, codes, left=0, right=None):
         if right == None:
-            right = len(self.pqs)
+            right = left + codes.shape[1]
         vecss = [pq.decode(codes[:, i, :pq.M]) for i, pq in enumerate(self.pqs[left:right], left)]
         return np.sum(vecss, axis=0)
 
