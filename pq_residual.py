@@ -82,15 +82,16 @@ class ResidualPQ(object):
     def encode(self, vecs):
         """
         :param vecs:
-        :return: (N * deep * M)
+        :return: (N, deep * M)
         """
         codes = np.zeros((len(vecs), self.deep, self.M), dtype=self.code_dtype)  # N * deep * M
         for i, pq in enumerate(self.pqs):
             codes[:, i, :pq.M] = pq.encode(vecs)
             vecs = vecs - pq.decode(codes[:, i, :pq.M])
-        return codes  # N * deep * M
+        return codes.reshape((len(vecs), -1))
 
     def decode(self, codes, left=0, right=None):
+        codes = codes.reshape((-1, self.deep, self.M))
         if right == None:
             right = left + codes.shape[1]
         vecss = [pq.decode(codes[:, i, :pq.M]) for i, pq in enumerate(self.pqs[left:right], left)]
