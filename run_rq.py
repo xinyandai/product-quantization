@@ -3,6 +3,7 @@ from pq_residual import *
 from sorter import *
 from run_pq import execute
 from run_pq import parse_args
+import pickle
 
 
 if __name__ == '__main__':
