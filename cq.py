@@ -16,13 +16,16 @@ class CQ(object):
 
         self.epsilons = np.zeros((self.depth, self.Ks), dtype=np.float32)
         self.scale = 1000.0
-        self.mu = 15
+        self.mu = 15.0
+        self.cq_iter = 10
+        self.sgd_iter = 100
+        self.lr=0.1
 
     def class_message(self):
         return "CQ with {} residual layers and {} codebook each layer"\
             .format(self.depth, self.Ks)
 
-    def fit(self, X, iter=20, lr=0.1):
+    def fit(self, X, iter=20):
         N, D = X.shape
 
         self.D = D
@@ -41,7 +44,7 @@ class CQ(object):
             codes[:, layer], _ = vq(residuals, self.codewords[layer, :, :D])
             if layer > 0:
                 # loop
-                for _ in tqdm.tqdm(range(10)):
+                for _ in tqdm.tqdm(range(self.cq_iter)):
                     error = np.zeros((N, self.Ks), dtype=np.float32)
                     # update epsilon and  codeword by codeword
                     for i in range(self.Ks):
@@ -57,14 +60,14 @@ class CQ(object):
                             residual = residuals[idx, :]
                             # update codeword with sgd
                             # grad = first + second - third, 1D-array[D]
-                            for _ in range(100):
+                            for _ in range(self.sgd_iter):
                                 first = 2 * np.mean(c / self.scale - residual / self.scale, axis=0)
                                 a = np.dot(pre_layer / self.scale / len(idx), c)
                                 second = 8 * self.mu * np.sum(a.reshape(-1, 1) * pre_layer , axis=0)
                                 third = 4 * self.mu * self.epsilons[layer, i] * np.mean(pre_layer / self.scale, axis=0)
 
                                 grad =  np.reshape(first + second - third, -1)
-                                c = c - grad  * lr
+                                c = c - grad  * self.lr
 
                             self.codewords[layer, i, :D] = c
                             self.epsilons[layer, i] = 2.0 * np.dot(np.mean(pre_layer, axis=0), c)
