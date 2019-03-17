@@ -13,7 +13,7 @@ class CQ(object):
             else (np.uint16 if Ks <= 2 ** 16 else np.uint32)
         self.codewords = None
         self.D = None
-        self.mu = 0.4
+        self.mu = 8
         self.epsilons = np.zeros((self.depth, self.Ks), dtype=np.float32)
 
     def class_message(self):
@@ -55,7 +55,7 @@ class CQ(object):
                             residual = residuals[idx, :]
                             # update codeword with sgd
                             # grad = first + second - third, 1D-array[D]
-                            for _ in range(1000):
+                            for _ in range(100):
                                 first = 2 * np.mean(c - residual, axis=0)
                                 a = np.dot(pre_layer / len(idx), c)
                                 second = 8 * self.mu * np.sum(a.reshape(-1, 1) * pre_layer, axis=0)
@@ -72,7 +72,7 @@ class CQ(object):
                         # 3. assign code according error to centers
                         # error = first  +  second  1D-array[N]
                         first = np.linalg.norm(residuals - c, axis=1) # N * D -> N
-                        pre_layer_all = self.codewords[layer, codes[:, layer-1], :D]
+                        pre_layer_all = self.codewords[layer - 1, codes[:, layer-1], :D]
                         second = 2 * np.dot(pre_layer_all, c) - self.epsilons[layer, i] #
                         error[:, i] = first ** 2 + self.mu * second**2
                     # choose code
@@ -107,7 +107,7 @@ class CQ(object):
                     c = self.codewords[layer, i, :D]
                     # 3. error to centers
                     first = np.linalg.norm(residuals - c, axis=1)  # N * D -> N
-                    second = 2 * np.dot(self.codewords[layer, codes[:, layer-1], :D], c) - self.epsilons[layer, i]  #
+                    second = 2 * np.dot(self.codewords[layer-1, codes[:, layer-1], :D], c) - self.epsilons[layer, i]  #
                     error[:, i] = first ** 2 + self.mu * second ** 2
                 # 3'. choose code
                 codes[:, layer] = np.argmin(error, axis=1)
