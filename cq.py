@@ -13,14 +13,16 @@ class CQ(object):
             else (np.uint16 if Ks <= 2 ** 16 else np.uint32)
         self.codewords = None
         self.D = None
-        self.mu = 8
+
         self.epsilons = np.zeros((self.depth, self.Ks), dtype=np.float32)
+        self.scale = 1000.0
+        self.mu = 15
 
     def class_message(self):
         return "CQ with {} residual layers and {} codebook each layer"\
             .format(self.depth, self.Ks)
 
-    def fit(self, X, iter=20, lr=0.01):
+    def fit(self, X, iter=20, lr=0.1):
         N, D = X.shape
 
         self.D = D
@@ -56,10 +58,10 @@ class CQ(object):
                             # update codeword with sgd
                             # grad = first + second - third, 1D-array[D]
                             for _ in range(100):
-                                first = 2 * np.mean(c - residual, axis=0)
-                                a = np.dot(pre_layer / len(idx), c)
-                                second = 8 * self.mu * np.sum(a.reshape(-1, 1) * pre_layer, axis=0)
-                                third = 4 * self.mu * self.epsilons[layer, i] * np.mean(pre_layer, axis=0)
+                                first = 2 * np.mean(c / self.scale - residual / self.scale, axis=0)
+                                a = np.dot(pre_layer / self.scale / len(idx), c)
+                                second = 8 * self.mu * np.sum(a.reshape(-1, 1) * pre_layer , axis=0)
+                                third = 4 * self.mu * self.epsilons[layer, i] * np.mean(pre_layer / self.scale, axis=0)
 
                                 grad =  np.reshape(first + second - third, -1)
                                 c = c - grad  * lr
