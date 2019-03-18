@@ -5,16 +5,16 @@ from sorter import *
 
 if __name__ == '__main__':
     np.random.seed(808)
-    dataset = 'yahoomusic'
+    dataset = 'music100'
     topk = 20
 
     bench_mark = 4
-    small_norm_codebook = 3
-    big_norm_codebook = 8
-    big_norm_percent = float(bench_mark - small_norm_codebook) / (big_norm_codebook - small_norm_codebook)
 
-    print("# number of codebook for all {} number of codebook for {} items with big norm percent {}".format(
-        small_norm_codebook, big_norm_codebook, big_norm_percent))
+    norm_codebook = [3, 4, 8]
+    norm_percent =  [0.2, 0.4, 0.4]
+
+    print("# norm_codebook {} \n"
+          "# norm_percent {}".format(norm_codebook, norm_percent))
 
     Ks = 256
     metric = 'product'
@@ -23,41 +23,25 @@ if __name__ == '__main__':
     X, Q, G = loader(dataset, topk, 'product', folder='./data/')
     sorted_norm_index = np.argsort(np.linalg.norm(X, axis=1))
 
-    big_norm_count = int(big_norm_percent * len(X))
-    small_norm_index = sorted_norm_index[:-big_norm_count]
-    big_norm_index = sorted_norm_index[-big_norm_count:]
+    norm_count = [int(i * len(X))+1 for i in norm_percent]
+    norm_index = []
+    norm_items = []
+    start = 0
+    for i in norm_count:
+        index = sorted_norm_index[start:start+i]
+        norm_index.append(index)
+        norm_items.append(X[index, :])
+        start += i
 
-    big_norm_items = X[big_norm_index, :]
-    small_norm_items = X[small_norm_index, :]
-
+    print("# norm_count {}".format(norm_count))
     compressed = np.zeros_like(X)
-    compressed[small_norm_index, :] = small_norm_items
-    compressed[big_norm_index, :] = big_norm_items
-
-    print(np.linalg.norm(X - compressed) ** 2)
-
     # pq, rq, or component of norm-pq
-    small_norm_quantizer = ResidualPQ(
-            pqs=[PQ(M=1, Ks=Ks) for _ in range(small_norm_codebook)])
-    big_norm_quantizer = ResidualPQ(
-            pqs=[PQ(M=1, Ks=Ks) for _ in range(big_norm_codebook)])
-
-    print("# ranking metric {}".format(metric))
-    print('# training')
-    print()
-    small_norm_quantizer.fit(X[:train_size].astype(dtype=np.float32), iter=20)
-    big_norm_quantizer.fit(X[:train_size].astype(dtype=np.float32), iter=20)
-
-    print('# compress items')
-    small_norm_compressed = small_norm_quantizer.compress(small_norm_items)
-    big_norm_compressed = big_norm_quantizer.compress(big_norm_items)
-
-    compressed[small_norm_index, :] = small_norm_compressed
-    compressed[big_norm_index, :] = big_norm_compressed
-
-    print(np.linalg.norm(small_norm_compressed - small_norm_items)**2)
-    print(np.linalg.norm(big_norm_compressed - big_norm_items)**2)
-    print(np.linalg.norm(X - compressed)**2)
+    for index, items, codebook in zip(norm_index, norm_items, norm_codebook):
+        print("# ranking metric {}".format(metric))
+        print('# training')
+        rq = ResidualPQ(pqs=[PQ(M=1, Ks=Ks) for _ in range(codebook)])
+        rq.fit(X[:train_size].astype(dtype=np.float32), iter=20)
+        compressed[index, :] = rq.compress(items)
 
     print("# sorting items")
     Ts = [2 ** i for i in range(2+int(math.log2(len(X))))]
