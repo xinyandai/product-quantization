@@ -4,7 +4,8 @@ import re
 
 # data_set = 'tinygist10million'
 # data_set = 'netflix'
-data_set = 'yahoomusic'
+# data_set = 'yahoomusic'
+data_set = 'music100'
 # data_set = 'sift1m'
 # data_set = 'imagenet'
 # data_set = 'movielens'
@@ -39,8 +40,8 @@ def plot_one(method, color, x, y, linestyle="-", marker='d'):
         x = np.array(data[:10, x])
         # x = np.log(x)
         y = np.array(data[:10, y])
-        method_name = method.replace("norm_rq", "NE-RQ")
-        method_name = method_name.replace("irregular_norm_3_8_20", "Irregular NE-RQ")
+        method_name = method.replace("rq_irregular", "Irregular RQ")
+        method_name = method_name.replace("rq", "Regular RQ")
         plt.plot(x, y, color, label=method_name, linestyle=linestyle, marker=marker, markersize=12, linewidth=3)
     except Exception as e:
         print(e)
