@@ -28,7 +28,7 @@ def topk_distribution():
     split = 20
     top = 5
 
-    X, Q, G = loader('sift1m', 20, 'product', verbose=False)
+    X, Q, G = loader('yahoomusic', 20, 'product')
     top_k_set = np.unique(G)
     norms = np.linalg.norm(X, axis=1)
     arg_norms = np.argsort(- norms)
