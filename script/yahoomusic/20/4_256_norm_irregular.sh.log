@@ -1,0 +1,46 @@
+/home/xinyan/.conda/envs/py3/bin/python /home/xinyan/program/hpc_github/product-quantization/run_irregular_norm_rq.py
+# number of codebook for all 3 number of codebook for 8 items with big norm percent 0.2
+# load the base data ./data/yahoomusic/yahoomusic_base.fvecs,
+# load the queries ./data/yahoomusic/yahoomusic_query.fvecs,
+# load the ground truth ./data/yahoomusic/20_yahoomusic_product_groundtruth.ivecs
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 0,  residual average norm : 0.3152028024196625 max norm: 0.7938453555107117 min norm: 0.06407400965690613
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 1,  residual average norm : 0.24185962975025177 max norm: 0.751899003982544 min norm: 0.0368298701941967
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 0,  residual average norm : 0.3149268627166748 max norm: 0.812092661857605 min norm: 0.061983540654182434
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 1,  residual average norm : 0.24168401956558228 max norm: 0.7596438527107239 min norm: 0.036829873919487
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 2,  residual average norm : 0.20141027867794037 max norm: 0.6421591639518738 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 3,  residual average norm : 0.17348609864711761 max norm: 0.6171463131904602 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 4,  residual average norm : 0.15209227800369263 max norm: 0.5758090019226074 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 5,  residual average norm : 0.13492035865783691 max norm: 0.5562120079994202 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 300
+# layer: 6,  residual average norm : 0.12068706750869751 max norm: 0.5120530724525452 min norm: 0.0
+# compress items
+# sorting items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.0465, 0.9299999999999999, 0, 1
+2, 0, 0.09249999999999999, 0.9249999999999998, 0, 2
+4, 0, 0.17905000000000001, 0.8952500000000001, 0, 4
+8, 0, 0.33535000000000004, 0.8383750000000001, 0, 8
+16, 0, 0.5799, 0.7248749999999999, 0, 16
+32, 0, 0.82125, 0.51328125, 0, 32
+64, 0, 0.9424, 0.2945, 0, 64
+128, 0, 0.9841, 0.153765625, 0, 128
+256, 0, 0.9944000000000001, 0.0776875, 0, 256
+512, 0, 0.9974500000000001, 0.038962890625, 0, 512
+1024, 0, 0.9991, 0.019513671875, 0, 1024
+2048, 0, 0.99985, 0.00976416015625, 0, 2048
+4096, 0, 1.0, 0.0048828125, 0, 4096
+8192, 0, 1.0, 0.00244140625, 0, 8192
+16384, 0, 1.0, 0.001220703125, 0, 16384
+32768, 0, 1.0, 0.0006103515625, 0, 32768
+65536, 0, 1.0, 0.00030517578125, 0, 65536
+131072, 0, 1.0, 0.000152587890625, 0, 131072
+262144, 0, 1.0, 7.62939453125e-05, 0, 262144

@@ -1,0 +1,65 @@
+# /home/xinyan/.conda/envs/py3/bin/python /home/xinyan/program/hpc_github/product-quantization/run_irregular_rq.py
+# norm_codebook [3, 4, 8]
+# norm_percent [0.2, 0.4, 0.4]
+# load the base data ./data/music100/music100_base.fvecs,
+# load the queries ./data/music100/music100_query.fvecs,
+# load the ground truth ./data/music100/20_music100_product_groundtruth.ivecs
+# norm_count [200001, 400001, 400001]
+# ranking metric product
+# training
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 0,  residual average norm : 0.5720825791358948 max norm: 1.9213078022003174 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 1,  residual average norm : 0.5131847858428955 max norm: 1.8327569961547852 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 2,  residual average norm : 0.47382819652557373 max norm: 1.6546168327331543 min norm: 0.0
+# ranking metric product
+# training
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 0,  residual average norm : 0.5721577405929565 max norm: 1.9169179201126099 min norm: 0.07991611957550049
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 1,  residual average norm : 0.5136982202529907 max norm: 1.8369286060333252 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 2,  residual average norm : 0.47396600246429443 max norm: 1.5973830223083496 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 3,  residual average norm : 0.4417722523212433 max norm: 1.5421897172927856 min norm: 0.0
+# ranking metric product
+# training
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 0,  residual average norm : 0.5735503435134888 max norm: 1.8730570077896118 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 1,  residual average norm : 0.5142673850059509 max norm: 1.8070414066314697 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 2,  residual average norm : 0.4748401939868927 max norm: 1.6214685440063477 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 3,  residual average norm : 0.44308605790138245 max norm: 1.5700860023498535 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 4,  residual average norm : 0.4158295691013336 max norm: 1.384238839149475 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 5,  residual average norm : 0.3918108642101288 max norm: 1.3373441696166992 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 6,  residual average norm : 0.370374858379364 max norm: 1.2723060846328735 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 7,  residual average norm : 0.3509696125984192 max norm: 1.151815414428711 min norm: 0.0
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.030899999999999997, 0.6179999999999999, 0, 1
+2, 0, 0.0555, 0.555, 0, 2
+4, 0, 0.09819999999999998, 0.4909999999999999, 0, 4
+8, 0, 0.167, 0.41750000000000004, 0, 8
+16, 0, 0.264, 0.33, 0, 16
+32, 0, 0.39325, 0.24578125, 0, 32
+64, 0, 0.52935, 0.165421875, 0, 64
+128, 0, 0.66695, 0.1042109375, 0, 128
+256, 0, 0.7744500000000001, 0.06050390625, 0, 256
+512, 0, 0.8570999999999999, 0.03348046874999999, 0, 512
+1024, 0, 0.9152, 0.017875000000000002, 0, 1024
+2048, 0, 0.9478499999999999, 0.009256347656249999, 0, 2048
+4096, 0, 0.9692999999999999, 0.00473291015625, 0, 4096
+8192, 0, 0.9825999999999999, 0.0023989257812499997, 0, 8192
+16384, 0, 0.99205, 0.00121099853515625, 0, 16384
+32768, 0, 0.9963, 0.00060809326171875, 0, 32768
+65536, 0, 0.9985, 0.00030471801757812504, 0, 65536
+131072, 0, 0.9994, 0.000152496337890625, 0, 131072
+262144, 0, 0.9994, 7.62481689453125e-05, 0, 262144
+524288, 0, 0.9994, 3.812408447265625e-05, 0, 524288
+1048576, 0, 0.9994, 1.9062042236328125e-05, 0, 1048576

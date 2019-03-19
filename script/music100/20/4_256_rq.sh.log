@@ -1,0 +1,38 @@
+# (py3) [xinyan@xinyan product-quantization]$ python run_rq.py  'music100' 20  4 256
+# load the base data ./data/music100/music100_base.fvecs,
+# load the queries ./data/music100/music100_query.fvecs,
+# load the ground truth ./data/music100/20_music100_product_groundtruth.ivecs
+# ranking metric product
+# Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 0,  residual average norm : 0.5723599791526794 max norm: 1.86457097530365 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 1,  residual average norm : 0.5130831599235535 max norm: 1.7838183641433716 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 2,  residual average norm : 0.4738073945045471 max norm: 1.6390643119812012 min norm: 0.0
+#    Training the subspace: 0 / 1, 0 -> 100
+# layer: 3,  residual average norm : 0.44228702783584595 max norm: 1.4324289560317993 min norm: 0.0
+# compress items
+# searching!
+expected items, overall time, avg recall, avg precision, avg error, avg items
+1, 0, 0.013399999999999999, 0.26799999999999996, 0, 1
+2, 0, 0.02395, 0.2395, 0, 2
+4, 0, 0.043550000000000005, 0.21775000000000003, 0, 4
+8, 0, 0.07369999999999999, 0.18424999999999997, 0, 8
+16, 0, 0.12434999999999999, 0.15543749999999998, 0, 16
+32, 0, 0.20465, 0.12790625, 0, 32
+64, 0, 0.30889999999999995, 0.09653124999999999, 0, 64
+128, 0, 0.4343, 0.067859375, 0, 128
+256, 0, 0.5671999999999999, 0.04431249999999999, 0, 256
+512, 0, 0.69485, 0.027142578124999997, 0, 512
+1024, 0, 0.79615, 0.0155498046875, 0, 1024
+2048, 0, 0.8743500000000001, 0.008538574218750001, 0, 2048
+4096, 0, 0.9211, 0.00449755859375, 0, 4096
+8192, 0, 0.94925, 0.0023175048828125, 0, 8192
+16384, 0, 0.96765, 0.00118121337890625, 0, 16384
+32768, 0, 0.9816500000000001, 0.0005991516113281251, 0, 32768
+65536, 0, 0.9913, 0.000302520751953125, 0, 65536
+131072, 0, 0.99585, 0.00015195465087890626, 0, 131072
+262144, 0, 0.99585, 7.597732543945313e-05, 0, 262144
+524288, 0, 0.99585, 3.7988662719726566e-05, 0, 524288
+1048576, 0, 0.99585, 1.8994331359863283e-05, 0, 1048576
