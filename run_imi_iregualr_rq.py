@@ -42,13 +42,15 @@ def run_ex(dataset, topk, Ks, metric):
 
     # if compress norm
     print("# compress norm")
-    x_full_compress = hierarchy_compressed[0]
-    norm_sqr = np.sum(x_full_compress * x_full_compress, axis=1, keepdims=True)
-    norm_quantizer = PQ(M=1, Ks=256).fit(norm_sqr, iter=20)
-    compressed_norm_sqr = chunk_compress(norm_quantizer, norm_sqr).reshape((-1))
-    del norm_sqr
+    compressed_norm_sqrs = []
+    norm_qs = [PQ(M=1, Ks=256) for _ in hierarchy_codebook]
+    for h_compress, qs in zip(hierarchy_compressed, norm_qs):
+        norm_sqr = np.sum(h_compress * h_compress, axis=1, keepdims=True)
+        qs.fit(norm_sqr, iter=20)
+        compressed_norm_sqrs.append(chunk_compress(qs, norm_sqr).reshape(-1))
+        del norm_sqr
 
-    print("# imi full sort")
+    print("# imi full sort and generate candidate")
     sorted_candidate = np.empty((len(Q), len(X)), dtype=np.int32)
     for i in tqdm.tqdm(nb.prange(len(Q))):
         sorted_candidate[i, :] = np.argsort(np.linalg.norm(Q[i] - imi_compressed, axis=1))
@@ -59,6 +61,7 @@ def run_ex(dataset, topk, Ks, metric):
         probe_size = min(131072, n_item)
         I = np.empty((Q.shape[0], probe_size - 1), dtype=np.int32)
         compressed = np.empty(shape=(probe_size, D), dtype=np.float32)
+        candidate_norm_sqr = np.empty(shape=(probe_size), dtype=np.float32)
 
         hierarchy_index = np.array(np.cumsum(hierarchy_percent) * probe_size).astype(np.int)
         hierarchy_index[-1] = probe_size
@@ -71,8 +74,8 @@ def run_ex(dataset, topk, Ks, metric):
             for v in nb.prange(0, len(hierarchy_index) - 1):
                 candidate_id = sorted_candidate[q, hierarchy_index[v]:hierarchy_index[v+1]]
                 compressed[hierarchy_index[v]:hierarchy_index[v+1], :] = hierarchy_compressed[v][candidate_id, :]
-
-            candidate_norm_sqr = compressed_norm_sqr[sorted_candidate[q, :probe_size]]
+                candidate_norm_sqr[hierarchy_index[v]:hierarchy_index[v+1]] \
+                    = compressed_norm_sqrs[v][sorted_candidate[q, hierarchy_index[v]:hierarchy_index[v+1]]]
             sort_by_pq = euclidean_norm_arg_sort(Q[q], compressed, candidate_norm_sqr)
             # sort_by_pq = euclidean_arg_sort(Q[q], compressed)
             I[q, :] = sorted_candidate[q, sort_by_pq]
