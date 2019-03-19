@@ -11,16 +11,14 @@ from run_imi_pq import print_recalls
 def run_ex(dataset, topk, Ks, metric):
 
     ### load data
-    X, T, Q, G = loader(dataset, topk, metric, folder='data/')
+    X, _, Q, G = loader(dataset, topk, metric, folder='data/')
     N, D = np.shape(X)
-    if T is None:
-        T = X[:100000]
     Q = Q[:200, :]
     G = G[:200, :]
 
     # imi for candidate generation
     imi = PQ(M=2, Ks=Ks)
-    imi.fit(T.astype(dtype=np.float32), iter=20)
+    imi.fit(X[:100000].astype(dtype=np.float32), iter=20)
 
     print('# compress items with imi')
     imi_compressed = chunk_compress(imi, X)

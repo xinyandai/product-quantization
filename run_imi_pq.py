@@ -43,12 +43,10 @@ def run_ex(dataset, topk, codebook, Ks, metric, by_residual=True):
     # pq, rq, or component of norm-pq
     imi = PQ(M=2, Ks=Ks)
     pq = PQ(M=codebook, Ks=Ks)
-    if T is None:
-        T = X[:100000]
     Q = Q[:200, :]
     G = G[:200, :]
 
-    imi.fit(T.astype(dtype=np.float32), iter=20)
+    imi.fit(X[:100000].astype(dtype=np.float32), iter=20)
     print('# compress items')
     x_candidate = chunk_compress(imi, X)
     residual = X - x_candidate
