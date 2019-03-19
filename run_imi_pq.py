@@ -49,11 +49,11 @@ def run_ex(dataset, topk, codebook, Ks, metric, by_residual=True):
     G = G[:200, :]
 
     imi.fit(T.astype(dtype=np.float32), iter=20)
-    pq.fit(T.astype(dtype=np.float32), iter=20)
-
     print('# compress items')
     x_candidate = chunk_compress(imi, X)
     residual = X - x_candidate
+
+    pq.fit(residual[:100000].astype(dtype=np.float32), iter=20)
     residual_compress = chunk_compress(pq, residual)
     x_compress = residual_compress + x_candidate
 
