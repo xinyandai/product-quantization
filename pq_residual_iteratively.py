@@ -78,7 +78,7 @@ class IterativelyResidualPQ(object):
                 layer_residual = vecs[:, :] - (np.sum(compressed, axis=0) - compressed[m])
                 codes_m = vq(layer_residual, code_book=self.codewords[m, :, :])[0]
                 compressed[m, :, :] = self.codewords[m, codes_m, :]
-        #        codes[:, m] = codes_m
+                codes[:, m] = codes_m
         return codes
 
     def decode(self, codes, left=0, right=None):
