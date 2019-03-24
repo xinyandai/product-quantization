@@ -1,0 +1,71 @@
+# /home/xinyan/.conda/envs/py3/bin/python /home/xinyan/program/hpc_github/product-quantization/run_rq.py
+# Parameters: dataset = imagenet, topK = 20, codebook = 64, Ks = 256, metric = product
+# load the base data ./data/imagenet/imagenet_base.fvecs,
+# load the queries ./data/imagenet/imagenet_query.fvecs,
+# load the ground truth ./data/imagenet/20_imagenet_product_groundtruth.ivecs
+# ranking metric product
+# Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>Subspace PQ, M: 1, Ks : 256, code_dtype: <class 'numpy.uint8'>
+0, 0.20509201288223267, 0.3603806495666504
+1, 0.1793849766254425, 0.20590364933013916
+2, 0.16378386318683624, 0.20959344506263733
+3, 0.15231886506080627, 0.21277455985546112
+4, 0.14314916729927063, 0.17980355024337769
+5, 0.13543079793453217, 0.18080668151378632
+6, 0.12880443036556244, 0.168488010764122
+7, 0.122958704829216, 0.17553649842739105
+8, 0.11773176491260529, 0.17121340334415436
+9, 0.11290118098258972, 0.15035380423069
+10, 0.10844357311725616, 0.1452205628156662
+11, 0.10439396649599075, 0.14923612773418427
+12, 0.10067082196474075, 0.13871517777442932
+13, 0.09718010574579239, 0.14300061762332916
+14, 0.09384031593799591, 0.12597356736660004
+15, 0.09071870893239975, 0.12476588040590286
+16, 0.08772926032543182, 0.11337707191705704
+17, 0.08494452387094498, 0.1203763335943222
+18, 0.08226194977760315, 0.11173156648874283
+19, 0.07970558851957321, 0.11048624664545059
+20, 0.07721249759197235, 0.0968572124838829
+21, 0.07489490509033203, 0.10427685081958771
+22, 0.07269599288702011, 0.10378006100654602
+23, 0.07054688781499863, 0.09087768197059631
+24, 0.0685533955693245, 0.09574352949857712
+25, 0.0666343942284584, 0.09148626029491425
+26, 0.06478189677000046, 0.08907961845397949
+27, 0.06298092007637024, 0.08347033709287643
+28, 0.061314042657613754, 0.08876685798168182
+29, 0.0596420019865036, 0.07985520362854004
+30, 0.05805887281894684, 0.08132141083478928
+31, 0.05647694692015648, 0.07435830682516098
+32, 0.05498753860592842, 0.07618726044893265
+33, 0.05351926386356354, 0.07262235134840012
+34, 0.05210583657026291, 0.07075345516204834
+35, 0.05076193809509277, 0.06942114233970642
+36, 0.049447011202573776, 0.06675565987825394
+37, 0.0481756217777729, 0.06531860679388046
+38, 0.04695111885666847, 0.06463633477687836
+39, 0.045749638229608536, 0.06426596641540527
+40, 0.04458646476268768, 0.06323787569999695
+41, 0.043450262397527695, 0.0598519891500473
+42, 0.042351312935352325, 0.057806193828582764
+43, 0.041313011199235916, 0.05919012799859047
+44, 0.04026055335998535, 0.054013583809137344
+45, 0.03926760330796242, 0.05476929247379303
+46, 0.038303494453430176, 0.052875928580760956
+47, 0.037357479333877563, 0.05082316696643829
+48, 0.0364329032599926, 0.04890415072441101
+49, 0.03553105145692825, 0.04613489285111427
+50, 0.034697458148002625, 0.04891818016767502
+51, 0.03383515775203705, 0.04569743573665619
+52, 0.033004436641931534, 0.04284345731139183
+53, 0.032190557569265366, 0.04432414844632149
+54, 0.031423259526491165, 0.0435730405151844
+55, 0.03066328540444374, 0.041417915374040604
+56, 0.029944302514195442, 0.04216448590159416
+57, 0.029255356639623642, 0.041131917387247086
+58, 0.028551947325468063, 0.03979172185063362
+59, 0.027887756004929543, 0.0381896086037159
+60, 0.027227148413658142, 0.038884539157152176
+61, 0.026608780026435852, 0.03796526789665222
+62, 0.026016145944595337, 0.03746799752116203
+63, 0.025422146543860435, 0.03570501506328583
