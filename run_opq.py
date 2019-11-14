@@ -23,5 +23,5 @@ if __name__ == '__main__':
 
     X, T, Q, G = loader(dataset, topk, metric, folder='data/')
     # pq, rq, or component of norm-pq
-    quantizer = OPQ(M=codebook-1, Ks=Ks)
+    quantizer = OPQ(M=codebook, Ks=Ks)
     execute(quantizer, X, T, Q, G, metric)
