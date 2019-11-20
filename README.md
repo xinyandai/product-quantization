@@ -3,7 +3,7 @@ A general framework of vector quantization with python.
 
 # [NEQ](https://arxiv.org/abs/1911.04654), AAAI 2020, Oral
 Norm-Explicit Quantization: Improving Vector Quantization for Maximum Inner Product Search.
-* abstract
+* Abstract
 
   Vector quantization (VQ) techniques are widely used in similarity search for
   data compression, fast metric computation and etc. Originally designed for
@@ -30,14 +30,14 @@ The netflix dataset is contained in this repository, you can download more datas
 
     python run_ground_truth.py  --dataset netflix --topk 50 --metric product
 
-# run examples
+# Run examples
 
     python run_pq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256
     python run_opq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256
     python run_rq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256
     python run_aq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256 # very slow
 
-# reproduce result of NEQ
+# Reproduce results of NEQ
 
     python run_norm_pq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256
     python run_norm_opq.py --dataset netflix --topk 20 --metric product --num_codebook 4 --Ks 256
