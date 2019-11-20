@@ -24,7 +24,9 @@ class NormPQ(object):
         assert vecs.dtype == np.float32
         assert vecs.ndim == 2
         N, D = vecs.shape
-        assert self.n_percentile < N, "the number of norm intervals should be more than Ks"
+        if self.n_percentile > N:
+            self.n_percentile = N
+        assert self.n_percentile <= N, "the number of norm intervals should be more than Ks"
 
         norms, normalized_vecs = normalize(vecs)
         self.quantize.fit(normalized_vecs, iter)

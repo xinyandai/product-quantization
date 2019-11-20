@@ -24,6 +24,11 @@ def execute(pq, X, Q, G, metric='euclid', train_size=100000):
     pq.fit(X[:train_size].astype(dtype=np.float32), iter=20)
     print('# compress items')
     compressed = chunk_compress(pq, X)
+
+    norms = np.linalg.norm(X, axis=1)
+    compressed_norms = np.linalg.norm(compressed, axis=1)
+    print("relative norm ", np.mean(np.abs(norms - compressed_norms) / np.max(norms)))
+
     print("# sorting items")
     Ts = [2 ** i for i in range(2+int(math.log2(len(X))))]
     recalls = BatchSorter(compressed, Q, X, G, Ts, metric=metric, batch_size=200).recall()
@@ -42,6 +47,7 @@ if __name__ == '__main__':
     parser.add_argument('--sup_quantizer', type=str.lower,
                         help='choose the sup_quantizer: NormPQ')
     parser.add_argument('--dataset', type=str, help='choose data set name')
+    parser.add_argument('--datadir', type=str, help='choose data set name', default="/research/jcheng2/xinyan/data/")
     parser.add_argument('--topk', type=int, help='topk of ground truth')
     parser.add_argument('--metric', type=str, help='metric of ground truth, euclid by default')
     parser.add_argument('--ranker', type=str, help='metric of ranker, euclid by default')
@@ -57,7 +63,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.base_fvecs:
-        X, Q, G = loader(args.dataset, args.topk, args.metric)
+        X, Q, G = loader(args.dataset, args.topk, args.metric, args.datadir)
     else:
         X, Q, G = bvecs_loader(args.dataset, args.topk, args.metric)
 

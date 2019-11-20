@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
-fontsize = 36
-ticksize = 32
+fontsize=56
+ticksize=48
 
 """
 RQ: netflix, 0.04952465370297432
@@ -50,17 +50,17 @@ absolute_mses = absolute_mses / max_norms[:, np.newaxis]
 
 
 # mses = relative_mses
-mses = absolute_mses
-# mses = relative_norms
+# mses = absolute_mses
+mses = relative_norms
 
-dataset = ['Netflix', 'Yahoo!Music', 'ImageNet', 'Sift100M']
+dataset = ['Netflix', 'YM', 'ImageNet', 'Sift']
 rqs = mses[:, 0]
 nrq = mses[:, 1]
 
 x =list(range(len(rqs)))
 
 width = 0.4
-plt.ylabel('Quantization Error', fontsize=fontsize)
+plt.ylabel('Norm Error', fontsize=fontsize)
 
 plt.bar(x, rqs, width=width, label='RQ', hatch='', fc='lightgray')
 plt.bar([i + width for i in x], nrq, width=width, label='NE-RQ', hatch='', fc='dimgray')
