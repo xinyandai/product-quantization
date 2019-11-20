@@ -39,7 +39,7 @@ def plot_one(data_set, top_k, codebook, Ks, method, color, x, y, linestyle="-", 
         # x = np.log(x)
         y = np.array(data[1:lines, y])
         method_name = method.replace("norm_", "NE-")
-        plt.plot(x, y, color, label=method_name.upper(), linestyle=linestyle, marker=marker)
+        plt.plot(x, y, color, label=method_name.upper(), linestyle=linestyle, marker=marker, markersize=8, linewidth=1.5)
     except Exception as e:
         print(e)
 
@@ -51,38 +51,39 @@ def plot():
     codebook = 8
     Ks = 256
 
-    for i, (data_set, lines) in enumerate([('netflix', 8), ('yahoomusic', 8), ('imagenet', 10), ('sift100m', 14)]):
-        plt.subplot(2, 4, i+1)
-
-        plot_one(data_set, top_k, codebook, Ks, 'pq', 'blue', x, y, ':', 's', lines=lines)
-        plot_one(data_set, top_k, codebook, Ks, 'norm_pq', 'blue', x, y, '-', 's', lines=lines)
-
-        plot_one(data_set, top_k, codebook, Ks, 'opq', 'gray', x, y, ':', '+', lines=lines)
-        plot_one(data_set, top_k, codebook, Ks, 'norm_opq', 'gray', x, y, '-', '+', lines=lines)
-
+    def _plot_setting(data_set):
         plt.xlabel('# Probe Items', fontsize=fontsize)
         plt.ylabel('Recall', fontsize=fontsize)
         plt.yticks(fontsize=ticksize)
 
         plt.xticks(fontsize=ticksize)
-
+        plt.text(1, 0.9, data_set, fontsize=ticksize, color='black')
+        plt.ylim(0, 1)
         plt.legend(loc='lower right', fontsize=ticksize)
+        # plt.legend(loc='lower right', fontsize=ticksize - 5,
+        #            handlelength=1, borderpad=-0.2,
+        #            columnspacing=0.3, handletextpad=0.2)
+
+    for i, (data_set, lines) in enumerate([('netflix', 8), ('yahoomusic', 8), ('imagenet', 10), ('sift100m', 14)]):
+        plt.subplot(2, 4, i+1)
+
+        plot_one(data_set, top_k, codebook, Ks, 'norm_opq', 'red', x, y, '-', 'X', lines=lines)
+        plot_one(data_set, top_k, codebook, Ks, 'norm_pq', 'red', x, y, '-', 's', lines=lines)
+
+        plot_one(data_set, top_k, codebook, Ks, 'opq', 'gray', x, y, '--', 'X', lines=lines)
+        plot_one(data_set, top_k, codebook, Ks, 'pq', 'gray', x, y, '--', 's', lines=lines)
+
+        _plot_setting(data_set)
+
 
     for i, (data_set, lines) in enumerate([('netflix', 8), ('yahoomusic', 8), ('imagenet', 10), ('sift100m', 14)]):
 
         plt.subplot(2, 4, i+1+4)
-        plot_one(data_set, top_k, codebook, Ks, 'aq', 'black', x, y, ':', 's', lines=lines)
-        plot_one(data_set, top_k, codebook, Ks, 'norm_aq', 'black', x, y, '-', 's', lines=lines)
-
-        plot_one(data_set, top_k, codebook, Ks, 'rq', 'red', x, y, ':', '+', lines=lines)
-        plot_one(data_set, top_k, codebook, Ks, 'norm_rq', 'red', x, y, '-', '+', lines=lines)
-
-        plt.xlabel('# Probe Items', fontsize=fontsize)
-        plt.xticks(fontsize=ticksize)
-        plt.ylabel('Recall', fontsize=fontsize)
-        plt.yticks(fontsize=ticksize)
-
-        plt.legend(loc='lower right', fontsize=ticksize)
+        plot_one(data_set, top_k, codebook, Ks, 'norm_rq', 'red', x, y, '-', 'X', lines=lines)
+        plot_one(data_set, top_k, codebook, Ks, 'norm_aq', 'red', x, y, '-', 's', lines=lines)
+        plot_one(data_set, top_k, codebook, Ks, 'rq', 'gray', x, y, '--', 'X', lines=lines)
+        plot_one(data_set, top_k, codebook, Ks, 'aq', 'gray', x, y, '--', 's', lines=lines)
+        _plot_setting(data_set)
 
     plt.subplots_adjust(
         top=0.97, bottom=0.148, left=0.068, right=0.99, hspace=0.2, wspace=0.163)
