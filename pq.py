@@ -30,7 +30,7 @@ class PQ(object):
         self.Ds = np.insert(self.Ds, 0, 0)  # insert zero at beginning
 
         # [m][ks][ds]: m-th subspace, ks-the codeword, ds-th dim
-        self.codewords = np.zeros((self.M, self.Ks, np.max(self.Ds)), dtype=np.float32)
+        self.codewords = np.zeros((self.M, self.Ks, np.max(dims_width)), dtype=np.float32)
         for m in range(self.M):
             if self.verbose:
                 print("#    Training the subspace: {} / {}, {} -> {}".format(m, self.M, self.Ds[m], self.Ds[m+1]))
